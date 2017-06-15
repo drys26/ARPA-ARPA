@@ -12,6 +12,7 @@ import Floaty
 
 class HomeRoot: UIViewController {
 
+    @IBOutlet weak var float: Floaty!
     
     var pageMenu: CAPSPageMenu?
     
@@ -56,6 +57,7 @@ class HomeRoot: UIViewController {
         self.view.addSubview(pageMenu!.view)
         
         view.bringSubview(toFront: floaty)
+        view.bringSubview(toFront: float)
     }
 
     override func didReceiveMemoryWarning() {

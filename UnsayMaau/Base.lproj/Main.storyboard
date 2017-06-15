@@ -151,16 +151,24 @@
                     <view key="view" contentMode="scaleToFill" id="HGN-ZM-x0F">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mpi-Oh-6Mn" customClass="Floaty" customModule="Floaty">
+                                <rect key="frame" x="144" y="532" width="86" height="78"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Whats Best" id="UGB-8I-7em"/>
                     <connections>
+                        <outlet property="float" destination="mpi-Oh-6Mn" id="pIX-82-DE4"/>
                         <segue destination="bKv-0Y-eGC" kind="show" identifier="goToSelectFrame" id="fhc-WR-wQ7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e6K-Tz-0nV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2732" y="-173"/>
+            <point key="canvasLocation" x="2732" y="-173.16341829085459"/>
         </scene>
         <!--Home Post Controller-->
         <scene sceneID="gL5-VI-QEz">
