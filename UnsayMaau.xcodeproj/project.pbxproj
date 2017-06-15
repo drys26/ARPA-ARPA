@@ -14,6 +14,7 @@
 		10ABFF4E1EF250940087F05F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10ABFF4C1EF250940087F05F /* LaunchScreen.storyboard */; };
 		10ABFF591EF250950087F05F /* UnsayMaauTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF581EF250950087F05F /* UnsayMaauTests.swift */; };
 		10ABFF641EF250950087F05F /* UnsayMaauUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF631EF250950087F05F /* UnsayMaauUITests.swift */; };
+		10ABFF771EF258230087F05F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 10ABFF761EF258230087F05F /* GoogleService-Info.plist */; };
 		73FFA8EDB762139FAC9B42A8 /* Pods_UnsayMaauTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D60FF120BBA4BABB1BAE40C9 /* Pods_UnsayMaauTests.framework */; };
 		790342CBA41FE31985F20439 /* Pods_UnsayMaau.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F3083FE279D994DFAFADE4 /* Pods_UnsayMaau.framework */; };
 		DA4B0E4012D3713B31ECDB72 /* Pods_UnsayMaauUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA121ED094E467C3F07E62F /* Pods_UnsayMaauUITests.framework */; };
@@ -50,6 +51,7 @@
 		10ABFF5F1EF250950087F05F /* UnsayMaauUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnsayMaauUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		10ABFF631EF250950087F05F /* UnsayMaauUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsayMaauUITests.swift; sourceTree = "<group>"; };
 		10ABFF651EF250950087F05F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		10ABFF761EF258230087F05F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1673A9EBECCD2AE697E814CE /* Pods-UnsayMaauUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaauUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaauUITests/Pods-UnsayMaauUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4359148D4201D62F217471DA /* Pods-UnsayMaauTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaauTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaauTests/Pods-UnsayMaauTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6AA121ED094E467C3F07E62F /* Pods_UnsayMaauUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsayMaauUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,6 +178,7 @@
 		10ABFF751EF2536E0087F05F /* Important Files */ = {
 			isa = PBXGroup;
 			children = (
+				10ABFF761EF258230087F05F /* GoogleService-Info.plist */,
 				10ABFF431EF250940087F05F /* AppDelegate.swift */,
 				10ABFF4F1EF250950087F05F /* Info.plist */,
 			);
@@ -322,6 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				10ABFF4E1EF250940087F05F /* LaunchScreen.storyboard in Resources */,
+				10ABFF771EF258230087F05F /* GoogleService-Info.plist in Resources */,
 				10ABFF4B1EF250940087F05F /* Assets.xcassets in Resources */,
 				10ABFF491EF250940087F05F /* Main.storyboard in Resources */,
 			);

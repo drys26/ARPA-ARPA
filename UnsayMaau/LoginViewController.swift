@@ -7,19 +7,44 @@
 //
 
 import UIKit
+import Firebase
+import GoogleSignIn
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDelegate {
 
+
+    
+    var databaseRef: DatabaseReference!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        databaseRef = Database.database().reference()
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().delegate = self
+        
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        print("User Sign in to Google")
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        Auth.auth().signIn(with: credential) { (user1, error) in
+            print("User Sign in to Firebase")
+            self.databaseRef.child("Users").child((user1?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+                let snapshot = snapshot.value as? NSDictionary
+                if snapshot == nil {
+                    let userDictionary = ["display_name": (user1?.displayName)! ,"email_address" : (user1?.email)! , "photo_url" : (user1?.photoURL?.absoluteString)!, "cover_photo_url": (user1?.photoURL?.absoluteString)!] as [String : Any]
+                    self.databaseRef.child("Users").child((user1?.uid)!).setValue(userDictionary)
+                }
+                //self.performSegue(withIdentifier: "goToMain", sender: nil)
+            })
+        }
     }
-
-
+    
+    @IBAction func googleSignInAction(_ sender: Any) {
+        GIDSignIn.sharedInstance().signIn()
+    }
 }
 
