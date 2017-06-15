@@ -1,0 +1,6 @@
+framework module Pods_UnsayMaauUITests {
+  umbrella header "Pods-UnsayMaauUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

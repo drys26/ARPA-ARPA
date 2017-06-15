@@ -1,0 +1,6 @@
+framework module Pods_UnsayMaau {
+  umbrella header "Pods-UnsayMaau-umbrella.h"
+
+  export *
+  module * { export * }
+}

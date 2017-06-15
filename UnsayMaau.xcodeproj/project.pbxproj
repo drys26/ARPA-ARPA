@@ -14,6 +14,9 @@
 		10ABFF4E1EF250940087F05F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10ABFF4C1EF250940087F05F /* LaunchScreen.storyboard */; };
 		10ABFF591EF250950087F05F /* UnsayMaauTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF581EF250950087F05F /* UnsayMaauTests.swift */; };
 		10ABFF641EF250950087F05F /* UnsayMaauUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF631EF250950087F05F /* UnsayMaauUITests.swift */; };
+		73FFA8EDB762139FAC9B42A8 /* Pods_UnsayMaauTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D60FF120BBA4BABB1BAE40C9 /* Pods_UnsayMaauTests.framework */; };
+		790342CBA41FE31985F20439 /* Pods_UnsayMaau.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F3083FE279D994DFAFADE4 /* Pods_UnsayMaau.framework */; };
+		DA4B0E4012D3713B31ECDB72 /* Pods_UnsayMaauUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA121ED094E467C3F07E62F /* Pods_UnsayMaauUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,15 @@
 		10ABFF5F1EF250950087F05F /* UnsayMaauUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnsayMaauUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		10ABFF631EF250950087F05F /* UnsayMaauUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsayMaauUITests.swift; sourceTree = "<group>"; };
 		10ABFF651EF250950087F05F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1673A9EBECCD2AE697E814CE /* Pods-UnsayMaauUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaauUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaauUITests/Pods-UnsayMaauUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4359148D4201D62F217471DA /* Pods-UnsayMaauTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaauTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaauTests/Pods-UnsayMaauTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6AA121ED094E467C3F07E62F /* Pods_UnsayMaauUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsayMaauUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		74EA516F617F9B7C8448DE15 /* Pods-UnsayMaauTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaauTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaauTests/Pods-UnsayMaauTests.release.xcconfig"; sourceTree = "<group>"; };
+		814EB9E6BA18B2B4E0530A80 /* Pods-UnsayMaau.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaau.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaau/Pods-UnsayMaau.debug.xcconfig"; sourceTree = "<group>"; };
+		92A29CE36657E3059BB4B0E6 /* Pods-UnsayMaau.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaau.release.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaau/Pods-UnsayMaau.release.xcconfig"; sourceTree = "<group>"; };
+		B2F3083FE279D994DFAFADE4 /* Pods_UnsayMaau.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsayMaau.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D60FF120BBA4BABB1BAE40C9 /* Pods_UnsayMaauTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsayMaauTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9D422119C34CE9FBC49A9F7 /* Pods-UnsayMaauUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaauUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaauUITests/Pods-UnsayMaauUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				790342CBA41FE31985F20439 /* Pods_UnsayMaau.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73FFA8EDB762139FAC9B42A8 /* Pods_UnsayMaauTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA4B0E4012D3713B31ECDB72 /* Pods_UnsayMaauUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +96,8 @@
 				10ABFF571EF250950087F05F /* UnsayMaauTests */,
 				10ABFF621EF250950087F05F /* UnsayMaauUITests */,
 				10ABFF411EF250940087F05F /* Products */,
+				4849255B76C2503599C06F09 /* Pods */,
+				B274570DA817138855F7CA6B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,6 +142,29 @@
 			path = UnsayMaauUITests;
 			sourceTree = "<group>";
 		};
+		4849255B76C2503599C06F09 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				814EB9E6BA18B2B4E0530A80 /* Pods-UnsayMaau.debug.xcconfig */,
+				92A29CE36657E3059BB4B0E6 /* Pods-UnsayMaau.release.xcconfig */,
+				4359148D4201D62F217471DA /* Pods-UnsayMaauTests.debug.xcconfig */,
+				74EA516F617F9B7C8448DE15 /* Pods-UnsayMaauTests.release.xcconfig */,
+				1673A9EBECCD2AE697E814CE /* Pods-UnsayMaauUITests.debug.xcconfig */,
+				F9D422119C34CE9FBC49A9F7 /* Pods-UnsayMaauUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B274570DA817138855F7CA6B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B2F3083FE279D994DFAFADE4 /* Pods_UnsayMaau.framework */,
+				D60FF120BBA4BABB1BAE40C9 /* Pods_UnsayMaauTests.framework */,
+				6AA121ED094E467C3F07E62F /* Pods_UnsayMaauUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +172,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 10ABFF681EF250950087F05F /* Build configuration list for PBXNativeTarget "UnsayMaau" */;
 			buildPhases = (
+				CE64BB733AA187C2D347611C /* [CP] Check Pods Manifest.lock */,
 				10ABFF3C1EF250940087F05F /* Sources */,
 				10ABFF3D1EF250940087F05F /* Frameworks */,
 				10ABFF3E1EF250940087F05F /* Resources */,
+				A2C0EBB8BEA2584479484AE0 /* [CP] Embed Pods Frameworks */,
+				3C3523EDEB0F7663679CBA71 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -149,9 +192,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 10ABFF6B1EF250950087F05F /* Build configuration list for PBXNativeTarget "UnsayMaauTests" */;
 			buildPhases = (
+				42A31B4E601F8C4703C70D01 /* [CP] Check Pods Manifest.lock */,
 				10ABFF501EF250950087F05F /* Sources */,
 				10ABFF511EF250950087F05F /* Frameworks */,
 				10ABFF521EF250950087F05F /* Resources */,
+				C3360FDAB3E653E14A39E9F3 /* [CP] Embed Pods Frameworks */,
+				CF581E95FB30819F7CAA1C6E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -167,9 +213,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 10ABFF6E1EF250950087F05F /* Build configuration list for PBXNativeTarget "UnsayMaauUITests" */;
 			buildPhases = (
+				31A6D67C2E5F76C5306847E7 /* [CP] Check Pods Manifest.lock */,
 				10ABFF5B1EF250950087F05F /* Sources */,
 				10ABFF5C1EF250950087F05F /* Frameworks */,
 				10ABFF5D1EF250950087F05F /* Resources */,
+				C93FB4B73C1B6E4FBBD97535 /* [CP] Embed Pods Frameworks */,
+				940705C1E699F722D778F625 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -253,6 +302,144 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		31A6D67C2E5F76C5306847E7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		3C3523EDEB0F7663679CBA71 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UnsayMaau/Pods-UnsayMaau-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		42A31B4E601F8C4703C70D01 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		940705C1E699F722D778F625 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UnsayMaauUITests/Pods-UnsayMaauUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A2C0EBB8BEA2584479484AE0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UnsayMaau/Pods-UnsayMaau-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C3360FDAB3E653E14A39E9F3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UnsayMaauTests/Pods-UnsayMaauTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C93FB4B73C1B6E4FBBD97535 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UnsayMaauUITests/Pods-UnsayMaauUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE64BB733AA187C2D347611C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		CF581E95FB30819F7CAA1C6E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UnsayMaauTests/Pods-UnsayMaauTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		10ABFF3C1EF250940087F05F /* Sources */ = {
@@ -412,6 +599,7 @@
 		};
 		10ABFF691EF250950087F05F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 814EB9E6BA18B2B4E0530A80 /* Pods-UnsayMaau.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = UnsayMaau/Info.plist;
@@ -424,6 +612,7 @@
 		};
 		10ABFF6A1EF250950087F05F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92A29CE36657E3059BB4B0E6 /* Pods-UnsayMaau.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = UnsayMaau/Info.plist;
@@ -436,6 +625,7 @@
 		};
 		10ABFF6C1EF250950087F05F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4359148D4201D62F217471DA /* Pods-UnsayMaauTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -450,6 +640,7 @@
 		};
 		10ABFF6D1EF250950087F05F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 74EA516F617F9B7C8448DE15 /* Pods-UnsayMaauTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -464,6 +655,7 @@
 		};
 		10ABFF6F1EF250950087F05F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1673A9EBECCD2AE697E814CE /* Pods-UnsayMaauUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = UnsayMaauUITests/Info.plist;
@@ -477,6 +669,7 @@
 		};
 		10ABFF701EF250950087F05F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9D422119C34CE9FBC49A9F7 /* Pods-UnsayMaauUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = UnsayMaauUITests/Info.plist;
