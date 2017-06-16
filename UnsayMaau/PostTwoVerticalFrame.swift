@@ -32,8 +32,6 @@ class PostTwoVerticalFrame: UIViewController , UINavigationControllerDelegate , 
     
     var postID: String!
     
-    var imagesDictionary = [String: Any]()
-    
     var frames = [1 , 2]
     
     

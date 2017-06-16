@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */; };
+		1096784B1EF3C915006CE3E3 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1096784A1EF3C915006CE3E3 /* Post.swift */; };
+		1096784D1EF3CB68006CE3E3 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1096784C1EF3CB68006CE3E3 /* Helpers.swift */; };
+		1096784F1EF3D081006CE3E3 /* PostFourFramesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1096784E1EF3D081006CE3E3 /* PostFourFramesViewController.swift */; };
 		10ABFF441EF250940087F05F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF431EF250940087F05F /* AppDelegate.swift */; };
 		10ABFF461EF250940087F05F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF451EF250940087F05F /* LoginViewController.swift */; };
 		10ABFF491EF250940087F05F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10ABFF471EF250940087F05F /* Main.storyboard */; };
@@ -43,6 +46,9 @@
 
 /* Begin PBXFileReference section */
 		10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTwoVerticalFrame.swift; sourceTree = "<group>"; };
+		1096784A1EF3C915006CE3E3 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		1096784C1EF3CB68006CE3E3 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		1096784E1EF3D081006CE3E3 /* PostFourFramesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostFourFramesViewController.swift; sourceTree = "<group>"; };
 		10ABFF401EF250940087F05F /* UnsayMaau.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsayMaau.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10ABFF431EF250940087F05F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		10ABFF451EF250940087F05F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -159,6 +165,7 @@
 				10D294951EF27774008F84B2 /* HomePostController.swift */,
 				10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */,
 				10ABFF781EF2A25C0087F05F /* SelectFrameViewController.swift */,
+				1096784E1EF3D081006CE3E3 /* PostFourFramesViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -166,6 +173,7 @@
 		10ABFF721EF2535F0087F05F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1096784A1EF3C915006CE3E3 /* Post.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -183,6 +191,7 @@
 		10ABFF741EF253690087F05F /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				1096784C1EF3CB68006CE3E3 /* Helpers.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -505,8 +514,11 @@
 				10ABFF461EF250940087F05F /* LoginViewController.swift in Sources */,
 				10ABFF441EF250940087F05F /* AppDelegate.swift in Sources */,
 				10D294961EF27774008F84B2 /* HomePostController.swift in Sources */,
+				1096784D1EF3CB68006CE3E3 /* Helpers.swift in Sources */,
 				10D294941EF27184008F84B2 /* HomeRoot.swift in Sources */,
+				1096784F1EF3D081006CE3E3 /* PostFourFramesViewController.swift in Sources */,
 				10ABFF791EF2A25C0087F05F /* SelectFrameViewController.swift in Sources */,
+				1096784B1EF3C915006CE3E3 /* Post.swift in Sources */,
 				10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

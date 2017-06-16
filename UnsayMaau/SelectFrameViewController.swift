@@ -26,6 +26,14 @@ class SelectFrameViewController: UIViewController {
         performSegue(withIdentifier: "goToPostTwoVertical", sender: nil)
     }
     
+    @IBAction func selectSecondFrame(_ sender: Any) {
+        performSegue(withIdentifier: "goToPostFourFrames", sender: nil)
+    }
+    
+    
+    
+    
+    
 
     /*
     // MARK: - Navigation
