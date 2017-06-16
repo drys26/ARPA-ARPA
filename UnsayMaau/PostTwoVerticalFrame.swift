@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import Firebase
 
 class PostTwoVerticalFrame: UIViewController , UINavigationControllerDelegate , UIImagePickerControllerDelegate {
-
+    
     @IBOutlet weak var firstImageView: UIImageView!
     @IBOutlet weak var secondImageView: UIImageView!
+    
+    @IBOutlet weak var postDescriptionText: UITextField!
     
     var imageData = [Data]()
     
@@ -19,28 +22,72 @@ class PostTwoVerticalFrame: UIViewController , UINavigationControllerDelegate , 
     
     var imageDescription = [String]()
     
+    var imageIDS = [String]()
+    
     var isFirstFrame: Bool = false
     
     var isSecondFrame: Bool = false
+    
+    var ref: DatabaseReference!
+    
+    var postID: String!
+    
+    var imagesDictionary = [String: Any]()
+    
+    var frames = [1 , 2]
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        ref = Database.database().reference()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(postAction))
     }
     
-    
+    func editImageDesc(isFirstFrame: Bool){
+        var stringDescription: String = "frame 1 description"
+        if !isFirstFrame {
+            stringDescription = "frame 2 description"
+        }
+        let alertController = UIAlertController(title: "Confirm", message: "Please input \(stringDescription)", preferredStyle: .alert)
+        alertController.addTextField(
+            configurationHandler: {(textField: UITextField!) in
+                if isFirstFrame {
+                    textField.text = self.imageDescription[0]
+                } else {
+                    textField.text = self.imageDescription[1]
+                }
+        })
+        let action = UIAlertAction(title: "Update",style: .default, handler: {[weak self]
+            (paramAction:UIAlertAction!) in
+            if let textFields = alertController.textFields{
+                let theTextFields = textFields as [UITextField]
+                let enteredText = theTextFields[0].text
+                if (isFirstFrame) {
+                    self?.imageDescription.remove(at: 0)
+                    self?.imageDescription.insert(enteredText!, at: 0)
+                    print(self?.imageDescription[0])
+                } else {
+                    self?.imageDescription.remove(at: 1)
+                    self?.imageDescription.insert(enteredText!, at: 1)
+                    print(self?.imageDescription[1])
+                }
+            }
+        })
+        alertController.addAction(action)
+        present(alertController, animated: true, completion: nil)
+    }
     
     @IBAction func editFirstFrame(_ sender: Any) {
-        print("It is a long press")
+        editImageDesc(isFirstFrame: true)
     }
+    
+    @IBAction func editSecondFrame(_ sender: Any) {
+        editImageDesc(isFirstFrame: false)
+    }
+    
     
     @IBAction func chooseFirstFrame(_ sender: Any) {
         presentImagePickerController(isFirstFrame: true)
@@ -55,12 +102,23 @@ class PostTwoVerticalFrame: UIViewController , UINavigationControllerDelegate , 
         }
         if self.isFirstFrame {
             firstImageView.image = selectedImage
-            imageData.insert(contentsOf: imageData, at: 0)
-            print(imageData[0])
+            if self.imageData.count > 0 {
+                self.imageData.remove(at: 0)
+            } else {
+                self.imageData.insert(imageData, at: 0)
+                print(self.imageData[0])
+            }
         } else {
             secondImageView.image = selectedImage
-            imageData.insert(contentsOf: imageData, at: 1)
-            print(imageData[1])
+            if self.imageData.count > 1 {
+                self.imageData.remove(at: 1)
+            } else {
+                self.imageData.insert(imageData, at: 1)
+                print(self.imageData[1])
+            }
+            
+            //self.imageData.insert(imageData, at: 1)
+            //print(self.imageData[1])
         }
         dismiss(animated: true, completion: { () -> Void in
             self.promptDescription(isFirstFrame: self.isFirstFrame)
@@ -73,29 +131,40 @@ class PostTwoVerticalFrame: UIViewController , UINavigationControllerDelegate , 
         if !isFirstFrame {
             stringDescription = "frame 2 description"
         }
-        let alertController = UIAlertController(title: "Email?", message: "Please input \(stringDescription)", preferredStyle: .alert)
-//        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
-//            if let field = alertController.textFields?[0] {
-//                
-//            }
-//        }
-//        let confirmAction = UIAlertAction(title: "Confirm", message:"Please input \(stringDescription)", preferredStyle: .alert) { (_) in
-//            if let field = alertController.textFields![0] as? UITextField {
-//                if isFirstFrame {
-//                    self.imageDescription.insert(field.text!, at: 0)
-//                    print(self.imageDescription[0])
-//                } else {
-//                    self.imageDescription.insert(field.text!, at: 1)
-//                    print(self.imageDescription[1])
-//                }
-//            }
-//        }
-//        
-//        let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: <#T##((UIAlertAction) -> Void)?##((UIAlertAction) -> Void)?##(UIAlertAction) -> Void#>)
-
-        //alertController.addAction(confirmAction)
+        let alertController = UIAlertController(title: "Confirm", message: "Please input \(stringDescription)", preferredStyle: .alert)
+        alertController.addTextField(
+            configurationHandler: {(textField: UITextField!) in
+                textField.placeholder = "Enter something"
+        })
+        let action = UIAlertAction(title: "Submit",style: .default, handler: {[weak self]
+            (paramAction:UIAlertAction!) in
+            if let textFields = alertController.textFields{
+                let theTextFields = textFields as [UITextField]
+                let enteredText = theTextFields[0].text
+                if (self?.isFirstFrame)! {
+                    if (self?.imageDescription.count)! > 0 {
+                        self?.imageDescription.remove(at: 0)
+                    } else {
+                        self?.imageDescription.insert(enteredText!, at: 0)
+                        print(self?.imageDescription[0])
+                    }
+                    
+                } else {
+                    if (self?.imageDescription.count)! > 1 {
+                        self?.imageDescription.remove(at: 1)
+                    } else {
+                        self?.imageDescription.insert(enteredText!, at: 1)
+                        print(self?.imageDescription[1])
+                    }
+                }
+            }
+        })
+        alertController.addAction(action)
         present(alertController, animated: true, completion: nil)
-
+    }
+    
+    func configurationTextField(textField: UITextField!){
+        textField.placeholder = "Enter Description"
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -118,14 +187,54 @@ class PostTwoVerticalFrame: UIViewController , UINavigationControllerDelegate , 
         present(imagePickerController, animated: true, completion: nil)
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func updateImagesDictionary(count: Int , temporaryImageDictionary: [String: Any]){
+        //imagesDictionary["\(imageIDS[count])"] = temporaryImageDictionary
+        ref.child("Images").child(postID).child(imageIDS[count]).setValue(temporaryImageDictionary)
     }
-    */
-
+    
+    func postAction(){
+        print("Post Action")
+        postID = ref.childByAutoId().key
+        imageIDS.append(ref.childByAutoId().key)
+        imageIDS.append(ref.childByAutoId().key)
+        uploadImage(datas: imageData)
+        let postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescriptionText.text] as [String : Any]
+        ref.child("Posts").child(postID).setValue(postsDictionary)
+        
+    }
+    
+    func uploadImage(datas: [Data]) {
+        for i in 0..<imageData.count{
+            let storageRef = Storage.storage().reference(withPath: "Post_Images/\(imageIDS[i])")
+            let uploadMetaData = StorageMetadata()
+            uploadMetaData.contentType = "images/jpeg"
+            print("Image Data \(imageData.count)")
+            print("Image Description \(imageDescription.count)")
+            print("Image Frames \(frames.count)")
+            print(i)
+            let uploadTask = storageRef.putData(imageData[i], metadata: uploadMetaData, completion: { (metadata,error) in
+                if(error != nil){
+                    print("I received an error! \(error?.localizedDescription ?? "null")")
+                } else {
+                    let downloadUrl = metadata!.downloadURL()?.absoluteString
+                    print("Upload complete! Heres some metadata!! \(String(describing: metadata))")
+                    print("Here's your download url \(downloadUrl!)")
+                    let imageDict = ["image_url": downloadUrl!,"image_description":self.imageDescription[i],"frame_no": self.frames[i]] as [String : Any]
+                    self.updateImagesDictionary(count: i,temporaryImageDictionary: imageDict)
+                }
+            })
+        }
+        // End Adding Post
+        navigationController?.popToRootViewController(animated: true)
+    }
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

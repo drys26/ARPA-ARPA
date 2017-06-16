@@ -84,9 +84,10 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="NE6-9D-mhD" appends="YES" id="nFM-zS-rzV"/>
+                                    <outletCollection property="gestureRecognizers" destination="srM-AJ-Qau" appends="YES" id="WXB-u2-NDk"/>
                                 </connections>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fWy-Sk-nsv">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Post Description" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fWy-Sk-nsv">
                                 <rect key="frame" x="16" y="397" width="343" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
@@ -96,8 +97,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="firstImageView" destination="AfQ-E6-dV9" id="j4U-Wl-49O"/>
+                        <outlet property="postDescriptionText" destination="fWy-Sk-nsv" id="1aY-S6-N9K"/>
                         <outlet property="secondImageView" destination="DU7-wT-bGs" id="iAT-Pl-Ilo"/>
                     </connections>
                 </viewController>
@@ -112,9 +116,14 @@
                         <action selector="chooseSecondFrame:" destination="XkY-6g-WeM" id="CmG-0f-sX0"/>
                     </connections>
                 </tapGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Taf-Rt-99c">
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="1" id="Taf-Rt-99c">
                     <connections>
                         <action selector="editFirstFrame:" destination="XkY-6g-WeM" id="Ahr-pJ-daQ"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="1" id="srM-AJ-Qau">
+                    <connections>
+                        <action selector="editSecondFrame:" destination="XkY-6g-WeM" id="VfS-sK-v44"/>
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
