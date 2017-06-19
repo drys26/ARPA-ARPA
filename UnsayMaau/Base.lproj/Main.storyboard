@@ -433,32 +433,6 @@
                     <view key="view" contentMode="scaleToFill" id="4wP-qz-eB3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="big_vertical_2x2" translatesAutoresizingMaskIntoConstraints="NO" id="Skw-Pg-lSG">
-                                <rect key="frame" x="83" y="144" width="100" height="100"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Zcs-yM-d3r" appends="YES" id="DPc-DL-9lC"/>
-                                </connections>
-                            </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="equal_4x4" translatesAutoresizingMaskIntoConstraints="NO" id="UZs-1V-4UN">
-                                <rect key="frame" x="191" y="144" width="100" height="100"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7pf-kw-mov">
-                                <rect key="frame" x="83" y="252" width="100" height="100"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Td2-1D-j8g">
-                                <rect key="frame" x="191" y="252" width="100" height="100"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qWg-SA-wJy">
-                                <rect key="frame" x="137" y="360" width="100" height="100"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
@@ -661,10 +635,8 @@
     </scenes>
     <resources>
         <image name="Vine-Vera-Beauty-Queen-Shopping-Intro" width="1000" height="677"/>
-        <image name="big_vertical_2x2" width="50" height="50"/>
         <image name="bubble_blue" width="80" height="45"/>
         <image name="dogpic" width="314" height="314"/>
-        <image name="equal_4x4" width="50" height="50"/>
         <image name="eye" width="29" height="17"/>
         <image name="groups" width="29" height="20"/>
         <image name="home" width="22" height="21"/>
