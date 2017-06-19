@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */; };
+		1065762E1EF7925200E0CB43 /* GroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1065762D1EF7925200E0CB43 /* GroupController.swift */; };
 		10ABFF441EF250940087F05F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF431EF250940087F05F /* AppDelegate.swift */; };
 		10ABFF461EF250940087F05F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF451EF250940087F05F /* LoginViewController.swift */; };
 		10ABFF491EF250940087F05F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10ABFF471EF250940087F05F /* Main.storyboard */; };
@@ -15,6 +17,10 @@
 		10ABFF591EF250950087F05F /* UnsayMaauTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF581EF250950087F05F /* UnsayMaauTests.swift */; };
 		10ABFF641EF250950087F05F /* UnsayMaauUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF631EF250950087F05F /* UnsayMaauUITests.swift */; };
 		10ABFF771EF258230087F05F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 10ABFF761EF258230087F05F /* GoogleService-Info.plist */; };
+		10ABFF791EF2A25C0087F05F /* SelectFrameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF781EF2A25C0087F05F /* SelectFrameViewController.swift */; };
+		10D294941EF27184008F84B2 /* HomeRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D294931EF27184008F84B2 /* HomeRoot.swift */; };
+		10D294961EF27774008F84B2 /* HomePostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D294951EF27774008F84B2 /* HomePostController.swift */; };
+		10D9FF181EF3A1A90056549C /* EyeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D9FF171EF3A1A90056549C /* EyeController.swift */; };
 		73FFA8EDB762139FAC9B42A8 /* Pods_UnsayMaauTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D60FF120BBA4BABB1BAE40C9 /* Pods_UnsayMaauTests.framework */; };
 		790342CBA41FE31985F20439 /* Pods_UnsayMaau.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F3083FE279D994DFAFADE4 /* Pods_UnsayMaau.framework */; };
 		DA4B0E4012D3713B31ECDB72 /* Pods_UnsayMaauUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA121ED094E467C3F07E62F /* Pods_UnsayMaauUITests.framework */; };
@@ -38,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTwoVerticalFrame.swift; sourceTree = "<group>"; };
+		1065762D1EF7925200E0CB43 /* GroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupController.swift; sourceTree = "<group>"; };
 		10ABFF401EF250940087F05F /* UnsayMaau.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsayMaau.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10ABFF431EF250940087F05F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		10ABFF451EF250940087F05F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -52,6 +60,10 @@
 		10ABFF631EF250950087F05F /* UnsayMaauUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsayMaauUITests.swift; sourceTree = "<group>"; };
 		10ABFF651EF250950087F05F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		10ABFF761EF258230087F05F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		10ABFF781EF2A25C0087F05F /* SelectFrameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectFrameViewController.swift; sourceTree = "<group>"; };
+		10D294931EF27184008F84B2 /* HomeRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRoot.swift; sourceTree = "<group>"; };
+		10D294951EF27774008F84B2 /* HomePostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePostController.swift; sourceTree = "<group>"; };
+		10D9FF171EF3A1A90056549C /* EyeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeController.swift; sourceTree = "<group>"; };
 		1673A9EBECCD2AE697E814CE /* Pods-UnsayMaauUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaauUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaauUITests/Pods-UnsayMaauUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4359148D4201D62F217471DA /* Pods-UnsayMaauTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaauTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaauTests/Pods-UnsayMaauTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6AA121ED094E467C3F07E62F /* Pods_UnsayMaauUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsayMaauUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,6 +159,12 @@
 			isa = PBXGroup;
 			children = (
 				10ABFF451EF250940087F05F /* LoginViewController.swift */,
+				10D294931EF27184008F84B2 /* HomeRoot.swift */,
+				10D294951EF27774008F84B2 /* HomePostController.swift */,
+				10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */,
+				10ABFF781EF2A25C0087F05F /* SelectFrameViewController.swift */,
+				10D9FF171EF3A1A90056549C /* EyeController.swift */,
+				1065762D1EF7925200E0CB43 /* GroupController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -491,7 +509,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				10ABFF461EF250940087F05F /* LoginViewController.swift in Sources */,
+				1065762E1EF7925200E0CB43 /* GroupController.swift in Sources */,
 				10ABFF441EF250940087F05F /* AppDelegate.swift in Sources */,
+				10D294961EF27774008F84B2 /* HomePostController.swift in Sources */,
+				10D294941EF27184008F84B2 /* HomeRoot.swift in Sources */,
+				10ABFF791EF2A25C0087F05F /* SelectFrameViewController.swift in Sources */,
+				10D9FF181EF3A1A90056549C /* EyeController.swift in Sources */,
+				10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
