@@ -57,78 +57,6 @@
             </objects>
             <point key="canvasLocation" x="991" y="138"/>
         </scene>
-        <!--Post Two Vertical Frame-->
-        <scene sceneID="ZNi-Ng-de8">
-            <objects>
-                <viewController id="XkY-6g-WeM" customClass="PostTwoVerticalFrame" customModule="UnsayMaau" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="veo-eL-KUH"/>
-                        <viewControllerLayoutGuide type="bottom" id="hjM-jo-eYk"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="lh7-dn-SEj">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="big_vertical_2x2" translatesAutoresizingMaskIntoConstraints="NO" id="AfQ-E6-dV9">
-                                <rect key="frame" x="16" y="72" width="168" height="317"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="iTG-iV-BTo" appends="YES" id="j6j-Oc-Gec"/>
-                                    <outletCollection property="gestureRecognizers" destination="Taf-Rt-99c" appends="YES" id="xDI-Y4-7Y8"/>
-                                </connections>
-                            </imageView>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="big_vertical_2x2" translatesAutoresizingMaskIntoConstraints="NO" id="DU7-wT-bGs">
-                                <rect key="frame" x="190" y="72" width="169" height="317"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="NE6-9D-mhD" appends="YES" id="nFM-zS-rzV"/>
-                                    <outletCollection property="gestureRecognizers" destination="srM-AJ-Qau" appends="YES" id="WXB-u2-NDk"/>
-                                </connections>
-                            </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Post Description" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fWy-Sk-nsv">
-                                <rect key="frame" x="16" y="397" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="firstImageView" destination="AfQ-E6-dV9" id="j4U-Wl-49O"/>
-                        <outlet property="postDescriptionText" destination="fWy-Sk-nsv" id="1aY-S6-N9K"/>
-                        <outlet property="secondImageView" destination="DU7-wT-bGs" id="iAT-Pl-Ilo"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zo1-5s-CcF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="iTG-iV-BTo">
-                    <connections>
-                        <action selector="chooseFirstFrame:" destination="XkY-6g-WeM" id="6i6-Hr-8Jb"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="NE6-9D-mhD">
-                    <connections>
-                        <action selector="chooseSecondFrame:" destination="XkY-6g-WeM" id="CmG-0f-sX0"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="1" id="Taf-Rt-99c">
-                    <connections>
-                        <action selector="editFirstFrame:" destination="XkY-6g-WeM" id="Ahr-pJ-daQ"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="1" id="srM-AJ-Qau">
-                    <connections>
-                        <action selector="editSecondFrame:" destination="XkY-6g-WeM" id="VfS-sK-v44"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="2732" y="-3287.4062968515746"/>
-        </scene>
         <!--Select Frame View Controller-->
         <scene sceneID="bnc-iN-aw9">
             <objects>
@@ -185,7 +113,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="XkY-6g-WeM" kind="show" identifier="goToPostTwoVertical" id="Wst-KI-Uu6"/>
                         <segue destination="fhR-n7-kfV" kind="show" identifier="goToFrames" id="9Si-QU-UW5"/>
                     </connections>
                 </viewController>
@@ -252,92 +179,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vhS-BR-zJ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3740" y="-2781.8590704647677"/>
-        </scene>
-        <!--Post Four Frames View Controller-->
-        <scene sceneID="SKP-B0-mnW">
-            <objects>
-                <viewController id="wya-gr-vxZ" customClass="PostFourFramesViewController" customModule="UnsayMaau" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="MfK-RH-D1k"/>
-                        <viewControllerLayoutGuide type="bottom" id="SWJ-vX-AUx"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Vq3-T2-88C">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="big_vertical_2x2" translatesAutoresizingMaskIntoConstraints="NO" id="F4y-uy-JIE">
-                                <rect key="frame" x="16" y="72" width="168" height="156"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="6K5-rq-5dZ" appends="YES" id="tsP-SL-DxA"/>
-                                </connections>
-                            </imageView>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="big_vertical_2x2" translatesAutoresizingMaskIntoConstraints="NO" id="VMm-Gd-wDK">
-                                <rect key="frame" x="190" y="72" width="169" height="156"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="2O9-g0-Uvk" appends="YES" id="9gF-eR-hfw"/>
-                                </connections>
-                            </imageView>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="big_vertical_2x2" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-hh-1tW">
-                                <rect key="frame" x="16" y="236" width="168" height="156"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="2J8-pR-ZbD" appends="YES" id="Rah-Il-JMV"/>
-                                </connections>
-                            </imageView>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="big_vertical_2x2" translatesAutoresizingMaskIntoConstraints="NO" id="7KN-CT-wCV">
-                                <rect key="frame" x="190" y="236" width="169" height="156"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="y72-PW-Nqm" appends="YES" id="zIl-Wx-6kq"/>
-                                </connections>
-                            </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Post Description" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vdQ-Yf-dr5">
-                                <rect key="frame" x="16" y="400" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="firstImageView" destination="F4y-uy-JIE" id="m0n-ge-Z0E"/>
-                        <outlet property="fourthImageView" destination="7KN-CT-wCV" id="bKX-D6-VpW"/>
-                        <outlet property="postDescriptionText" destination="vdQ-Yf-dr5" id="2pt-ia-t6h"/>
-                        <outlet property="secondImageView" destination="VMm-Gd-wDK" id="pXb-py-MTW"/>
-                        <outlet property="thirdImageView" destination="RUt-hh-1tW" id="DgC-bD-2G9"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="554-pg-rRH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="6K5-rq-5dZ">
-                    <connections>
-                        <action selector="chooseFirstFrame:" destination="wya-gr-vxZ" id="B9z-mw-JsA"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="2O9-g0-Uvk">
-                    <connections>
-                        <action selector="chooseSecondFrame:" destination="wya-gr-vxZ" id="Kk7-63-DQW"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="2J8-pR-ZbD">
-                    <connections>
-                        <action selector="chooseThirdFrame:" destination="wya-gr-vxZ" id="LDT-cr-3Qr"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="y72-PW-Nqm">
-                    <connections>
-                        <action selector="chooseFourthFrame:" destination="wya-gr-vxZ" id="DSt-gp-lmZ"/>
-                    </connections>
-                </tapGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="3740" y="-2064.0179910044981"/>
         </scene>
         <!--Item-->
         <scene sceneID="8Bm-WY-v5X">
