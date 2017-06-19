@@ -26,3 +26,9 @@ protocol PostFrames {
     func postAction()
     func uploadImage(datas: [Data])
 }
+
+
+public enum Frames {
+    case TWO_VERTICAL
+    case FOUR_CROSS
+}

@@ -162,7 +162,7 @@
                     </view>
                     <connections>
                         <segue destination="XkY-6g-WeM" kind="show" identifier="goToPostTwoVertical" id="Wst-KI-Uu6"/>
-                        <segue destination="wya-gr-vxZ" kind="show" identifier="goToPostFourFrames" id="5yD-Mp-zvD"/>
+                        <segue destination="fhR-n7-kfV" kind="show" identifier="goToFrames" id="9Si-QU-UW5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IQs-3J-jqf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -178,6 +178,41 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2732" y="-2064"/>
+        </scene>
+        <!--Select Image From Library View Controller-->
+        <scene sceneID="Dsk-Ub-xk1">
+            <objects>
+                <viewController id="fhR-n7-kfV" customClass="SelectImageFromLibraryViewController" customModule="UnsayMaau" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="n0A-1c-0HN"/>
+                        <viewControllerLayoutGuide type="bottom" id="pby-Zw-7hF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Fob-ae-VPZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="I0I-YV-7YP">
+                                <rect key="frame" x="16" y="102" width="343" height="267"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </stackView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Post Description" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rwd-J4-T6C">
+                                <rect key="frame" x="16" y="377" width="343" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="postDescription" destination="rwd-J4-T6C" id="ZIZ-5e-pvx"/>
+                        <outlet property="rootStackView" destination="I0I-YV-7YP" id="rjO-p0-avV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vhS-BR-zJ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3740" y="-2781.8590704647677"/>
         </scene>
         <!--Post Four Frames View Controller-->
         <scene sceneID="SKP-B0-mnW">
