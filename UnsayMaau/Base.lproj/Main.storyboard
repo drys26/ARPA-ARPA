@@ -173,10 +173,13 @@
                                     <outletCollection property="gestureRecognizers" destination="Fkc-98-6rS" appends="YES" id="h2K-PT-pxE"/>
                                 </connections>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="big_horizontal_2x2" translatesAutoresizingMaskIntoConstraints="NO" id="yLQ-g7-bgj">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="vertical_3x3" translatesAutoresizingMaskIntoConstraints="NO" id="yLQ-g7-bgj">
                                 <rect key="frame" x="16" y="303" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Sr4-k2-VwV" appends="YES" id="35w-pu-67S"/>
+                                </connections>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -205,6 +208,11 @@
                 <tapGestureRecognizer id="Fkc-98-6rS">
                     <connections>
                         <action selector="selectFourthFrame:" destination="bKv-0Y-eGC" id="OAR-BV-7jT"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Sr4-k2-VwV">
+                    <connections>
+                        <action selector="selectFifthFrame:" destination="bKv-0Y-eGC" id="eWR-HU-qJO"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -336,7 +344,7 @@
             <objects>
                 <navigationController id="T1q-fT-hr7" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="AlF-dd-iGF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wZb-eD-spg">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wZb-eD-spg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -429,5 +437,6 @@
         <image name="big_vertical_2x2" width="50" height="50"/>
         <image name="equal_4x4" width="50" height="50"/>
         <image name="horizontal_3x3" width="100" height="100"/>
+        <image name="vertical_3x3" width="100" height="100"/>
     </resources>
 </document>

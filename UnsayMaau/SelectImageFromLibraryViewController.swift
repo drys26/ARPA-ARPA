@@ -59,6 +59,9 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
         case "THREE_VERTICAL":
             threeVerticalFrames()
             break
+        case "THREE_HORIZONTAL":
+            threeHorizontalFrames()
+            break
         default:
             print("nothing")
             break
@@ -119,6 +122,72 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
         rootStackView.addArrangedSubview(firstImageView)
         rootStackView.addArrangedSubview(secondImageView)
         
+    }
+    
+    func threeHorizontalFrames(){
+        
+        // Root Stack View Axis == .horizontal
+        rootStackView.axis = .horizontal
+        
+        // Create an UIImageView Object
+        
+        let firstImageView = UIImageView(image: UIImage(named: "number_1"))
+        let secondImageView = UIImageView(image: UIImage(named: "number_2"))
+        let thirdImageView = UIImageView(image: UIImage(named: "number_3"))
+        
+        // Set the properties to clip to bounds and content mode
+        
+        firstImageView.contentMode = .scaleAspectFit
+        secondImageView.contentMode = .scaleAspectFit
+        thirdImageView.contentMode = .scaleAspectFit
+        
+        firstImageView.clipsToBounds = true
+        secondImageView.clipsToBounds = true
+        thirdImageView.clipsToBounds = true
+        
+        // set the user interaction to true
+        
+        firstImageView.isUserInteractionEnabled = true
+        secondImageView.isUserInteractionEnabled = true
+        thirdImageView.isUserInteractionEnabled = true
+        
+        // Add to the array of image views
+        
+        imageViews.append(firstImageView)
+        imageViews.append(secondImageView)
+        imageViews.append(thirdImageView)
+        
+        // Create an Long Tap Gesture Recognizer
+        
+        let firstImageLongGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.editFirstFrame))
+        let secondImageLongGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.editSecondFrame))
+        let thirdImageLongGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.editThirdFrame))
+        
+        // Add Minimun Duration of each Long Gesture
+        
+        firstImageLongGesture.minimumPressDuration = 1.0
+        secondImageLongGesture.minimumPressDuration = 1.0
+        thirdImageLongGesture.minimumPressDuration = 1.0
+        
+        // Add A Tap Gesture
+        
+        let firstImageTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.chooseFirstFrame))
+        let secondImageTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.chooseSecondFrame))
+        let thirdImageTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.chooseThirdFrame))
+        
+        // Add Gesture Recognizer
+        
+        firstImageView.addGestureRecognizer(firstImageTapGesture)
+        firstImageView.addGestureRecognizer(firstImageLongGesture)
+        secondImageView.addGestureRecognizer(secondImageTapGesture)
+        secondImageView.addGestureRecognizer(secondImageLongGesture)
+        thirdImageView.addGestureRecognizer(thirdImageTapGesture)
+        thirdImageView.addGestureRecognizer(thirdImageLongGesture)
+        
+        // Add to the root stack view
+        rootStackView.addArrangedSubview(firstImageView)
+        rootStackView.addArrangedSubview(secondImageView)
+        rootStackView.addArrangedSubview(thirdImageView)
     }
     
     func twoVerticalFrames(){
@@ -510,7 +579,7 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
             postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame] as [String : Any]
         } else if typeOfFrame == "FOUR_CROSS" {
             postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame] as [String : Any]
-        } else if typeOfFrame == "THREE_VERTICAL" {
+        } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
             postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame] as [String : Any]
         }
         
@@ -522,7 +591,7 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
         
         if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
             stopper = 1
-        } else if typeOfFrame == "THREE_VERTICAL" {
+        } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
             stopper = 2
         } else if typeOfFrame == "FOUR_CROSS" {
             stopper = 3

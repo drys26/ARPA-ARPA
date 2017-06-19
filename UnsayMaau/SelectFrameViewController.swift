@@ -45,6 +45,12 @@ class SelectFrameViewController: UIViewController {
         performSegue(withIdentifier: "goToFrames", sender: nil)
     }
     
+    
+    @IBAction func selectFifthFrame(_ sender: Any) {
+        typeOfFrame = "THREE_HORIZONTAL"
+        performSegue(withIdentifier: "goToFrames", sender: nil)
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
