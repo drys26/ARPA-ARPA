@@ -26,12 +26,22 @@ class SelectFrameViewController: UIViewController {
     
     
     @IBAction func selectFirstFrame(_ sender: Any) {
-        typeOfFrame = "TWO_VERTICAL"
+        typeOfFrame = "TWO_HORIZONTAL"
         performSegue(withIdentifier: "goToFrames", sender: nil)
     }
     
     @IBAction func selectSecondFrame(_ sender: Any) {
         typeOfFrame = "FOUR_CROSS"
+        performSegue(withIdentifier: "goToFrames", sender: nil)
+    }
+    
+    @IBAction func selectThirdFrame(_ sender: Any) {
+        typeOfFrame = "TWO_VERTICAL"
+        performSegue(withIdentifier: "goToFrames", sender: nil)
+    }
+    
+    @IBAction func selectFourthFrame(_ sender: Any) {
+        typeOfFrame = "THREE_VERTICAL"
         performSegue(withIdentifier: "goToFrames", sender: nil)
     }
     

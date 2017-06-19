@@ -157,6 +157,27 @@
                                     <outletCollection property="gestureRecognizers" destination="SRE-1b-jyn" appends="YES" id="Elj-gH-7HF"/>
                                 </connections>
                             </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="big_horizontal_2x2" translatesAutoresizingMaskIntoConstraints="NO" id="Dor-4S-bMc">
+                                <rect key="frame" x="16" y="195" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="02y-IL-iKP" appends="YES" id="hd0-YA-9QV"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="horizontal_3x3" translatesAutoresizingMaskIntoConstraints="NO" id="8hq-hO-ZSn">
+                                <rect key="frame" x="124" y="195" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Fkc-98-6rS" appends="YES" id="h2K-PT-pxE"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="big_horizontal_2x2" translatesAutoresizingMaskIntoConstraints="NO" id="yLQ-g7-bgj">
+                                <rect key="frame" x="16" y="303" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -174,6 +195,16 @@
                 <tapGestureRecognizer id="SRE-1b-jyn">
                     <connections>
                         <action selector="selectSecondFrame:" destination="bKv-0Y-eGC" id="gi9-VO-6kT"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="02y-IL-iKP">
+                    <connections>
+                        <action selector="selectThirdFrame:" destination="bKv-0Y-eGC" id="zAc-ww-RcV"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Fkc-98-6rS">
+                    <connections>
+                        <action selector="selectFourthFrame:" destination="bKv-0Y-eGC" id="OAR-BV-7jT"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -305,7 +336,7 @@
             <objects>
                 <navigationController id="T1q-fT-hr7" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="AlF-dd-iGF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wZb-eD-spg">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wZb-eD-spg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -394,7 +425,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="big_horizontal_2x2" width="100" height="100"/>
         <image name="big_vertical_2x2" width="50" height="50"/>
         <image name="equal_4x4" width="50" height="50"/>
+        <image name="horizontal_3x3" width="100" height="100"/>
     </resources>
 </document>
