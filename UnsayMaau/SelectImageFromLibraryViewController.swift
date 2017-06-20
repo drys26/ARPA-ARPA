@@ -27,10 +27,18 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
     
     var typeOfFrame: String!
     
+    var uid: String = (Auth.auth().currentUser?.uid)!
+    
+    var user: User!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Get the Database Reference
         ref = Database.database().reference()
+        
+        // Get the User Data
+        
+        getUserData()
         
         frames = [1,2,3,4]
         
@@ -39,6 +47,8 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
         rootStackView.distribution = .fillEqually
         
         // Set the Done Button in right bar button
+        
+        
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(postAction))
         
@@ -66,6 +76,16 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
             print("nothing")
             break
         }
+    }
+    
+    func getUserData(){
+        ref.child("Users").child(uid).observeSingleEvent(of: .value, with: {(snapshot) in
+            self.user = User(snap: snapshot)
+            //this code is just to show the UserClass was populated.
+            print(self.user.email)
+            print(self.user.displayName)
+            print(self.user.photoUrl)
+        })
     }
     
     func twoHorizontalFrames(){
@@ -576,11 +596,11 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
         var postsDictionary = [String:Any]()
         
         if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl)"] as [String : Any]
         } else if typeOfFrame == "FOUR_CROSS" {
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl)"] as [String : Any]
         } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl)"] as [String : Any]
         }
         
         ref.child("Posts").child(postID).setValue(postsDictionary)
