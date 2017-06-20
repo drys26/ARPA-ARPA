@@ -37,8 +37,9 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
                 if snapshot == nil {
                     let userDictionary = ["display_name": (user1?.displayName)! ,"email_address" : (user1?.email)! , "photo_url" : (user1?.photoURL?.absoluteString)!, "cover_photo_url": (user1?.photoURL?.absoluteString)!] as [String : Any]
                     self.databaseRef.child("Users").child((user1?.uid)!).setValue(userDictionary)
+                    
                 }
-                //self.performSegue(withIdentifier: "goToMain", sender: nil)
+                self.performSegue(withIdentifier: "goToMainPage", sender: nil)
             })
         }
     }

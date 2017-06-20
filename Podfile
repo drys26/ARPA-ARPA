@@ -21,6 +21,7 @@ pod 'JSQMessagesViewController'
 pod 'SkyFloatingLabelTextField'
 pod 'PageMenu'
 pod ‘SWRevealViewController’
+pod ‘Floaty’
 
   target 'UnsayMaauTests' do
     inherit! :search_paths
