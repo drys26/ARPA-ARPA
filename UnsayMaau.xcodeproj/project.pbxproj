@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		101406411EF8CB2100662E1E /* EyeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406401EF8CB2100662E1E /* EyeController.swift */; };
+		101406431EF8CDAC00662E1E /* GroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406421EF8CDAC00662E1E /* GroupController.swift */; };
 		10259BEB1EF7A66F004E0A02 /* SelectImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10259BEA1EF7A66F004E0A02 /* SelectImageViewController.swift */; };
 		10259BED1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10259BEC1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift */; };
 		10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */; };
@@ -47,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		101406401EF8CB2100662E1E /* EyeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeController.swift; sourceTree = "<group>"; };
+		101406421EF8CDAC00662E1E /* GroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupController.swift; sourceTree = "<group>"; };
 		10259BEA1EF7A66F004E0A02 /* SelectImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectImageViewController.swift; sourceTree = "<group>"; };
 		10259BEC1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectImageFromLibraryViewController.swift; sourceTree = "<group>"; };
 		10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTwoVerticalFrame.swift; sourceTree = "<group>"; };
@@ -172,6 +176,8 @@
 				1096784E1EF3D081006CE3E3 /* PostFourFramesViewController.swift */,
 				10259BEA1EF7A66F004E0A02 /* SelectImageViewController.swift */,
 				10259BEC1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift */,
+				101406401EF8CB2100662E1E /* EyeController.swift */,
+				101406421EF8CDAC00662E1E /* GroupController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -518,6 +524,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				10ABFF461EF250940087F05F /* LoginViewController.swift in Sources */,
+				101406431EF8CDAC00662E1E /* GroupController.swift in Sources */,
+				101406411EF8CB2100662E1E /* EyeController.swift in Sources */,
 				10ABFF441EF250940087F05F /* AppDelegate.swift in Sources */,
 				10259BED1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift in Sources */,
 				10259BEB1EF7A66F004E0A02 /* SelectImageViewController.swift in Sources */,
