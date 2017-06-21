@@ -23,7 +23,9 @@ class Post {
     var postDescription: String
     var frameType: String
     
+    
     var postKey: String
+    
     
     init(post: DataSnapshot) {
         self.postKey = post.key
