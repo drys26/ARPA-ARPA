@@ -20,4 +20,5 @@ class HomeFeedCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var rootView: UIView!
     
     
+    
 }

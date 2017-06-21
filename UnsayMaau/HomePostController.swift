@@ -18,6 +18,11 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     var posts = [Post]()
     var ref: DatabaseReference!
     var refHandle: DatabaseHandle!
+    
+    var uid = Auth.auth().currentUser?.uid
+    
+    var user: User!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,13 +36,23 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         ref = Database.database().reference()
         showPost()
-        
+        getUserData()
+    }
+    
+    func getUserData(){
+        ref.child("Users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
+            self.user = User(snap: snapshot)
+            //this code is just to show the UserClass was populated.
+            print(self.user.email)
+            print(self.user.displayName)
+            print(self.user.photoUrl)
+        })
     }
 
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//        // Dispose of any resources that can be recreated.
-//    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
     func showPost(){
         refHandle = ref.child("Posts").observe(.childAdded, with: {(snapshot) in
@@ -60,6 +75,24 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         return posts.count
     }
     
+    
+    func commandAction(sender: UIButton){
+        let post = posts[sender.tag]
+        var followerDictionary = [String:Any]()
+        var followingDictionary = [String:Any]()
+        if sender.titleLabel?.text == "Follow" {
+            followingDictionary["following"] = ["\(post.authorImageID)":["user_info":"\(post.authorDisplayName),\(post.authorEmailAddress),\(post.authorImageUrl)"]]
+            ref.child("Users").child(uid!).updateChildValues(followingDictionary)
+            followerDictionary["followers"] = ["\(uid!)":["user_info":"\(user.displayName),\(user.email),\(user.photoUrl)"]]
+            ref.child("Users").child(post.authorImageID).updateChildValues(followerDictionary)
+            sender.setTitle("Unfollow", for: .normal)
+        } else {
+            ref.child("Users").child(uid!).child("following").child(post.authorImageID).removeValue()
+            ref.child("Users").child(post.authorImageID).child("followers").child(uid!).removeValue()
+            sender.setTitle("Follow", for: .normal)
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellIdentifier = "HomeFeedCell"
         
@@ -69,7 +102,14 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         let post = posts[indexPath.row]
         
         cell.authorDisplayName.text = post.authorDisplayName
-        cell.commandButton.setTitle("Follow", for: .normal)
+        cell.commandButton.tag = indexPath.row
+        cell.commandButton.addTarget(self, action: #selector(self.commandAction), for: .touchUpInside)
+        if post.authorImageID == uid {
+            cell.commandButton.setTitle("End Vote", for: .normal)
+        } else {
+            cell.commandButton.setTitle("Follow", for: .normal)
+        }
+        
         cell.authorImageView.sd_setImage(with: URL(string: post.authorImageUrl))
         let frameType = post.frameType
         
@@ -81,156 +121,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         return cell
     }
     
-    func twoHorizontalFrames(post: Post) -> UIStackView {
-        
-        var returnStackView = UIStackView()
-        
-        returnStackView.distribution = .fillEqually
-        returnStackView.axis = .horizontal
-        
-        // Create an UIImageView Object
-        
-        let firstImageView = UIImageView()
-        let secondImageView = UIImageView()
-        
-         // Array of Image Views
-        
-        var imageViews = [UIImageView]()
-        
-        
-        // Set the properties to clip to bounds and content mode
-        
-        firstImageView.contentMode = .scaleAspectFit
-        secondImageView.contentMode = .scaleAspectFit
-        
-        firstImageView.clipsToBounds = true
-        secondImageView.clipsToBounds = true
-        
-        
-        imageViews.append(firstImageView)
-        imageViews.append(secondImageView)
-        
-        // Array of PostImages 
-        
-        var postImages = [PostImages]()
-        
-        for i in 0..<post.frameImagesIDS.count {
-            ref.child("Images").child(post.postKey).child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
-                let postImage = PostImages(snap: snapshot)
-                imageViews[i].sd_setImage(with: URL(string: postImage.imageUrl))
-                postImages.append(postImage)
-            })
-            print(postImages.count)
-        }
-        
-        
-        returnStackView.addArrangedSubview(imageViews[0])
-        returnStackView.addArrangedSubview(imageViews[1])
-        
-        return returnStackView
-    }
     
-    func threeHorizontalFrames(post: Post) -> UIStackView {
-        
-        var returnStackView = UIStackView()
-        
-        
-        returnStackView.distribution = .fillEqually
-        returnStackView.axis = .horizontal
-        
-        
-        // Create an UIImageView Object
-        
-        let firstImageView = UIImageView()
-        let secondImageView = UIImageView()
-        let thirdImageView = UIImageView()
-        
-        var imageViews = [UIImageView]()
-        
-        firstImageView.contentMode = .scaleAspectFit
-        secondImageView.contentMode = .scaleAspectFit
-        thirdImageView.contentMode = .scaleAspectFit
-        
-        firstImageView.clipsToBounds = true
-        secondImageView.clipsToBounds = true
-        thirdImageView.clipsToBounds = true
-        
-        
-        
-        
-        imageViews.append(firstImageView)
-        imageViews.append(secondImageView)
-        imageViews.append(thirdImageView)
-        
-        // Array of PostImages
-        
-        var postImages = [PostImages]()
-        
-        for i in 0..<post.frameImagesIDS.count {
-            ref.child("Images").child(post.postKey).child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
-                let postImage = PostImages(snap: snapshot)
-                imageViews[i].sd_setImage(with: URL(string: postImage.imageUrl))
-                postImages.append(postImage)
-            })
-            print("Print Post Images \(postImages.count)")
-        }
-        
-        returnStackView.addArrangedSubview(imageViews[0])
-        returnStackView.addArrangedSubview(imageViews[1])
-        returnStackView.addArrangedSubview(imageViews[2])
-        
-        
-        return returnStackView
-    }
-    
-    func twoVerticalFrames(post: Post) -> UIStackView {
-        
-        var returnStackView = UIStackView()
-        
-        returnStackView.distribution = .fillEqually
-        returnStackView.axis = .vertical
-        
-        
-        // Create an UIImageView Object
-        
-        let firstImageView = UIImageView()
-        let secondImageView = UIImageView()
-        
-        // Array of Image Views
-        
-        var imageViews = [UIImageView]()
-        
-        // Set the properties to clip to bounds and content mode
-        
-        firstImageView.contentMode = .scaleAspectFit
-        secondImageView.contentMode = .scaleAspectFit
-        
-        firstImageView.clipsToBounds = true
-        secondImageView.clipsToBounds = true
-        
-        
-        imageViews.append(firstImageView)
-        imageViews.append(secondImageView)
-        
-        // Array of PostImages
-        
-        var postImages = [PostImages]()
-        
-        for i in 0..<post.frameImagesIDS.count {
-            ref.child("Images").child(post.postKey).child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
-                let postImage = PostImages(snap: snapshot)
-                imageViews[i].sd_setImage(with: URL(string: postImage.imageUrl))
-                postImages.append(postImage)
-            })
-            print(postImages.count)
-        }
-        
-        returnStackView.addArrangedSubview(imageViews[0])
-        returnStackView.addArrangedSubview(imageViews[1])
-        
-        
-        return returnStackView
-    }
     
     
     func returnHomeCellStackView(post: Post , frameType: String , width: CGFloat , height: CGFloat) -> UIStackView {
@@ -270,7 +161,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             imgView.contentMode = .scaleAspectFill
             imgView.clipsToBounds = true
             imgView.isUserInteractionEnabled = true
-            
+            imgView.accessibilityLabel = "\(post.frameImagesIDS[i]),\(post.postKey),\(post.authorImageID)"
+            imgView.tag = i
             let voteView = UIView(frame: CGRect(x: 10, y: imgView.frame.maxY, width: 80, height: 30))
             voteView.backgroundColor = UIColor.darkGray
             voteView.layer.cornerRadius = 16
@@ -278,35 +170,36 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             imgView.addSubview(voteView)
             
             let voteLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 90, height: 20))
-            voteLabel.text = "10,000"
+            voteLabel.text = "?"
             voteLabel.font = UIFont(name: voteLabel.font.fontName, size: 12)
             
             voteView.addSubview(voteLabel)
             
-            
-            
-            
             // Create an Long Tap Gesture Recognizer
             
-            let tap = UITapGestureRecognizer()
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.voteImage(sender:)))
             
-            switch i {
-            case 0:
-                tap.addTarget(self, action: #selector(self.voteFrame1))
-                break
-            case 1:
-                tap.addTarget(self, action: #selector(self.voteFrame2))
-                break
-            case 2:
-                tap.addTarget(self, action: #selector(self.voteFrame3))
-                break
-            case 3:
-                tap.addTarget(self, action: #selector(self.voteFrame4))
-                break
-            default:
-                print("No Target")
-                break
-            }
+            
+            
+            
+            
+//            switch i {
+//            case 0:
+//                tap.addTarget(self, action: #selector(self.voteFrame1))
+//                break
+//            case 1:
+//                tap.addTarget(self, action: #selector(self.voteFrame2))
+//                break
+//            case 2:
+//                tap.addTarget(self, action: #selector(self.voteFrame3))
+//                break
+//            case 3:
+//                tap.addTarget(self, action: #selector(self.voteFrame4))
+//                break
+//            default:
+//                print("No Target")
+//                break
+//            }
             
             // Add Gesture Recognizer
             
@@ -359,22 +252,33 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         return returnStackView
     }
     
-    
-    func voteFrame1() {
-        voteImage(frameNo: 1)
-    }
-    func voteFrame2() {
-        voteImage(frameNo: 2)
-    }
-    func voteFrame3() {
-        voteImage(frameNo: 3)
-    }
-    func voteFrame4() {
-        voteImage(frameNo: 4)
-    }
-    
-    func voteImage(frameNo: Int){
-        print(frameNo)
+    func voteImage(sender: UITapGestureRecognizer){
+        if let imageView = sender.view as? UIImageView {
+            // Tag is Frame no of the image
+            
+            print(imageView.tag)
+            
+            // Accessibility Label is the image info
+            // Contains image id , post id , author image id
+            
+            print(imageView.accessibilityLabel!)
+            
+            // Make an array of the label value
+            
+            let imageInfo = imageView.accessibilityLabel!.components(separatedBy: ",")
+            
+            let imageID = imageInfo[0]
+            let postID = imageInfo[1]
+            let voteUserID = imageInfo[2]
+            
+            // Create a Dictionary for votes node
+            
+            let voteDictionary = ["\(voteUserID)": true]
+            
+            // insert to the database
+            
+            ref.child("Vote_Post").child(imageID).setValue(voteDictionary)
+        }
     }
     
     
