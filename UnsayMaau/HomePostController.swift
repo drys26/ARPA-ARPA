@@ -346,38 +346,54 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                         refVote.removeAllObservers()
                     }
                 }
-            }
-            
-            // updateImageViewsWithVotes(frameType: frameType,currentImageViewTag: imageView.tag)
-            
-//            let root = imageView.superview as! UIStackView
+            } else {
+                root = imageView.superview?.superview as! UIStackView
+                
+                print(String(describing: root))
+                
+                for stackviews in root.subviews {
+                    for imageViewHolder in stackviews.subviews {
+                        if imageViewHolder.tag != imageView.tag {
+                            let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
+                            let imageID = imageInfo?[0]
+                            
+                            print(imageInfo!)
+                            print(String(describing: imageViewHolder))
+                            
+                            refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
+                                let voteCount = snapshot.childrenCount
+                                let voteString = "\(voteCount)"
+                                let rootImage = imageViewHolder as! UIImageView
+                                let rootView = rootImage.viewWithTag(0) as! UIView
+                                let label = rootView.viewWithTag(1) as! UILabel
+                                label.text = voteString
+                            })
+                            refVote.removeAllObservers()
+                        }
+                    }
+                }
+                
+//                for imageViewHolder in root.subviews {
+//                    if imageViewHolder.tag != imageView.tag {
 //
-//            for imageViewHolder in root.subviews as! [UIImageView] {
-//                
-//                if imageViewHolder.tag != imageView.tag {
-//                    
-//                    let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
-//                    
-//                    let imageID = imageInfo?[0]
-//                    let postID = imageInfo?[1]
-//                    let voteUserID = imageInfo?[2]
-//                    let frameType = imageInfo?[3]
-////                    let postTag = Int((imageInfo?[4])!)
-//                    
-//                    refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
-//                        let voteCount = snapshot.childrenCount
-//                        let label = imageViewHolder.viewWithTag(1) as! UILabel
-//                        let voteString = "\(voteCount)"
-//                        label.text = voteString
-//                    })
-//                    refVote.removeAllObservers()
+//                        let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
+//                        let imageID = imageInfo?[0]
+//                        
+//                        print(imageInfo!)
+//                        print(String(describing: imageViewHolder))
+//                        
+//                        refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
+//                            let voteCount = snapshot.childrenCount
+//                            let voteString = "\(voteCount)"
+//                            let rootImage = imageViewHolder as! UIImageView
+//                            let rootView = rootImage.viewWithTag(0) as! UIView
+//                            let label = rootView.viewWithTag(1) as! UILabel
+//                            label.text = voteString
+//                        })
+//                        refVote.removeAllObservers()
+//                    }
 //                }
-//                
-//            }
-            
-            
-            
-            
+            }
         }
     }
     
