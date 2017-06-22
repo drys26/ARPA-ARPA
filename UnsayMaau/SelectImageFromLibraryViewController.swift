@@ -14,6 +14,7 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
     
     @IBOutlet weak var rootStackView: UIStackView!
     @IBOutlet weak var postDescription: UITextField!
+    @IBOutlet weak var statusSegment: UISegmentedControl!
     
     
     var imageData: [Data] = []
@@ -597,12 +598,20 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
         
         var uid = Auth.auth().currentUser?.uid
         
+        var status: Bool!
+        
+        if statusSegment.selectedSegmentIndex == 0 {
+            status = false
+        } else {
+            status = true
+        }
+        
         if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)"] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status] as [String : Any]
         } else if typeOfFrame == "FOUR_CROSS" {
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)"] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status] as [String : Any]
         } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)"] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status] as [String : Any]
         }
         
         ref.child("Posts").child(postID).setValue(postsDictionary)
