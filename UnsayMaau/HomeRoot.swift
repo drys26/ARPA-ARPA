@@ -23,7 +23,9 @@ class HomeRoot: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        self.navigationItem.titleView = UIImageView(image: UIImage(named: "WhatsBest2"))
+        
+        
         var controllerArray: [UIViewController] = []
         
         let postVC = storyboard?.instantiateViewController(withIdentifier: "HomePostViewController")

@@ -595,12 +595,14 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
         uploadImage(datas: imageData)
         var postsDictionary = [String:Any]()
         
+        var uid = Auth.auth().currentUser?.uid
+        
         if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl)"] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)"] as [String : Any]
         } else if typeOfFrame == "FOUR_CROSS" {
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl)"] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)"] as [String : Any]
         } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl)"] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)"] as [String : Any]
         }
         
         ref.child("Posts").child(postID).setValue(postsDictionary)

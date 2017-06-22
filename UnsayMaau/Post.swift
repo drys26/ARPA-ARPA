@@ -15,6 +15,7 @@ class Post {
     var authorImageUrl: String
     var authorDisplayName: String
     var authorEmailAddress: String
+    var authorImageID: String
     //var postImageUrl: String
     var frameImagesIDS: [String]
     var postImagesInfos: [PostImages]
@@ -34,6 +35,7 @@ class Post {
         self.authorDisplayName = authorArr[0]
         self.authorEmailAddress = authorArr[1]
         self.authorImageUrl = authorArr[2]
+        self.authorImageID = authorArr[3]
         self.frameImagesIDS = []
         self.postImagesInfos = []
         self.frameType = postDictionary["frame_type"] as! String
