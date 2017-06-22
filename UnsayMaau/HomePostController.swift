@@ -16,13 +16,45 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     @IBOutlet weak var homeCollectionView: UICollectionView!
     
     var posts = [Post]()
+    
+    
+    // Firebase reference
+    
     var ref: DatabaseReference!
-    var refHandle: DatabaseHandle!
+    
+    // Firebase Handle
+    
+    var refHandle: UInt!
+    
+    var refUserHandle: UInt!
+    
+    var refVotePostHandle: UInt!
+    
+    var refVotePostTwoHandle: UInt!
     
     var uid = Auth.auth().currentUser?.uid
     
     var user: User!
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("View will appear ")
+        // Set the Database Reference
+        
+        ref = Database.database().reference()
+        getUserData()
+        showPost()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("View Did Disapper")
+        ref.removeObserver(withHandle: refUserHandle)
+        ref.removeObserver(withHandle: refHandle)
+        ref.removeObserver(withHandle: refVotePostHandle)
+        ref.removeObserver(withHandle: refVotePostTwoHandle)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,20 +66,21 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         self.view.accessibilityIdentifier = "root_view"
         
-        // Set the Database Reference
         
-        ref = Database.database().reference()
-        showPost()
-        getUserData()
+        
+        
+        
+        
     }
     
     func getUserData(){
-        ref.child("Users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
+        refUserHandle = ref.child("Users").child(uid!).observe(.value, with: {(snapshot) in
             self.user = User(snap: snapshot)
             //this code is just to show the UserClass was populated.
             print(self.user.email)
             print(self.user.displayName)
             print(self.user.photoUrl)
+            print(self.user.followingIDs)
         })
     }
     
@@ -59,19 +92,17 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     func showPost(){
         refHandle = ref.child("Posts").observe(.childAdded, with: {(snapshot) in
             let post = Post(post: snapshot)
-            self.posts.append(post)
-            print("Post Count \(self.posts.count)")
-            DispatchQueue.main.async {
-                self.homeCollectionView.reloadData()
+            
+            // Append post only if the post is by the user and the user followed
+            
+            if self.uid! == post.authorImageID || self.user.followingIDs.contains(post.authorImageID) {
+                self.posts.append(post)
+                print("Post Count \(self.posts.count)")
+                DispatchQueue.main.async {
+                    self.homeCollectionView.reloadData()
+                }
             }
         })
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        print("View Did Disapper")
-        ref.removeObserver(withHandle: refHandle)
-        ref.removeAllObservers()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -84,9 +115,9 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         var followerDictionary = [String:Any]()
         var followingDictionary = [String:Any]()
         if sender.titleLabel?.text == "Follow" {
-            followingDictionary["following"] = ["\(post.authorImageID)":["user_info":"\(post.authorDisplayName),\(post.authorEmailAddress),\(post.authorImageUrl)"]]
+            followingDictionary["following"] = ["\(post.authorImageID)":true]
             ref.child("Users").child(uid!).updateChildValues(followingDictionary)
-            followerDictionary["followers"] = ["\(uid!)":["user_info":"\(user.displayName),\(user.email),\(user.photoUrl)"]]
+            followerDictionary["followers"] = ["\(uid!)":true]
             ref.child("Users").child(post.authorImageID).updateChildValues(followerDictionary)
             sender.setTitle("Unfollow", for: .normal)
         } else {
@@ -119,10 +150,9 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         cell.commandButton.addTarget(self, action: #selector(self.commandAction), for: .touchUpInside)
         if post.authorImageID == uid {
             cell.commandButton.setTitle("End Vote", for: .normal)
-        } else {
-            cell.commandButton.setTitle("Follow", for: .normal)
+        } else if user.followingIDs.contains(post.authorImageID){
+            cell.commandButton.setTitle("Unfollow", for: .normal)
         }
-        
         cell.authorImageView.sd_setImage(with: URL(string: post.authorImageUrl))
         let frameType = post.frameType
         
@@ -185,24 +215,24 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             
             let voteLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 90, height: 20))
             if post.authorImageID == uid! {
-                var handle = ref.child("Vote_Post").child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
+                refVotePostHandle = ref.child("Vote_Post").child(post.frameImagesIDS[i]).observe(.value, with: {(snapshot) in
                     let voteCount = snapshot.childrenCount
                     voteLabel.text = "\(voteCount)"
                 })
-                ref.removeAllObservers()
+                
             } else {
-                ref.child("Users").child(uid!).child("post_voted").observeSingleEvent(of: .value, with: {(snapshot) in
+                 refVotePostHandle = ref.child("Users").child(uid!).child("post_voted").observe(.value, with: {(snapshot) in
                     if snapshot.hasChild(post.postKey) {
-                        var handle = self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
+                        var handle = self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observe(.value
+                            , with: {(snapshot) in
                             let voteCount = snapshot.childrenCount
                             voteLabel.text = "\(voteCount)"
                         })
-                        self.ref.removeAllObservers()
                     } else {
                         voteLabel.text = "?"
                     }
                 })
-                ref.removeAllObservers()
+                
             }
             voteLabel.font = UIFont(name: voteLabel.font.fontName, size: 12)
             voteLabel.tag = 1
@@ -288,11 +318,11 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             let voteUserID = imageInfo[2]
             let frameType = imageInfo[3]
             
-            let refVote = Database.database().reference()
+            
             
             // Check if user already voted
             
-            refVote.child("Users").child(uid!).child("post_voted").observeSingleEvent(of: .value, with: {(snapshot) in
+            ref.child("Users").child(uid!).child("post_voted").observeSingleEvent(of: .value, with: {(snapshot) in
                 
                 if snapshot.hasChild(postID) {
                     self.showAlertController(message: "You already voted for this post.", title: "Done")
@@ -304,17 +334,17 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                     
                     // Insert to the database
                     
-                    refVote.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
+                    self.ref.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
                     
-                    refVote.child("Users").child(self.uid!).child("post_voted").updateChildValues(["\(postID)": true])
+                    self.ref.child("Users").child(self.uid!).child("post_voted").updateChildValues(["\(postID)": true])
                     
-                    refVote.child("Vote_Post").child(imageID).observeSingleEvent(of: .value, with: {(snapshot) in
+                    self.refVotePostTwoHandle = self.ref.child("Vote_Post").child(imageID).observe(.value, with: {(snapshot) in
                         let voteCount = snapshot.childrenCount
                         let label = imageView.viewWithTag(1) as! UILabel
                         let voteString = "\(voteCount)"
                         label.text = voteString
                     })
-                    refVote.removeAllObservers()
+                    
                 }
             })
             
@@ -335,7 +365,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                         print(imageInfo!)
                         print(String(describing: imageViewHolder))
                         
-                        refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
+                        refVotePostTwoHandle = ref.child("Vote_Post").child(imageID!).observe(.value, with: {(snapshot) in
                             let voteCount = snapshot.childrenCount
                             let voteString = "\(voteCount)"
                             let rootImage = imageViewHolder as! UIImageView
@@ -343,7 +373,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                             let label = rootView.viewWithTag(1) as! UILabel
                             label.text = voteString
                         })
-                        refVote.removeAllObservers()
+                        
                     }
                 }
             } else {
@@ -360,7 +390,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                             print(imageInfo!)
                             print(String(describing: imageViewHolder))
                             
-                            refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
+                            refVotePostTwoHandle = ref.child("Vote_Post").child(imageID!).observe(.value, with: {(snapshot) in
                                 let voteCount = snapshot.childrenCount
                                 let voteString = "\(voteCount)"
                                 let rootImage = imageViewHolder as! UIImageView
@@ -368,7 +398,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                                 let label = rootView.viewWithTag(1) as! UILabel
                                 label.text = voteString
                             })
-                            refVote.removeAllObservers()
                         }
                     }
                 }
