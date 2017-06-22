@@ -45,6 +45,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
+            
+        
         
             return CGSize(width: view.frame.width - 20, height: 598)
         
@@ -82,7 +84,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("View Did Disapper")
         ref.removeObserver(withHandle: refHandle)
         ref.removeAllObservers()
     }
