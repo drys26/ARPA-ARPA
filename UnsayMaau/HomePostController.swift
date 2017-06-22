@@ -11,9 +11,10 @@ import Floaty
 import Firebase
 import SDWebImage
 
-class HomePostController: UIViewController ,UICollectionViewDelegate, UICollectionViewDataSource {
+class HomePostController: UIViewController ,UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var homeCollectionView: UICollectionView!
+
     
     var posts = [Post]()
     
@@ -66,12 +67,18 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         self.view.accessibilityIdentifier = "root_view"
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         
-        
-        
+            return CGSize(width: view.frame.width - 20, height: 598)
         
     }
+    
+    
+    
+    
     
     func getUserData(){
         refUserHandle = ref.child("Users").child(uid!).observe(.value, with: {(snapshot) in
@@ -127,16 +134,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         }
     }
     
-    func isFollowed(post: Post) -> Bool {
-        
-        return true
-    }
-    
-    func countVotes(imageID: String) -> Int {
-        
-        return 0
-    }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellIdentifier = "HomeFeedCell"
         
@@ -144,6 +141,10 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             fatalError("The dequeued cell is not an instance of HomeFeedCell.")
         }
         let post = posts[indexPath.row]
+        cell.followBtn.layer.cornerRadius = 10
+        let separator: UIView = UIView(frame: CGRect(x: cell.descriptionStackView.frame.minX, y: cell.descriptionStackView.frame.maxY, width: cell.descriptionStackView.frame.size.width, height: 1))
+        separator.backgroundColor = UIColor.lightGray
+        cell.descriptionStackView.addSubview(separator)
         
         cell.authorDisplayName.text = post.authorDisplayName
         cell.commandButton.tag = indexPath.row
@@ -153,6 +154,9 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         } else if user.followingIDs.contains(post.authorImageID){
             cell.commandButton.setTitle("Unfollow", for: .normal)
         }
+
+        cell.authorImageView.layer.cornerRadius = cell.authorImageView.frame.size.width / 2
+        
         cell.authorImageView.sd_setImage(with: URL(string: post.authorImageUrl))
         let frameType = post.frameType
         
@@ -160,6 +164,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         if cell.rootView.subviews.count == 0 {
             cell.rootView.addSubview(returnHomeCellStackView(post: post, frameType: frameType, width: cell.rootView.frame.size.width, height: cell.rootView.frame.size.height))
+            print(cell.rootView.frame.size.width)
         }
         return cell
     }
@@ -167,8 +172,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     
     
+
     func returnHomeCellStackView(post: Post , frameType: String , width: CGFloat , height: CGFloat ) -> UIStackView {
-        
         
         // Array of Image Views
         
@@ -178,9 +183,11 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         var count = 0
         
-        var returnStackView = UIStackView(frame: CGRect(x: 0, y: 0, width: width , height: height))
-        
+        let returnStackView = UIStackView(frame: CGRect(x: 0, y: 0, width: width , height: height))
+        returnStackView.translatesAutoresizingMaskIntoConstraints = true
         returnStackView.distribution = .fillEqually
+        
+        print(returnStackView.frame.size.width)
         
         if frameType == "TWO_HORIZONTAL" || frameType == "THREE_HORIZONTAL" {
             returnStackView.axis = .horizontal
@@ -206,17 +213,19 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             imgView.isUserInteractionEnabled = true
             imgView.accessibilityLabel = "\(post.frameImagesIDS[i]),\(post.postKey),\(post.authorImageID),\(post.frameType)"
             imgView.tag = i
-            let voteView = UIView(frame: CGRect(x: 10, y: imgView.frame.maxY, width: 80, height: 30))
+            
+            let voteView = UIView(frame: CGRect(x: 5, y: 5 , width: 80, height: 30))
             voteView.backgroundColor = UIColor.darkGray
             voteView.tag = 0
             voteView.layer.cornerRadius = 16
             voteView.alpha = 0.7
-            imgView.addSubview(voteView)
+            
             
             let voteLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 90, height: 20))
             if post.authorImageID == uid! {
                 refVotePostHandle = ref.child("Vote_Post").child(post.frameImagesIDS[i]).observe(.value, with: {(snapshot) in
                     let voteCount = snapshot.childrenCount
+                    
                     voteLabel.text = "\(voteCount)"
                 })
                 
@@ -235,7 +244,13 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                 
             }
             voteLabel.font = UIFont(name: voteLabel.font.fontName, size: 12)
+            voteLabel.textColor = UIColor.white
+            
+            
+            imgView.addSubview(voteView)
+
             voteLabel.tag = 1
+
             voteView.addSubview(voteLabel)
             
             // Create an Long Tap Gesture Recognizer
@@ -287,15 +302,11 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                 returnStackView.addArrangedSubview(imageViews[i])
             }
         }
-        //
-        //        returnStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Set the tag of the root stack view
-        
-        //returnStackView.tag = 10
         
         return returnStackView
     }
+    
+    
     
     func voteImage(sender: UITapGestureRecognizer){
         if let imageView = sender.view as? UIImageView {
