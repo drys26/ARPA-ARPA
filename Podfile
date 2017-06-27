@@ -22,6 +22,7 @@ pod 'SkyFloatingLabelTextField'
 pod 'PageMenu'
 pod ‘SWRevealViewController’
 pod ‘Floaty’
+pod 'FontAwesome'
 
   target 'UnsayMaauTests' do
     inherit! :search_paths

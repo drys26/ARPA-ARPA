@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FontAwesome.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GTMOAuth2.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -92,17 +97,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0EFA44A091A7D2461C510A4D15E3FE03</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>164FDB9035112ECE540F12AF59394472</key>
+		<key>144D21B21863DD6D5AA38A4D46B8D6CC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>16ED38757234D38AF446F8E5C7082F15</key>
+		<key>164FDB9035112ECE540F12AF59394472</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -117,17 +127,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>56BB67F6B6230DA529A9206309976791</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>5C123A74CD9D6CDA27160800BA68B01A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>681BE6E3D02A43F9BA63777AC435C8FD</key>
+		<key>5C7D108C64EF0FC5CB01BC39965AC324</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7B1BBCC6183B06D690C18A1821368224</key>
+		<key>62537857399F7BFBE081F7636DFB2CB0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>681BE6E3D02A43F9BA63777AC435C8FD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -143,11 +163,6 @@
 			<true/>
 		</dict>
 		<key>B1C4AAFAF49036C7007633DAA3C806AD</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B820306D466331A92917D225D39C3B80</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -188,11 +203,6 @@
 			<true/>
 		</dict>
 		<key>FA42B2582A91F96C82E376DD2392F34F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FC2AD0F2D5C9C9241092F98AE0FAEB20</key>
 		<dict>
 			<key>primary</key>
 			<true/>

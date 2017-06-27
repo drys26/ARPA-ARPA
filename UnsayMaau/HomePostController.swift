@@ -41,11 +41,13 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         super.viewWillAppear(animated)
         print("View will appear ")
         // Set the Database Reference
+        
         if ref == nil {
             ref = Database.database().reference()
             getUserData()
             showPost()
         }
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {

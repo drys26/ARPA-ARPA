@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		100F2F711F023EBB005E7F27 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 100F2F701F023EBB005E7F27 /* fontawesome-webfont.ttf */; };
+		100F2F731F024DC6005E7F27 /* RootGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100F2F721F024DC6005E7F27 /* RootGroupController.swift */; };
 		101406411EF8CB2100662E1E /* EyeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406401EF8CB2100662E1E /* EyeController.swift */; };
 		101406431EF8CDAC00662E1E /* GroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406421EF8CDAC00662E1E /* GroupController.swift */; };
 		101E3CE91F02111C003621CC /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CE81F02111C003621CC /* AddGroupViewController.swift */; };
@@ -56,6 +58,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		100F2F701F023EBB005E7F27 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
+		100F2F721F024DC6005E7F27 /* RootGroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootGroupController.swift; sourceTree = "<group>"; };
 		101406401EF8CB2100662E1E /* EyeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeController.swift; sourceTree = "<group>"; };
 		101406421EF8CDAC00662E1E /* GroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupController.swift; sourceTree = "<group>"; };
 		101E3CE81F02111C003621CC /* AddGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +156,7 @@
 		10ABFF421EF250940087F05F /* UnsayMaau */ = {
 			isa = PBXGroup;
 			children = (
+				100F2F701F023EBB005E7F27 /* fontawesome-webfont.ttf */,
 				10ABFF751EF2536E0087F05F /* Important Files */,
 				10ABFF741EF253690087F05F /* Extension */,
 				10ABFF731EF253640087F05F /* UI */,
@@ -194,8 +199,12 @@
 				101406421EF8CDAC00662E1E /* GroupController.swift */,
 				103A96B11EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift */,
 				10A45DB31EF930FC00880BD3 /* ProfileViewController.swift */,
+
 				101E3CE81F02111C003621CC /* AddGroupViewController.swift */,
 				101E3CEA1F02238B003621CC /* GroupTableViewCell.swift */,
+
+				100F2F721F024DC6005E7F27 /* RootGroupController.swift */,
+
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -380,6 +389,7 @@
 			files = (
 				10ABFF4E1EF250940087F05F /* LaunchScreen.storyboard in Resources */,
 				10ABFF771EF258230087F05F /* GoogleService-Info.plist in Resources */,
+				100F2F711F023EBB005E7F27 /* fontawesome-webfont.ttf in Resources */,
 				10ABFF4B1EF250940087F05F /* Assets.xcassets in Resources */,
 				10ABFF491EF250940087F05F /* Main.storyboard in Resources */,
 			);
@@ -547,7 +557,11 @@
 				10ABFF461EF250940087F05F /* LoginViewController.swift in Sources */,
 				101406431EF8CDAC00662E1E /* GroupController.swift in Sources */,
 				103A96B21EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift in Sources */,
+
 				101E3CED1F0224A9003621CC /* Group.swift in Sources */,
+
+				100F2F731F024DC6005E7F27 /* RootGroupController.swift in Sources */,
+
 				101406411EF8CB2100662E1E /* EyeController.swift in Sources */,
 				10ABFF441EF250940087F05F /* AppDelegate.swift in Sources */,
 				10259BED1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift in Sources */,

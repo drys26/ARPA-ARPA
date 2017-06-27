@@ -11,8 +11,10 @@ import Floaty
 import SDWebImage
 import Firebase
 
-class GroupController: UIViewController  {
-    
+
+class GroupController: UIViewController {
+
+
     @IBOutlet weak var floats: Floaty!
     
     var groups = [Group]()
@@ -92,7 +94,7 @@ class GroupController: UIViewController  {
             } else {
                 // TODO: Enter group view controller
                 // and display data
-                
+                performSegue(withIdentifier: "goToGroupPage", sender: nil)
             }
         }
     }
