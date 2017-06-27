@@ -9,7 +9,7 @@
 import UIKit
 import Floaty
 
-class GroupController: UIViewController {
+class GroupController: UIViewController{
 
     @IBOutlet weak var floats: Floaty!
     

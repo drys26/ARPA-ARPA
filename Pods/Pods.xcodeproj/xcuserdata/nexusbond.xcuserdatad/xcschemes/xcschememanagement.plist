@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FontAwesome.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GTMOAuth2.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -92,7 +97,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0EFA44A091A7D2461C510A4D15E3FE03</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>144D21B21863DD6D5AA38A4D46B8D6CC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,17 +117,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>16ED38757234D38AF446F8E5C7082F15</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>3E47031C818392E68AB0B78F83A4A568</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>44CAD6CE523055ED339E87154473A254</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>56BB67F6B6230DA529A9206309976791</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,17 +132,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>5C7D108C64EF0FC5CB01BC39965AC324</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>62537857399F7BFBE081F7636DFB2CB0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>681BE6E3D02A43F9BA63777AC435C8FD</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7B1BBCC6183B06D690C18A1821368224</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>88126A86C4F987B3BB5D83BEC7AA7710</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -143,11 +153,6 @@
 			<true/>
 		</dict>
 		<key>B1C4AAFAF49036C7007633DAA3C806AD</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B820306D466331A92917D225D39C3B80</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -167,17 +172,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CBE5C4F50E79707D5426B49A2AEFECF1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>D0581AF7BF4A6DA140D280B19ECC7BFF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D822C8E6EB1CB036F9B5561008ED7217</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -188,11 +183,6 @@
 			<true/>
 		</dict>
 		<key>FA42B2582A91F96C82E376DD2392F34F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FC2AD0F2D5C9C9241092F98AE0FAEB20</key>
 		<dict>
 			<key>primary</key>
 			<true/>
