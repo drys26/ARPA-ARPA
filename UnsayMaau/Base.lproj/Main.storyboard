@@ -1350,7 +1350,7 @@
                                                         <constraint firstItem="6Iw-qe-9UR" firstAttribute="leading" secondItem="MRE-Di-OvK" secondAttribute="trailing" constant="8" id="wT5-em-gRw"/>
                                                     </constraints>
                                                 </view>
-                                                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vEw-YN-QHH">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vEw-YN-QHH">
                                                     <rect key="frame" x="8" y="56" width="329" height="200"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -1389,7 +1389,6 @@
                                             <outlet property="authorDisplayName" destination="6Iw-qe-9UR" id="sTf-9M-cMQ"/>
                                             <outlet property="authorImageView" destination="MRE-Di-OvK" id="YCH-2h-8jf"/>
                                             <outlet property="commandButton" destination="9dZ-ci-QSS" id="kN0-9X-1nG"/>
-                                            <outlet property="followBtn" destination="9dZ-ci-QSS" id="gKz-TX-LE9"/>
                                             <outlet property="locationText" destination="jfb-Qf-oMN" id="aJC-OS-O9P"/>
                                             <outlet property="rootCaption" destination="C9f-vk-p89" id="MqX-NO-Yxr"/>
                                             <outlet property="rootDescription" destination="2m2-Q5-Zrz" id="cvY-R6-Cu4"/>
