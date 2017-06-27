@@ -16,14 +16,52 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     @IBOutlet weak var homeCollectionView: UICollectionView!
     
     var posts = [Post]()
+    
+    
+    // Firebase reference
+    
     var ref: DatabaseReference!
-    var refHandle: DatabaseHandle!
+    
+    // Firebase Handle
+    
+    var refHandle: UInt!
+    
+    var refUserHandle: UInt!
+    
+    var refVotePostHandle: UInt?
+    
+    var refVotePostTwoHandle: UInt?
     
     var uid = Auth.auth().currentUser?.uid
     
     var user: User!
     var refresher:UIRefreshControl!
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("View will appear ")
+        // Set the Database Reference
+        if ref == nil {
+            ref = Database.database().reference()
+            getUserData()
+            showPost()
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("View Did Disapper")
+        ref.removeObserver(withHandle: refUserHandle)
+        ref.removeObserver(withHandle: refHandle)
+        if let refVoteTemp = refVotePostHandle {
+            ref.removeObserver(withHandle: refVotePostHandle!)
+        }
+        if let refVoteTemp = refVotePostTwoHandle {
+            ref.removeObserver(withHandle: refVotePostTwoHandle!)
+        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,14 +84,16 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         homeCollectionView.dataSource = self
         
         self.view.accessibilityIdentifier = "root_view"
+
         
-        // Set the Database Reference
+
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        ref = Database.database().reference()
-        showPost()
-        getUserData()
-        
-        
+
+        return CGSize(width: view.frame.width - 20, height: 598)
+
         
     }
     
@@ -62,20 +102,16 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         homeCollectionView.reloadData()
         
     }
-    
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return CGSize(width: view.frame.width - 20, height: 598)
-    }
 
     
     func getUserData(){
-        ref.child("Users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
+        refUserHandle = ref.child("Users").child(uid!).observe(.value, with: {(snapshot) in
             self.user = User(snap: snapshot)
             //this code is just to show the UserClass was populated.
             print(self.user.email)
             print(self.user.displayName)
             print(self.user.photoUrl)
+            print(self.user.followingIDs)
         })
     }
     
@@ -87,18 +123,17 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     func showPost(){
         refHandle = ref.child("Posts").observe(.childAdded, with: {(snapshot) in
             let post = Post(post: snapshot)
-            self.posts.append(post)
-            print("Post Count \(self.posts.count)")
-            DispatchQueue.main.async {
-                self.homeCollectionView.reloadData()
+            
+            // Append post only if the post is by the user and the user followed
+            
+            if self.uid! == post.authorImageID || self.user.followingIDs.contains(post.authorImageID) {
+                self.posts.append(post)
+                print("Post Count \(self.posts.count)")
+                DispatchQueue.main.async {
+                    self.homeCollectionView.reloadData()
+                }
             }
         })
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        ref.removeObserver(withHandle: refHandle)
-        ref.removeAllObservers()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -111,15 +146,18 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         var followerDictionary = [String:Any]()
         var followingDictionary = [String:Any]()
         if sender.titleLabel?.text == "Follow" {
-            followingDictionary["following"] = ["\(post.authorImageID)":["user_info":"\(post.authorDisplayName),\(post.authorEmailAddress),\(post.authorImageUrl)"]]
+            followingDictionary["following"] = ["\(post.authorImageID)":true]
             ref.child("Users").child(uid!).updateChildValues(followingDictionary)
-            followerDictionary["followers"] = ["\(uid!)":["user_info":"\(user.displayName),\(user.email),\(user.photoUrl)"]]
+            followerDictionary["followers"] = ["\(uid!)":true]
             ref.child("Users").child(post.authorImageID).updateChildValues(followerDictionary)
             sender.setTitle("Unfollow", for: .normal)
-        } else {
+        } else if sender.titleLabel?.text == "Unfollow" {
             ref.child("Users").child(uid!).child("following").child(post.authorImageID).removeValue()
             ref.child("Users").child(post.authorImageID).child("followers").child(uid!).removeValue()
             sender.setTitle("Follow", for: .normal)
+        } else if sender.titleLabel?.text == "End Vote" {
+            ref.child("Posts").child(post.postKey).updateChildValues(["finished":true])
+            sender.setTitle("Finished", for: .normal)
         }
     }
     
@@ -130,68 +168,119 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             fatalError("The dequeued cell is not an instance of HomeFeedCell.")
         }
         let post = posts[indexPath.row]
-        cell.followBtn.layer.cornerRadius = 10
-        let separator: UIView = UIView(frame: CGRect(x: cell.descriptionStackView.frame.minX, y: cell.descriptionStackView.frame.maxY, width: cell.descriptionStackView.frame.size.width, height: 1))
+        cell.commandButton.layer.cornerRadius = 10
+        let separator: UIView = UIView(frame: CGRect(x: cell.rootDescription.frame.minX, y: cell.rootDescription.frame.maxY, width: cell.rootDescription.frame.size.width, height: 1))
         separator.backgroundColor = UIColor.lightGray
-        cell.descriptionStackView.addSubview(separator)
+        
         
         cell.authorDisplayName.text = post.authorDisplayName
         cell.commandButton.tag = indexPath.row
         cell.commandButton.addTarget(self, action: #selector(self.commandAction), for: .touchUpInside)
         if post.authorImageID == uid {
             cell.commandButton.setTitle("End Vote", for: .normal)
-        } else {
-            cell.commandButton.setTitle("Follow", for: .normal)
+        } else if user.followingIDs.contains(post.authorImageID){
+            cell.commandButton.setTitle("Unfollow", for: .normal)
         }
+        
         cell.authorImageView.layer.cornerRadius = cell.authorImageView.frame.size.width / 2
+        
         cell.authorImageView.sd_setImage(with: URL(string: post.authorImageUrl))
         let frameType = post.frameType
+        
+        let (imageStack , label , caption) = returnHomeCellStackView(post: post, frameType: frameType, width: cell.rootView.frame.size.width , height: cell.rootView.frame.size.height , descriptionWidth: cell.rootDescription.frame.size.width , captionHeight: cell.rootCaption.frame.size.height,descriptionHeight: cell.rootDescription.frame.size.height)
         
         // Add the view in the root stack view
         
         if cell.rootView.subviews.count == 0 {
-            cell.rootView.addSubview(returnHomeCellStackView(post: post, frameType: frameType, width: cell.rootView.frame.size.width, height: cell.rootView.frame.size.height))
+
+            cell.rootView.addSubview(imageStack)
             
+            let leading = NSLayoutConstraint(item: imageStack, attribute: .right, relatedBy: .equal, toItem: cell.rootView, attribute: .right, multiplier: 1.0, constant: 0)
+            let trailing = NSLayoutConstraint(item: imageStack, attribute: .left, relatedBy: .equal, toItem: cell.rootView, attribute: .left, multiplier: 1.0, constant: 0)
+            let top = NSLayoutConstraint(item: imageStack, attribute: .top, relatedBy: .equal, toItem: cell.rootView, attribute: .top, multiplier: 1.0, constant: 0)
+            let bottom = NSLayoutConstraint(item: imageStack, attribute: .bottom, relatedBy: .equal, toItem: cell.rootView, attribute: .bottom, multiplier: 1.0, constant: 0)
+            
+            cell.rootView.addConstraints([leading, trailing, top, bottom])
+            
+        }
+        
+        if cell.rootDescription.subviews.count == 0 {
+            cell.rootDescription.addSubview(separator)
+            for lbl in label {
+                cell.rootDescription.addArrangedSubview(lbl)
+            }
+        }
+        if cell.rootCaption.subviews.count == 0 {
+            cell.rootCaption.addArrangedSubview(caption)
         }
         return cell
         
     }
 
-
-    func returnHomeCellStackView(post: Post , frameType: String , width: CGFloat , height: CGFloat ) -> UIStackView {
-        
-        // Array of Image Views
-        
-        var imageViews = [UIImageView]()
-        
-        // Count for the image view objects to be instantiated
-        
+    
+    func returnCountOfFrames(frameType: String) -> Int {
         var count = 0
-        
-        let returnStackView = UIStackView(frame: CGRect(x: 0, y: 0, width: width, height: height))
-        returnStackView.translatesAutoresizingMaskIntoConstraints = true
-        returnStackView.distribution = .fillEqually
-        
-        print(returnStackView.frame.size.width)
-        
         if frameType == "TWO_HORIZONTAL" || frameType == "THREE_HORIZONTAL" {
-            returnStackView.axis = .horizontal
             count = 2
             if frameType == "THREE_HORIZONTAL" {
                 count = 3
             }
         } else if frameType == "TWO_VERTICAL" || frameType == "THREE_VERTICAL" {
-            returnStackView.axis = .vertical
             count = 2
             if frameType == "THREE_VERTICAL" {
                 count = 3
             }
         } else if frameType == "FOUR_CROSS" {
-            returnStackView.axis = .vertical
             count = 4
+        }
+        return count
+    }
+    
+    func returnHomeCellStackView(post: Post , frameType: String , width: CGFloat , height: CGFloat , descriptionWidth: CGFloat , captionHeight: CGFloat , descriptionHeight: CGFloat ) -> (UIStackView,[UILabel],UITextView) {
+        
+        // (UIStackView,[UILabel],UITextView)
+        // Array of Image Views
+        
+        var imageViews = [UIImageView]()
+        
+        // Array of Label
+        
+        var labelViews = [UILabel]()
+        
+        
+        
+        // var label = UILabel(frame: CGRect(x: 0, y: 0, width: descriptionWidth, height:descriptionHeight))
+        
+        //   var textView = UITextView(frame: CGRect(x: 0, y: 0, width: descriptionWidth, height: captionHeight))
+        
+        var textView = UITextView()
+        
+        textView.text = "\(post.postDescription)"
+        
+        // Count for the image view objects to be instantiated
+        
+        var count = returnCountOfFrames(frameType: frameType)
+        
+
+        let returnStackView = UIStackView(frame: CGRect(x: 0, y: 0, width: width , height: height))
+        returnStackView.translatesAutoresizingMaskIntoConstraints = false
+        returnStackView.distribution = .fillEqually
+        
+        if frameType == "TWO_HORIZONTAL" || frameType == "THREE_HORIZONTAL" {
+            returnStackView.axis = .horizontal
+        } else if frameType == "TWO_VERTICAL" || frameType == "THREE_VERTICAL" {
+            returnStackView.axis = .vertical
+        } else if frameType == "FOUR_CROSS" {
+            returnStackView.axis = .vertical
         }
         
         for i in 0..<count {
+            
+            let labelView = UILabel(frame: CGRect(x: 0, y: 0, width: descriptionWidth, height: 10))
+            labelView.font = UIFont.systemFont(ofSize: 14)
+            labelViews.append(labelView)
+            
+            
             let imgView = UIImageView()
             imgView.contentMode = .scaleAspectFill
             imgView.clipsToBounds = true
@@ -199,43 +288,37 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             imgView.accessibilityLabel = "\(post.frameImagesIDS[i]),\(post.postKey),\(post.authorImageID),\(post.frameType)"
             imgView.tag = i
             
+            
             let voteView = UIView(frame: CGRect(x: 5, y: 5 , width: 80, height: 30))
             voteView.backgroundColor = UIColor.darkGray
             voteView.tag = 0
             voteView.layer.cornerRadius = 16
             voteView.alpha = 0.7
-            
+            imgView.addSubview(voteView)
             
             let voteLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 90, height: 20))
             if post.authorImageID == uid! {
-                var handle = ref.child("Vote_Post").child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
+                refVotePostHandle = ref.child("Vote_Post").child(post.frameImagesIDS[i]).observe(.value, with: {(snapshot) in
                     let voteCount = snapshot.childrenCount
-                    
                     voteLabel.text = "\(voteCount)"
                 })
-                ref.removeAllObservers()
             } else {
-                ref.child("Users").child(uid!).child("post_voted").observeSingleEvent(of: .value, with: {(snapshot) in
+                refVotePostHandle = ref.child("Users").child(uid!).child("post_voted").observe(.value, with: {(snapshot) in
                     if snapshot.hasChild(post.postKey) {
-                        var handle = self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
-                            let voteCount = snapshot.childrenCount
-                            voteLabel.text = "\(voteCount)"
+                        var handle = self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observe(.value
+                            , with: {(snapshot) in
+                                let voteCount = snapshot.childrenCount
+                                voteLabel.text = "\(voteCount)"
                         })
-                        self.ref.removeAllObservers()
                     } else {
                         voteLabel.text = "?"
                     }
                 })
-                ref.removeAllObservers()
             }
             voteLabel.font = UIFont(name: voteLabel.font.fontName, size: 12)
             voteLabel.textColor = UIColor.white
-            
-            
-            imgView.addSubview(voteView)
-
+            //            imgView.addSubview(voteView)
             voteLabel.tag = 1
-
             voteView.addSubview(voteLabel)
             
             // Create an Long Tap Gesture Recognizer
@@ -251,6 +334,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             
             imageViews.append(imgView)
             
+            //print(String(describing: imgView))
+            
             print("Count of First Loop \(i)")
         }
         
@@ -258,10 +343,9 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             ref.child("Images").child(post.postKey).child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
                 let postImage = PostImages(snap: snapshot)
                 imageViews[i].sd_setImage(with: URL(string: postImage.imageUrl))
-                print("\(i)  \(postImage.imageUrl)")
+                labelViews[i].text = postImage.imageDescription
             })
         }
-        
         
         if count == 4 {
             
@@ -288,17 +372,12 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                 returnStackView.addArrangedSubview(imageViews[i])
             }
         }
-        
-        return returnStackView
-        
-        
+
+        //(returnStackView , labelViews , textView)
+        return (returnStackView , labelViews , textView)
     }
     
-    
-    
     func voteImage(sender: UITapGestureRecognizer){
-        
-        print("tapped")
         
         if let imageView = sender.view as? UIImageView {
             
@@ -322,143 +401,238 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             
             let refVote = Database.database().reference()
             
-            // Check if user already voted
+            // Check if post is already finished
             
-            refVote.child("Users").child(uid!).child("post_voted").observeSingleEvent(of: .value, with: {(snapshot) in
+            refVote.child("Posts").child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
                 
-                if snapshot.hasChild(postID) {
-                    self.showAlertController(message: "You already voted for this post.", title: "Done")
+                if snapshot.hasChild("finished") {
+                    self.showAlertController(message: "This post is already done", title: "Finished")
                 } else {
+                    // Check if user already voted
                     
-                    // Create a Dictionary for votes node
-                    
-                    let voteDictionary = ["\(self.uid!)": true]
-                    
-                    // Insert to the database
-                    
-                    refVote.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
-                    
-                    refVote.child("Users").child(self.uid!).child("post_voted").updateChildValues(["\(postID)": true])
-                    
-                    refVote.child("Vote_Post").child(imageID).observeSingleEvent(of: .value, with: {(snapshot) in
-                        let voteCount = snapshot.childrenCount
-                        let label = imageView.viewWithTag(1) as! UILabel
-                        let voteString = "\(voteCount)"
-                        label.text = voteString
-                    })
-                    refVote.removeAllObservers()
-                }
-            })
-            
-            let root: UIStackView
-            
-            if frameType.contains("TWO") || frameType.contains("THREE") {
-                root = imageView.superview as! UIStackView
-                print(String(describing: root))
-                for imageViewHolder in root.subviews {
-                    if imageViewHolder.tag != imageView.tag {
-                        
-                        let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
-                        let imageID = imageInfo?[0]
-//                        let postID = imageInfo?[1]
-//                        let voteUserID = imageInfo?[2]
-//                        let frameType = imageInfo?[3]
-                        
-                        print(imageInfo!)
-                        print(String(describing: imageViewHolder))
-                        
-                        refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
-                            let voteCount = snapshot.childrenCount
-                            let voteString = "\(voteCount)"
-                            let rootImage = imageViewHolder as! UIImageView
-                            let rootView = rootImage.viewWithTag(0) as! UIView
-                            let label = rootView.viewWithTag(1) as! UILabel
-                            label.text = voteString
-                        })
-                        refVote.removeAllObservers()
-                    }
-                }
-            } else {
-                root = imageView.superview?.superview as! UIStackView
-                
-                print(String(describing: root))
-                
-                for stackviews in root.subviews {
-                    for imageViewHolder in stackviews.subviews {
-                        if imageViewHolder.tag != imageView.tag {
-                            let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
-                            let imageID = imageInfo?[0]
+                    refVote.child("Users").child(self.uid!).child("post_voted").observeSingleEvent(of: .value, with: {(snapshot) in
+                        if snapshot.hasChild(postID) {
+                            self.showAlertController(message: "You already voted for this post.", title: "Done")
+                        }  else {
+                            // Create a Dictionary for votes node
                             
-                            print(imageInfo!)
-                            print(String(describing: imageViewHolder))
+                            //                    let voteDictionary = ["\(self.uid!)": true]
+                            //
+                            //                    // Insert to the database
+                            //
+                            //                    refVote.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
+                            //
+                            //                    refVote.child("Users").child(self.uid!).child("post_voted").updateChildValues(["\(postID)": true])
+                            //
+                            //                    refVote.child("Vote_Post").child(imageID).observe(.value, with: {(snapshot) in
+                            //                        let voteCount = snapshot.childrenCount
+                            //                        let label = imageView.viewWithTag(1) as! UILabel
+                            //                        let voteString = "\(voteCount)"
+                            //                        label.text = voteString
+                            //                    })
                             
-                            refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
+                            // Create a Dictionary for votes node
+                            //
+                            let voteDictionary = ["\(self.uid!)": true]
+                            
+                            // Insert to the database
+                            
+                            refVote.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
+                            
+                            refVote.child("Users").child(self.uid!).child("post_voted").updateChildValues(["\(postID)": true])
+                            
+                            refVote.child("Vote_Post").child(imageID).observe(.value, with: {(snapshot) in
                                 let voteCount = snapshot.childrenCount
-                                let voteString = "\(voteCount)"
-                                let rootImage = imageViewHolder as! UIImageView
-                                let rootView = rootImage.viewWithTag(0) as! UIView
-                                let label = rootView.viewWithTag(1) as! UILabel
-                                label.text = voteString
+                                let label = imageView.viewWithTag(1) as! UILabel
+                                label.text = "\(voteCount)"
+                                //                        if frameType.contains("TWO") || frameType.contains("THREE") {
+                                //                            let label = imageView.viewWithTag(1) as! UILabel
+                                //                            label.text = "\(voteCount)"
+                                //                        } else {
+                                //                            let rootImage = imageView.viewWithTag(1) as! UIImageView
+                                //                            let rootView = rootImage.viewWithTag(0) as! UIView
+                                //                            let label = rootView.viewWithTag(1) as! UILabel
+                                //                            label.text = "\(voteCount)"
+                                //                        }
+                                
                             })
                             refVote.removeAllObservers()
+                        }
+                    })
+                    
+                    let root: UIStackView
+                    
+                    if frameType.contains("TWO") || frameType.contains("THREE") {
+                        root = imageView.superview as! UIStackView
+                        print(String(describing: root))
+                        for imageViewHolder in root.subviews {
+                            if imageViewHolder.tag != imageView.tag {
+                                
+                                let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
+                                let imageID = imageInfo?[0]
+                                
+                                print(imageInfo!)
+                                print(String(describing: imageViewHolder))
+                                
+                                refVote.child("Vote_Post").child(imageID!).observe(.value, with: {(snapshot) in
+                                    let voteCount = snapshot.childrenCount
+                                    let voteString = "\(voteCount)"
+                                    let rootImage = imageViewHolder as! UIImageView
+                                    let rootView = rootImage.viewWithTag(0) as! UIView
+                                    let label = rootView.viewWithTag(1) as! UILabel
+                                    label.text = voteString
+                                })
+                                
+                            }
+                        }
+                    } else {
+                        root = imageView.superview?.superview as! UIStackView
+                        
+                        print(String(describing: root))
+                        
+                        for stackviews in root.subviews {
+                            for imageViewHolder in stackviews.subviews {
+                                if imageViewHolder.tag != imageView.tag {
+                                    let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
+                                    let imageID = imageInfo?[0]
+                                    
+                                    print(imageInfo!)
+                                    print(String(describing: imageViewHolder))
+                                    
+                                    refVote.child("Vote_Post").child(imageID!).observe(.value, with: {(snapshot) in
+                                        let voteCount = snapshot.childrenCount
+                                        let voteString = "\(voteCount)"
+                                        let rootImage = imageViewHolder as! UIImageView
+                                        let rootView = rootImage.viewWithTag(0) as! UIView
+                                        let label = rootView.viewWithTag(1) as! UILabel
+                                        label.text = voteString
+                                    })
+                                }
+                            }
                         }
                     }
                 }
                 
-//                for imageViewHolder in root.subviews {
-//                    if imageViewHolder.tag != imageView.tag {
-//
-//                        let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
-//                        let imageID = imageInfo?[0]
-//                        
-//                        print(imageInfo!)
-//                        print(String(describing: imageViewHolder))
-//                        
-//                        refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
-//                            let voteCount = snapshot.childrenCount
-//                            let voteString = "\(voteCount)"
-//                            let rootImage = imageViewHolder as! UIImageView
-//                            let rootView = rootImage.viewWithTag(0) as! UIView
-//                            let label = rootView.viewWithTag(1) as! UILabel
-//                            label.text = voteString
-//                        })
-//                        refVote.removeAllObservers()
-//                    }
-//                }
-            }
+            })
+            
+            
         }
     }
     
-    func updateImageViewsWithVotes(frameType: String,currentImageViewTag: Int){
-        print(frameType)
-        print(currentImageViewTag)
-        
-        
-        //        if frameType.contains("TWO") {
-        //
-        //            let refVote = Database.database().reference()
-        //            for imageViewHolder in imageViewsArr.subviews as! [UIImageView] {
-        //                if imageViewHolder.tag != currentImageViewTag {
-        //
-        //                    let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
-        //
-        //                    let imageID = imageInfo?[0]
-        //                    let postID = imageInfo?[1]
-        //                    let voteUserID = imageInfo?[2]
-        //                    let frameType = imageInfo?[3]
-        //                    let postTag = Int((imageInfo?[4])!)
-        //
-        //                    refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
-        //                        let voteCount = snapshot.childrenCount
-        //                        let label = imageViewHolder.viewWithTag(1) as! UILabel
-        //                        let voteString = "\(voteCount)"
-        //                        label.text = voteString
-        //                    })
-        //                    refVote.removeAllObservers()
-        //                }
-        //            }
-        //        }
-    }
+    
+    
+    //    func voteImage(sender: UITapGestureRecognizer){
+    //        if let imageView = sender.view as? UIImageView {
+    //
+    //            // Tag is Frame no of the image
+    //
+    //            print(imageView.tag)
+    //
+    //            // Accessibility Label is the image info
+    //            // Contains image id , post id , author image id
+    //
+    //            print(imageView.accessibilityLabel!)
+    //
+    //            // Make an array of the label value
+    //
+    //            let imageInfo = imageView.accessibilityLabel!.components(separatedBy: ",")
+    //
+    //            let imageID = imageInfo[0]
+    //            let postID = imageInfo[1]
+    //            let voteUserID = imageInfo[2]
+    //            let frameType = imageInfo[3]
+    //
+    //            let refVote = Database.database().reference()
+    //
+    ////            // Check if post is already finished
+    ////
+    ////            ref.child("Posts").child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
+    ////
+    ////                if snapshot.hasChild("finished") {
+    ////                    self.showAlertController(message: "This post is already done", title: "Finished")
+    ////                } else {
+    ////
+    ////                }
+    ////            })
+    //
+    //            // Check if user already voted
+    //
+    //            refVote.child("Users").child(self.uid!).child("post_voted").observeSingleEvent(of: .value, with: {(snapshot) in
+    //                if snapshot.hasChild(postID) {
+    //                    self.showAlertController(message: "You already voted for this post.", title: "Done")
+    //                }  else {
+    //                    // Create a Dictionary for votes node
+    //
+    //                    let voteDictionary = ["\(self.uid!)": true]
+    //
+    //                    // Insert to the database
+    //
+    //                    refVote.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
+    //
+    //                    refVote.child("Users").child(self.uid!).child("post_voted").updateChildValues(["\(postID)": true])
+    //
+    //                    refVote.child("Vote_Post").child(imageID).observe(.value, with: {(snapshot) in
+    //                        let voteCount = snapshot.childrenCount
+    //                        let label = imageView.viewWithTag(1) as! UILabel
+    //                        let voteString = "\(voteCount)"
+    //                        label.text = voteString
+    //                    })
+    //                }
+    //            })
+    //
+    //            let root: UIStackView
+    //
+    //            if frameType.contains("TWO") || frameType.contains("THREE") {
+    //                root = imageView.superview as! UIStackView
+    //                print(String(describing: root))
+    //                for imageViewHolder in root.subviews {
+    //                    if imageViewHolder.tag != imageView.tag {
+    //
+    //                        let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
+    //                        let imageID = imageInfo?[0]
+    //
+    //                        print(imageInfo!)
+    //                        print(String(describing: imageViewHolder))
+    //
+    //                        refVote.child("Vote_Post").child(imageID!).observe(.value, with: {(snapshot) in
+    //                            let voteCount = snapshot.childrenCount
+    //                            let voteString = "\(voteCount)"
+    //                            let rootImage = imageViewHolder as! UIImageView
+    //                            let rootView = rootImage.viewWithTag(0) as! UIView
+    //                            let label = rootView.viewWithTag(1) as! UILabel
+    //                            label.text = voteString
+    //                        })
+    //
+    //                    }
+    //                }
+    //            } else {
+    //                root = imageView.superview?.superview as! UIStackView
+    //
+    //                print(String(describing: root))
+    //
+    //                for stackviews in root.subviews {
+    //                    for imageViewHolder in stackviews.subviews {
+    //                        if imageViewHolder.tag != imageView.tag {
+    //                            let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
+    //                            let imageID = imageInfo?[0]
+    //
+    //                            print(imageInfo!)
+    //                            print(String(describing: imageViewHolder))
+    //
+    //                            refVote.child("Vote_Post").child(imageID!).observe(.value, with: {(snapshot) in
+    //                                let voteCount = snapshot.childrenCount
+    //                                let voteString = "\(voteCount)"
+    //                                let rootImage = imageViewHolder as! UIImageView
+    //                                let rootView = rootImage.viewWithTag(0) as! UIView
+    //                                let label = rootView.viewWithTag(1) as! UILabel
+    //                                label.text = voteString
+    //                            })
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
     
     func showAlertController(message: String , title: String){
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -470,3 +644,4 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     
 }
+
