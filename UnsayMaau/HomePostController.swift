@@ -15,7 +15,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     @IBOutlet weak var homeCollectionView: UICollectionView!
     
-    
     var posts = [Post]()
     
     // Firebase reference
@@ -35,6 +34,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     var uid = Auth.auth().currentUser?.uid
     
     var user: User!
+    var refresher:UIRefreshControl!
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,27 +65,43 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        self.refresher = UIRefreshControl()
+        self.refresher.attributedTitle = NSAttributedString(string: "pull to refresh")
+        refresher.addTarget(self, action: #selector(HomePostController.reloadData), for: .valueChanged)
+        
+        
+        if #available(iOS 10.0, *){
+            homeCollectionView.refreshControl = refresher
+        }else{
+        
+            homeCollectionView.addSubview(refresher)
+        }
         // Set the Delegates of the collection to self
         
         homeCollectionView.delegate = self
         homeCollectionView.dataSource = self
         
         self.view.accessibilityIdentifier = "root_view"
+
         
+
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        
-        
-        
+
         return CGSize(width: view.frame.width - 20, height: 598)
+
         
     }
     
+    func reloadData(){
     
-    
-    
+        homeCollectionView.reloadData()
+        
+    }
+
     
     func getUserData(){
         refUserHandle = ref.child("Users").child(uid!).observe(.value, with: {(snapshot) in
@@ -175,6 +191,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         // Add the view in the root stack view
         
         if cell.rootView.subviews.count == 0 {
+
             cell.rootView.addSubview(imageStack)
             
             let leading = NSLayoutConstraint(item: imageStack, attribute: .right, relatedBy: .equal, toItem: cell.rootView, attribute: .right, multiplier: 1.0, constant: 0)
@@ -196,7 +213,9 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             cell.rootCaption.addArrangedSubview(caption)
         }
         return cell
+        
     }
+
     
     func returnCountOfFrames(frameType: String) -> Int {
         var count = 0
@@ -241,6 +260,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         var count = returnCountOfFrames(frameType: frameType)
         
+
         let returnStackView = UIStackView(frame: CGRect(x: 0, y: 0, width: width , height: height))
         returnStackView.translatesAutoresizingMaskIntoConstraints = false
         returnStackView.distribution = .fillEqually
@@ -302,7 +322,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             
             // Create an Long Tap Gesture Recognizer
             
-            let tap = UITapGestureRecognizer(target: self, action: #selector(self.voteImage(sender:)))
+            let tap = UITapGestureRecognizer()
+            tap.addTarget(self, action: #selector(self.voteImage(sender:)))
             
             // Add Gesture Recognizer
             
@@ -350,6 +371,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                 returnStackView.addArrangedSubview(imageViews[i])
             }
         }
+
         //(returnStackView , labelViews , textView)
         return (returnStackView , labelViews , textView)
     }

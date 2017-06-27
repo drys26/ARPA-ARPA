@@ -47,7 +47,7 @@
         <scene sceneID="all-a4-HE0">
             <objects>
                 <tabBarController id="ATg-IB-uyg" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="nS7-D0-1s9">
+                    <tabBar key="tabBar" contentMode="scaleToFill" itemPositioning="fill" id="nS7-D0-1s9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -280,6 +280,14 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w7v-NM-vEO">
+                                <rect key="frame" x="284" y="162" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="signOutAction:" destination="71Y-BX-TJT" eventType="touchUpInside" id="6an-Fd-tgg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -326,6 +334,67 @@
             </objects>
             <point key="canvasLocation" x="990" y="898"/>
         </scene>
+        <!--Add Group View Controller-->
+        <scene sceneID="q2I-q4-vvV">
+            <objects>
+                <viewController id="hba-3n-AZ8" customClass="AddGroupViewController" customModule="UnsayMaau" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BPW-oS-N8X"/>
+                        <viewControllerLayoutGuide type="bottom" id="yYU-HV-sN4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Asc-oq-zza">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bag1" translatesAutoresizingMaskIntoConstraints="NO" id="hoc-9A-XOF">
+                                <rect key="frame" x="67" y="80" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="467-aQ-2G9" appends="YES" id="R4a-GH-IzZ"/>
+                                </connections>
+                            </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Group Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yAR-xd-Wbf">
+                                <rect key="frame" x="67" y="216" width="240" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Short Description" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rkt-lO-5nb">
+                                <rect key="frame" x="67" y="254" width="240" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="G7y-eK-bKY">
+                                <rect key="frame" x="130" y="292" width="115" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Public"/>
+                                    <segment title="Private"/>
+                                </segments>
+                            </segmentedControl>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="hoc-9A-XOF" id="ynM-6Z-jZJ"/>
+                        <outlet property="groupNameText" destination="yAR-xd-Wbf" id="gIV-hH-AaX"/>
+                        <outlet property="groupShortDescription" destination="Rkt-lO-5nb" id="b6u-SL-MCP"/>
+                        <outlet property="groupStatusSegment" destination="G7y-eK-bKY" id="xYM-aY-Osp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I8b-sL-ded" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="467-aQ-2G9">
+                    <connections>
+                        <action selector="selectImageFromLibrary:" destination="hba-3n-AZ8" id="R1q-NY-Qbp"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="140" y="1613.3433283358322"/>
+        </scene>
         <!--Whats Best-->
         <scene sceneID="lBi-F0-vTZ">
             <objects>
@@ -368,14 +437,14 @@
                                 <rect key="frame" x="0.0" y="108" width="375" height="510"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="150" id="U9h-00-1Tb">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="groupCell" rowHeight="150" id="U9h-00-1Tb" customClass="GroupTableViewCell" customModule="UnsayMaau" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="150"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="U9h-00-1Tb" id="1dq-XE-tFp">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="149.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pink" translatesAutoresizingMaskIntoConstraints="NO" id="cz7-nn-5JP">
+                                                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pink" translatesAutoresizingMaskIntoConstraints="NO" id="cz7-nn-5JP">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="149.5"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fancy Nails" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FZD-L9-7qb">
@@ -407,6 +476,13 @@
                                                 <constraint firstItem="cz7-nn-5JP" firstAttribute="top" secondItem="1dq-XE-tFp" secondAttribute="top" id="qnX-0J-BMI"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="backgroundImageView" destination="cz7-nn-5JP" id="6YU-ey-bmS"/>
+                                            <outlet property="groupDescriptionText" destination="5gp-4a-LkT" id="5gT-F8-myD"/>
+                                            <outlet property="groupMembersText" destination="0ed-gN-tP5" id="BwJ-sf-5ra"/>
+                                            <outlet property="groupNameText" destination="FZD-L9-7qb" id="U2e-Oh-yqd"/>
+                                            <outlet property="rootView" destination="1dq-XE-tFp" id="cz9-NR-XzI"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -427,6 +503,8 @@
                     <navigationItem key="navigationItem" title="Whats Best" id="bpR-DK-Cso"/>
                     <connections>
                         <outlet property="floats" destination="Mhq-Fn-fr3" id="QT1-xa-MKu"/>
+                        <outlet property="groupTableView" destination="JRJ-4D-CIl" id="H8j-bg-OFF"/>
+                        <segue destination="hba-3n-AZ8" kind="show" identifier="goToAddGroup" id="rFw-u4-RvP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O7A-EW-ZMz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -618,7 +696,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="tsM-SW-htz">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oFF-HC-SU4">
                                     <size key="itemSize" width="358" height="587"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -746,7 +824,8 @@
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <attributedString key="attributedText">
                                                                         <fragment>
-                                                                            <string key="content">Great minds think alike - these celeb outfits prove it! Which star do you think rocked each matching piece the best? Vote for your faves! </string>
+                                                                            <string key="content">Great minds think alike - these celeb outfits prove it! Which star do you think rocked each matching piece the best? Vote for your faves!
+</string>
                                                                             <attributes>
                                                                                 <font key="NSFont" metaFont="system" size="14"/>
                                                                                 <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="charWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
@@ -833,7 +912,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="apA-KS-K3c">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Jq4-SZ-OHQ">
                                     <size key="itemSize" width="346" height="576"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -961,7 +1040,8 @@
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <attributedString key="attributedText">
                                                                         <fragment>
-                                                                            <string key="content">Great minds think alike - these celeb outfits prove it! Which star do you think rocked each matching piece the best? Vote for your faves! </string>
+                                                                            <string key="content">Great minds think alike - these celeb outfits prove it! Which star do you think rocked each matching piece the best? Vote for your faves!
+</string>
                                                                             <attributes>
                                                                                 <font key="NSFont" metaFont="system" size="14"/>
                                                                                 <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="charWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
@@ -1166,7 +1246,7 @@
             </objects>
             <point key="canvasLocation" x="3740" y="-2781.8590704647677"/>
         </scene>
-        <!--Item-->
+        <!--WATCHLIST-->
         <scene sceneID="sqx-xK-I1j">
             <objects>
                 <viewController id="xjM-l9-tA0" sceneMemberID="viewController">
@@ -1179,7 +1259,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="qer-yB-07U"/>
+                    <tabBarItem key="tabBarItem" title="WATCHLIST" image="watchlist" id="qer-yB-07U"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rdv-rf-sHT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1315,13 +1395,18 @@
                                                                 <constraint firstAttribute="width" constant="30" id="xPn-z9-fiG"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Iw-qe-9UR">
-                                                            <rect key="frame" x="46" y="9" width="36.5" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Iw-qe-9UR">
+                                                            <rect key="frame" x="46" y="9" width="35.5" height="21"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="21" id="IY7-9S-aS5"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                                            <nil key="textColor"/>
+                                                            <attributedString key="attributedText">
+                                                                <fragment content="Name">
+                                                                    <attributes>
+                                                                        <font key="NSFont" metaFont="system"/>
+                                                                    </attributes>
+                                                                </fragment>
+                                                            </attributedString>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jfb-Qf-oMN">
@@ -1376,7 +1461,7 @@
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" secondItem="yEK-yQ-4M9" secondAttribute="height" multiplier="313:177" id="gjQ-8m-p5J"/>
+                                                        <constraint firstAttribute="width" secondItem="yEK-yQ-4M9" secondAttribute="height" multiplier="313:177" id="d6O-mj-AXZ"/>
                                                     </constraints>
                                                 </stackView>
                                             </subviews>
@@ -1444,6 +1529,7 @@
     </scenes>
     <resources>
         <image name="Vine-Vera-Beauty-Queen-Shopping-Intro" width="1000" height="677"/>
+        <image name="bag1" width="500" height="400"/>
         <image name="big_horizontal_2x2" width="100" height="100"/>
         <image name="big_vertical_2x2" width="50" height="50"/>
         <image name="equal_4x4" width="50" height="50"/>
@@ -1455,5 +1541,6 @@
         <image name="pink" width="500" height="500"/>
         <image name="user" width="20" height="20"/>
         <image name="vertical_3x3" width="100" height="100"/>
+        <image name="watchlist" width="34" height="12"/>
     </resources>
 </document>

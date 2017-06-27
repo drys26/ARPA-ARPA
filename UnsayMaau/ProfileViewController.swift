@@ -9,6 +9,8 @@
 import UIKit
 import PageMenu
 import Floaty
+import GoogleSignIn
+import Firebase
 
 class ProfileViewController: UIViewController {
 
@@ -79,5 +81,10 @@ class ProfileViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func signOutAction(_ sender: Any) {
+        GIDSignIn.sharedInstance().signOut()
+        try! Auth.auth().signOut()
+        dismiss(animated: true, completion: nil)
+    }
 
 }
