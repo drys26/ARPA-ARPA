@@ -14,7 +14,6 @@ import SDWebImage
 class HomePostController: UIViewController ,UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var homeCollectionView: UICollectionView!
-
     
     var posts = [Post]()
     var ref: DatabaseReference!
@@ -23,11 +22,24 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     var uid = Auth.auth().currentUser?.uid
     
     var user: User!
+    var refresher:UIRefreshControl!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        self.refresher = UIRefreshControl()
+        self.refresher.attributedTitle = NSAttributedString(string: "pull to refresh")
+        refresher.addTarget(self, action: #selector(HomePostController.reloadData), for: .valueChanged)
+        
+        
+        if #available(iOS 10.0, *){
+            homeCollectionView.refreshControl = refresher
+        }else{
+        
+            homeCollectionView.addSubview(refresher)
+        }
         // Set the Delegates of the collection to self
         
         homeCollectionView.delegate = self
@@ -41,20 +53,21 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         showPost()
         getUserData()
         
+        
+        
     }
     
+    func reloadData(){
+    
+        homeCollectionView.reloadData()
+        
+    }
+    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-            
-        
-        
             return CGSize(width: view.frame.width - 20, height: 598)
-        
     }
-    
-    
-    
-    
+
     
     func getUserData(){
         ref.child("Users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
@@ -138,14 +151,12 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         if cell.rootView.subviews.count == 0 {
             cell.rootView.addSubview(returnHomeCellStackView(post: post, frameType: frameType, width: cell.rootView.frame.size.width, height: cell.rootView.frame.size.height))
-            print(cell.rootView.frame.size.width)
+            
         }
         return cell
+        
     }
-    
-    
-    
-    
+
 
     func returnHomeCellStackView(post: Post , frameType: String , width: CGFloat , height: CGFloat ) -> UIStackView {
         
@@ -157,7 +168,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         var count = 0
         
-        let returnStackView = UIStackView(frame: CGRect(x: 0, y: 0, width: width , height: height))
+        let returnStackView = UIStackView(frame: CGRect(x: 0, y: 0, width: width, height: height))
         returnStackView.translatesAutoresizingMaskIntoConstraints = true
         returnStackView.distribution = .fillEqually
         
@@ -229,7 +240,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             
             // Create an Long Tap Gesture Recognizer
             
-            let tap = UITapGestureRecognizer(target: self, action: #selector(self.voteImage(sender:)))
+            let tap = UITapGestureRecognizer()
+            tap.addTarget(self, action: #selector(self.voteImage(sender:)))
             
             // Add Gesture Recognizer
             
@@ -278,11 +290,16 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         }
         
         return returnStackView
+        
+        
     }
     
     
     
     func voteImage(sender: UITapGestureRecognizer){
+        
+        print("tapped")
+        
         if let imageView = sender.view as? UIImageView {
             
             // Tag is Frame no of the image
