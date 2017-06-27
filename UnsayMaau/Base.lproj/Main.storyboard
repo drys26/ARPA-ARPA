@@ -314,7 +314,7 @@
             <objects>
                 <navigationController id="c8y-4v-Emc" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="GROUPS" image="groups" id="7O8-MM-UiY"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8X2-Eg-HBa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="8X2-Eg-HBa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -353,6 +353,9 @@
                                         <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="e30-jF-wTS" appends="YES" id="6sE-wx-JV2"/>
+                                </connections>
                             </view>
                             <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search for keywords" translatesAutoresizingMaskIntoConstraints="NO" id="8ul-cf-xna">
                                 <rect key="frame" x="0.0" y="64" width="375" height="44"/>
@@ -427,6 +430,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O7A-EW-ZMz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="e30-jF-wTS">
+                    <connections>
+                        <action selector="addGroupAction:" destination="4tm-Yt-qfU" id="oZI-DY-wxD"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="989.60000000000002" y="1614.2428785607199"/>
         </scene>
@@ -525,7 +533,7 @@
         <scene sceneID="MBz-Pi-gHD">
             <objects>
                 <navigationController id="s0c-4E-Y7Y" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TkC-dM-lhU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TkC-dM-lhU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1182,7 +1190,7 @@
             <objects>
                 <navigationController id="T1q-fT-hr7" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="HOME" image="home" id="AlF-dd-iGF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wZb-eD-spg">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wZb-eD-spg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

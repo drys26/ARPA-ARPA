@@ -18,7 +18,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     var posts = [Post]()
     
-    
     // Firebase reference
     
     var ref: DatabaseReference!

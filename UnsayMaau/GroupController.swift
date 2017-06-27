@@ -10,25 +10,30 @@ import UIKit
 import Floaty
 
 class GroupController: UIViewController {
-
+    
     @IBOutlet weak var floats: Floaty!
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
         
         
-    self.view.bringSubview(toFront: floats)
+        
+        self.view.bringSubview(toFront: floats)
         
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    @IBAction func addGroupAction(_ sender: Any) {
+        
     }
     
 }
