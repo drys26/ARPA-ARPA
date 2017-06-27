@@ -16,16 +16,20 @@ class Group: Equatable {
     var groupDescription: String
     var groupName: String
     var members: [User]
+    var pendingMembers: [User]
     var admins: [User]
     var groupStatus: Bool
+    var groupRef: DatabaseReference
     
     
     init(snap: DataSnapshot) {
+        groupRef = snap.ref
         let groupDict = snap.value as! [String: Any]
         var ref = Database.database().reference()
         groupId = snap.key
         members = [User]()
         admins = [User]()
+        pendingMembers = [User]()
         backgroundImageUrl = groupDict["background_image_url"] as! String
         groupDescription = groupDict["group_description"] as! String
         groupName = groupDict["group_name"] as! String
@@ -36,6 +40,15 @@ class Group: Equatable {
                 ref.child("Users").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
                     let user = User(snap: snapshot)
                     self.admins.append(user)
+                })
+            }
+        }
+        if snap.hasChild("pending_members") {
+            let pendingDict = groupDict["pending_members"] as! [String: Any]
+            for (key , element) in pendingDict {
+                ref.child("Users").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
+                    let user = User(snap: snapshot)
+                    self.pendingMembers.append(user)
                 })
             }
         }

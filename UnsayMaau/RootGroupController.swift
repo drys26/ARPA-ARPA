@@ -11,6 +11,8 @@ import PageMenu
 
 class RootGroupController: UIViewController {
 
+    var group: Group!
+    
     
     var pageMenu: CAPSPageMenu?
     
@@ -75,7 +77,12 @@ class RootGroupController: UIViewController {
     
     
     
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToSeeMembers" {
+            let smvc = segue.destination as! SeeMembersViewController
+            smvc.group = group
+        }
+    }
     
 
 }

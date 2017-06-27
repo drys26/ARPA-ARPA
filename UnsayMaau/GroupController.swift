@@ -94,7 +94,7 @@ class GroupController: UIViewController {
             } else {
                 // TODO: Enter group view controller
                 // and display data
-                performSegue(withIdentifier: "goToGroupPage", sender: nil)
+                performSegue(withIdentifier: "goToGroupPage", sender: group)
             }
         }
     }
@@ -105,6 +105,15 @@ class GroupController: UIViewController {
         let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(alertAction)
         present(alertController, animated: true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToGroupPage" {
+            if let group = sender as? Group {
+                let root = segue.destination as! RootGroupController
+                root.group = group
+            }
+        }
     }
     
 }
