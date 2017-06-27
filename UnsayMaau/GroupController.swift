@@ -51,6 +51,7 @@ class GroupController: UIViewController  {
                     DispatchQueue.main.async {
                         self.groupTableView.reloadData()
                     }
+                    
                 }
             }
         })
@@ -84,9 +85,10 @@ class GroupController: UIViewController  {
     func clickCell(sender: UITapGestureRecognizer){
         if let rootView = sender.view as? UIView {
             let group = groups[rootView.tag]
-            
             if !group.admins.contains(user){
-                showAlertController(message: "Request Send", title: "Please wait for response")
+                let pendingDictionary = ["pending_members": ["\(uid!)": true]]
+                refGroups.child(group.groupId).updateChildValues(pendingDictionary)
+                showAlertController(message: "Please wait for response", title: "Request Send")
             } else {
                 // TODO: Enter group view controller
                 // and display data
