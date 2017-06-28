@@ -18,7 +18,9 @@ class GroupController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        self.navigationItem.titleView = UIImageView(image: UIImage(named: "WhatsBest"))
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         
     self.view.bringSubview(toFront: floats)

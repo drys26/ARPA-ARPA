@@ -49,6 +49,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             showPost()
         }
         
+        
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -213,6 +215,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             }
         }
         if cell.rootCaption.subviews.count == 0 {
+            
             cell.rootCaption.addArrangedSubview(caption)
         }
         return cell

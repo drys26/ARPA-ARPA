@@ -24,4 +24,6 @@ class HomeFeedCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var rootDescription: UIStackView!
     @IBOutlet weak var rootCaption: UIStackView!
     
+    
+    
 }

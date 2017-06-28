@@ -32,6 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         let googleHandler = GIDSignIn.sharedInstance().handle(url,
                                                               sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as!String,
