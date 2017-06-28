@@ -19,9 +19,9 @@ class HomeFeedCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var commandButton: UIButton!
     @IBOutlet weak var rootView: UIView!
     @IBOutlet weak var followBtn: UIButton!
+
+    @IBOutlet weak var rootDescriptionCaption: UIStackView!
     
-    
-    @IBOutlet weak var rootDescription: UIStackView!
-    @IBOutlet weak var rootCaption: UIStackView!
+    @IBOutlet weak var userInfoRootView: UIView!
     
 }

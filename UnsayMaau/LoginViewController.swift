@@ -9,14 +9,16 @@
 import UIKit
 import Firebase
 import GoogleSignIn
-import SkyFloatingLabelTextField
-import FontAwesome
 
 class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDelegate {
 
 
-    @IBOutlet weak var emailAddress: SkyFloatingLabelTextFieldWithIcon!
-    @IBOutlet weak var passWord: SkyFloatingLabelTextFieldWithIcon!
+
+    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var whatsBestLogo: UIImageView!
+    @IBOutlet weak var googleButton: UIButton!
+    @IBOutlet weak var facebookButton: UIButton!
+    @IBOutlet weak var createAccountButton: UIButton!
     
     
     var databaseRef: DatabaseReference!
@@ -27,12 +29,48 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         databaseRef = Database.database().reference()
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
+        whatsBestLogo.tintColor  = UIColor.white
+       
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
         
-        emailAddress.iconFont = UIFont(name: "FontAwesome", size: 20)
-        emailAddress.iconText = "\u{f003}"
+        UIView.animate(withDuration: 1, animations: {
+            self.heightConstraint.constant = 75
+            self.view.layoutIfNeeded()
+        }) { (true) in
+            UIView.animate(withDuration: 0.5, animations: {
+                self.googleButton.alpha = 1
+            }, completion: { (true) in
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.facebookButton.alpha = 1
+                }, completion: { (true) in
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.createAccountButton.alpha = 1
+                    }, completion: nil)
+                })
+            })
+        }
         
-        passWord.iconFont = UIFont(name: "FontAwesome", size: 20)
-        passWord.iconText = "\u{f023}"
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle{
+        return .lightContent
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        googleButton.alpha = 0
+        facebookButton.alpha = 0
+        createAccountButton.alpha = 0
+        googleButton.layer.cornerRadius = googleButton.frame.size.height / 2
+        facebookButton.layer.cornerRadius = facebookButton.frame.size.height / 2
+        createAccountButton.layer.cornerRadius = createAccountButton.frame.size.height / 2
+        createAccountButton.layer.borderColor = UIColor.white.cgColor
+        createAccountButton.layer.borderWidth = 2
+        
         
     }
     
@@ -58,5 +96,8 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
     @IBAction func googleSignInAction(_ sender: Any) {
         GIDSignIn.sharedInstance().signIn()
     }
+    
+    
+    
 }
 

@@ -23,8 +23,9 @@ class HomeRoot: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.titleView = UIImageView(image: UIImage(named: "WhatsBest2"))
-        
+        self.navigationItem.titleView = UIImageView(image: UIImage(named: "WhatsBest"))
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         var controllerArray: [UIViewController] = []
         
