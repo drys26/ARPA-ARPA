@@ -11,11 +11,15 @@ import PageMenu
 
 class RootGroupController: UIViewController {
 
+    var group: Group!
+    
     
     var pageMenu: CAPSPageMenu?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "See Members", style: .plain, target: self, action: #selector(self.goToSeeMembers))
 
         var controllerArray: [UIViewController] = []
         
@@ -67,8 +71,18 @@ class RootGroupController: UIViewController {
     }
     
     
+    func goToSeeMembers(){
+        performSegue(withIdentifier: "goToSeeMembers", sender: nil)
+    }
     
-
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToSeeMembers" {
+            let smvc = segue.destination as! SeeMembersViewController
+            smvc.group = group
+        }
+    }
     
 
 }

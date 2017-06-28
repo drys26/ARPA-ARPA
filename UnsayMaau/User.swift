@@ -9,16 +9,18 @@
 import UIKit
 import Firebase
 
-class User {
+class User: Equatable {
     
     var email = ""
     var photoUrl = ""
     var displayName: String = ""
     var followersIDs: [String] = []
     var followingIDs: [String] = []
+    var userId: String
     
     
     init(snap: DataSnapshot) {
+        userId = snap.key
         let userDict = snap.value as! [String: Any]
         self.email = userDict["email_address"] as! String
         self.displayName = userDict["display_name"] as! String
@@ -35,6 +37,10 @@ class User {
                 self.followersIDs.append(key)
             }
         }
+    }
+    
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.userId == rhs.userId
     }
     
 }

@@ -49,8 +49,6 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
         
         // Set the Done Button in right bar button
         
-        
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(postAction))
         
         // Use switch to know what type of frame the user choose

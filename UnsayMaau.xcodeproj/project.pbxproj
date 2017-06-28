@@ -11,12 +11,16 @@
 		100F2F731F024DC6005E7F27 /* RootGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100F2F721F024DC6005E7F27 /* RootGroupController.swift */; };
 		101406411EF8CB2100662E1E /* EyeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406401EF8CB2100662E1E /* EyeController.swift */; };
 		101406431EF8CDAC00662E1E /* GroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406421EF8CDAC00662E1E /* GroupController.swift */; };
+		101E3CE91F02111C003621CC /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CE81F02111C003621CC /* AddGroupViewController.swift */; };
+		101E3CEB1F02238B003621CC /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CEA1F02238B003621CC /* GroupTableViewCell.swift */; };
+		101E3CED1F0224A9003621CC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CEC1F0224A9003621CC /* Group.swift */; };
+		101E3CEF1F02552C003621CC /* SeeMembersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CEE1F02552C003621CC /* SeeMembersTableViewCell.swift */; };
+		101E3CF11F0255BD003621CC /* SeeMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CF01F0255BD003621CC /* SeeMembersViewController.swift */; };
 		10259BEB1EF7A66F004E0A02 /* SelectImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10259BEA1EF7A66F004E0A02 /* SelectImageViewController.swift */; };
 		10259BED1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10259BEC1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift */; };
 		103A96B01EF8D42E001DAC9F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103A96AF1EF8D42E001DAC9F /* User.swift */; };
 		103A96B21EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103A96B11EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift */; };
 		103A96B41EF8DD18001DAC9F /* PostImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103A96B31EF8DD18001DAC9F /* PostImages.swift */; };
-		104F0C181F0278BE00E1553E /* LaunchScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F0C171F0278BE00E1553E /* LaunchScreenController.swift */; };
 		10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */; };
 		1096784B1EF3C915006CE3E3 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1096784A1EF3C915006CE3E3 /* Post.swift */; };
 		1096784D1EF3CB68006CE3E3 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1096784C1EF3CB68006CE3E3 /* Helpers.swift */; };
@@ -60,12 +64,16 @@
 		100F2F721F024DC6005E7F27 /* RootGroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootGroupController.swift; sourceTree = "<group>"; };
 		101406401EF8CB2100662E1E /* EyeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeController.swift; sourceTree = "<group>"; };
 		101406421EF8CDAC00662E1E /* GroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupController.swift; sourceTree = "<group>"; };
+		101E3CE81F02111C003621CC /* AddGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupViewController.swift; sourceTree = "<group>"; };
+		101E3CEA1F02238B003621CC /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
+		101E3CEC1F0224A9003621CC /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		101E3CEE1F02552C003621CC /* SeeMembersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeMembersTableViewCell.swift; sourceTree = "<group>"; };
+		101E3CF01F0255BD003621CC /* SeeMembersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeMembersViewController.swift; sourceTree = "<group>"; };
 		10259BEA1EF7A66F004E0A02 /* SelectImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectImageViewController.swift; sourceTree = "<group>"; };
 		10259BEC1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectImageFromLibraryViewController.swift; sourceTree = "<group>"; };
 		103A96AF1EF8D42E001DAC9F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		103A96B11EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		103A96B31EF8DD18001DAC9F /* PostImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostImages.swift; sourceTree = "<group>"; };
-		104F0C171F0278BE00E1553E /* LaunchScreenController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenController.swift; sourceTree = "<group>"; };
 		10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTwoVerticalFrame.swift; sourceTree = "<group>"; };
 		1096784A1EF3C915006CE3E3 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		1096784C1EF3CB68006CE3E3 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -195,8 +203,11 @@
 				101406421EF8CDAC00662E1E /* GroupController.swift */,
 				103A96B11EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift */,
 				10A45DB31EF930FC00880BD3 /* ProfileViewController.swift */,
+				101E3CE81F02111C003621CC /* AddGroupViewController.swift */,
+				101E3CEA1F02238B003621CC /* GroupTableViewCell.swift */,
 				100F2F721F024DC6005E7F27 /* RootGroupController.swift */,
-				104F0C171F0278BE00E1553E /* LaunchScreenController.swift */,
+				101E3CEE1F02552C003621CC /* SeeMembersTableViewCell.swift */,
+				101E3CF01F0255BD003621CC /* SeeMembersViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -207,6 +218,7 @@
 				1096784A1EF3C915006CE3E3 /* Post.swift */,
 				103A96AF1EF8D42E001DAC9F /* User.swift */,
 				103A96B31EF8DD18001DAC9F /* PostImages.swift */,
+				101E3CEC1F0224A9003621CC /* Group.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -548,6 +560,7 @@
 				10ABFF461EF250940087F05F /* LoginViewController.swift in Sources */,
 				101406431EF8CDAC00662E1E /* GroupController.swift in Sources */,
 				103A96B21EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift in Sources */,
+				101E3CED1F0224A9003621CC /* Group.swift in Sources */,
 				100F2F731F024DC6005E7F27 /* RootGroupController.swift in Sources */,
 				101406411EF8CB2100662E1E /* EyeController.swift in Sources */,
 				10ABFF441EF250940087F05F /* AppDelegate.swift in Sources */,
@@ -555,14 +568,17 @@
 				10259BEB1EF7A66F004E0A02 /* SelectImageViewController.swift in Sources */,
 				10A45DB41EF930FC00880BD3 /* ProfileViewController.swift in Sources */,
 				103A96B41EF8DD18001DAC9F /* PostImages.swift in Sources */,
+				101E3CEF1F02552C003621CC /* SeeMembersTableViewCell.swift in Sources */,
 				103A96B01EF8D42E001DAC9F /* User.swift in Sources */,
-				104F0C181F0278BE00E1553E /* LaunchScreenController.swift in Sources */,
 				10D294961EF27774008F84B2 /* HomePostController.swift in Sources */,
 				1096784D1EF3CB68006CE3E3 /* Helpers.swift in Sources */,
+				101E3CF11F0255BD003621CC /* SeeMembersViewController.swift in Sources */,
 				10D294941EF27184008F84B2 /* HomeRoot.swift in Sources */,
+				101E3CEB1F02238B003621CC /* GroupTableViewCell.swift in Sources */,
 				1096784F1EF3D081006CE3E3 /* PostFourFramesViewController.swift in Sources */,
 				10ABFF791EF2A25C0087F05F /* SelectFrameViewController.swift in Sources */,
 				1096784B1EF3C915006CE3E3 /* Post.swift in Sources */,
+				101E3CE91F02111C003621CC /* AddGroupViewController.swift in Sources */,
 				10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
