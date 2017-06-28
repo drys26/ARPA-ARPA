@@ -75,11 +75,28 @@ class SeeMembersViewController: UIViewController {
             let toIndexPath = IndexPath(row: users[section!].count, section: section1)
             
             // swap the data between the 2 (internal) arrays
+            
             users[toIndexPath.section].insert(user, at: toIndexPath.row)
             users[fromIndexPath.section].remove(at: fromIndexPath.row)
             
             // Do the move between the table view rows
             self.seeMembersTableView.moveRow(at: fromIndexPath, to: toIndexPath)
+        }
+        
+        func removeUsers(){
+            self.users[section!].remove(at: row!)
+            self.seeMembersTableView.deleteRows(at: [IndexPath(row: row! , section: section!)], with: .fade)
+        }
+        
+        func removeSection(sectionIndex: Int){
+            self.seeMembersTableView.beginUpdates()
+            if users[sectionIndex].count == 0 {
+                let indexSet = NSMutableIndexSet()
+                indexSet.add(section! - 1)
+                seeMembersTableView.deleteSections(indexSet as IndexSet, with: .fade)
+            }
+            self.seeMembersTableView.endUpdates()
+            
         }
         
         
@@ -90,20 +107,27 @@ class SeeMembersViewController: UIViewController {
             
             moveCell(section1: 2)
             
+            removeSection(sectionIndex: section!)
+            
             self.reload()
         
             
         } else if buttonText! == "Decline" {
             group.groupRef.child("pending_members").child(user.userId).removeValue()
-            self.users[section!].remove(at: row!)
-            self.seeMembersTableView.deleteRows(at: [IndexPath(row: row! , section: section!)], with: .fade)
+            removeSection(sectionIndex: section!)
+            removeUsers()
             
             self.reload()
         } else if buttonText! == "Make Admin" {
             group.groupRef.child("members").child(user.userId).removeValue()
             group.groupRef.child("admin_members").updateChildValues(["\(user.userId)": true])
-            
+            removeSection(sectionIndex: section!)
             moveCell(section1: 3)
+            
+        } else if buttonText! == "Kick" {
+            group.groupRef.child("members").child(user.userId).removeValue()
+            removeSection(sectionIndex: section!)
+            removeUsers()
             
         }
         
@@ -316,6 +340,7 @@ class SeeMembersViewController: UIViewController {
     }
     
     func reload() {
+        
         DispatchQueue.main.async {
             self.seeMembersTableView.reloadData()
         }
