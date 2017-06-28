@@ -63,50 +63,117 @@ class SeeMembersViewController: UIViewController {
         
         let info = sender.accessibilityLabel?.components(separatedBy: ",")
         
-        let section = info?[0]
-        let row = info?[1]
+        let section = Int(info![0])
+        let row = Int(info![1])
         let buttonText = info?[2]
         
-        let user = users[section][row]
+        let user = users[section!][row!]
         
-        if buttonText == "Accept" {
-//            rootRef.child("Groups").child(group.groupId).child("pending_members").child(user.userId).removeValue()
-//            rootRef.child("Groups").child(group.groupId).child("members").updateChildValues(["\(user.userId)": ["isActive":false,"isJoined":true]])
-//            group.groupRef.child("pending_members")
+        func moveCell(section1: Int) {
+            // arbitrarily define two indexPaths for testing purposes
+            let fromIndexPath = IndexPath(row: row! , section: section!)
+            let toIndexPath = IndexPath(row: users[section!].count, section: section1)
+            
+            // swap the data between the 2 (internal) arrays
+            users[toIndexPath.section].insert(user, at: toIndexPath.row)
+            users[fromIndexPath.section].remove(at: fromIndexPath.row)
+            
+            // Do the move between the table view rows
+            self.seeMembersTableView.moveRow(at: fromIndexPath, to: toIndexPath)
         }
         
-
+        
+        
+        if buttonText! == "Accept" {
+            group.groupRef.child("pending_members").child(user.userId).removeValue()
+            group.groupRef.child("members").updateChildValues(["\(user.userId)": true])
+            
+            moveCell(section1: 2)
+            
+            self.reload()
+        
+            
+        } else if buttonText! == "Decline" {
+            group.groupRef.child("pending_members").child(user.userId).removeValue()
+            self.users[section!].remove(at: row!)
+            self.seeMembersTableView.deleteRows(at: [IndexPath(row: row! , section: section!)], with: .fade)
+            
+            self.reload()
+        } else if buttonText! == "Make Admin" {
+            group.groupRef.child("members").child(user.userId).removeValue()
+            group.groupRef.child("admin_members").updateChildValues(["\(user.userId)": true])
+            
+            moveCell(section1: 3)
+            
+        }
+        
+        
+        animateOut()
     }
     
     func touchForOptions(recognizer: UIGestureRecognizer) {
+        
         if recognizer.state == UIGestureRecognizerState.ended {
             let swipeLocation = recognizer.location(in: self.seeMembersTableView)
             if let swipedIndexPath = seeMembersTableView.indexPathForRow(at: swipeLocation) {
                 if let swipedCell = self.seeMembersTableView.cellForRow(at: swipedIndexPath) {
                     // Swipe happened. Do stuff!
                     
+                    
+                    
                     let section = swipedIndexPath.section
                     let row = swipedIndexPath.row
                     var buttons = [UIButton]()
                     
-                    if section == 0 {
-                        
-                        buttons.append(UIButton())
-                        buttons.append(UIButton())
-//
-                        // Accept,Decline
-                        buttons[0].setTitle("Accept", for: .normal)
-                        buttons[1].setTitle("Decline", for: .normal)
-                        
+                    func loopButton(){
                         for btn in buttons {
                             // Set access label
-                            btn.accessibilityLabel = "\(section),\(row),\(btn.titleLabel!.text)"
+                            btn.accessibilityLabel = "\(section),\(row),\(btn.titleLabel!.text!)"
                             // Add Target
                             btn.addTarget(self, action: #selector(self.commandActionButton(sender:)), for: .touchUpInside)
                         }
                     }
                     
+                    if section == 0 {
+                        
+                        buttons.append(UIButton(type: .system))
+                        buttons.append(UIButton(type: .system))
+//
+                        // Accept,Decline
+                        buttons[0].setTitle("Accept", for: .normal)
+                        buttons[1].setTitle("Decline", for: .normal)
+                        
+                        loopButton()
+                        
+                    } else if section == 1 || section == 2 {
+                        
+                        buttons.append(UIButton(type: .system))
+                        buttons.append(UIButton(type: .system))
+                        
+                        //
+                        // Make Admin and Kick if Admin && if user is not admin Request Kick and Request Ban
+                        
+                        if group.admins.contains(mainUser) {
+                            buttons[0].setTitle("Make Admin", for: .normal)
+                            buttons[1].setTitle("Kick", for: .normal)
+                        } else {
+                            buttons[0].setTitle("Request Kick", for: .normal)
+                            buttons[1].setTitle("Request Ban", for: .normal)
+                        }
+                        
+                        loopButton()
+                        
+                        
+                    }
+                    
                     let rootStackView = modelView.viewWithTag(10) as! UIStackView
+                    
+                    if rootStackView.subviews.count > 0 {
+                        for button in rootStackView.subviews as! [UIButton] {
+                            rootStackView.removeArrangedSubview(button)
+                            button.removeFromSuperview()
+                        }
+                    }
                     
                     for button in buttons {
                         rootStackView.addArrangedSubview(button)
@@ -136,6 +203,8 @@ class SeeMembersViewController: UIViewController {
                         self.modelView.alpha = 1
                         self.modelView.transform = CGAffineTransform.identity
                     })
+                    
+                    
                 }
             }
         }
@@ -187,13 +256,14 @@ class SeeMembersViewController: UIViewController {
             // If there is pending members
             
             if snapshot.hasChild("pending_members") {
+                //self.sections.append("Pending")
                 self.group.groupRef.child("pending_members").observeSingleEvent(of: .value, with: {(rootSnapshot) in
                     let value = rootSnapshot.value as! [String: Any]
                     for (key , _) in value {
                         self.rootRef.child("Users").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
                             let user = User(snap: snapshot)
                             self.users[0].append(user)
-                            reload()
+                            self.reload()
                         })
                     }
                 })
@@ -203,7 +273,8 @@ class SeeMembersViewController: UIViewController {
             
             if snapshot.hasChild("members") {
                 self.group.groupRef.child("members").observeSingleEvent(of: .value, with: {(rootSnapshot) in
-                    
+                    //self.sections.append("Active")
+                   // self.sections.append("Inactive")
                     let memberDict = rootSnapshot.value as! [String: Any]
                     for (key , booleanValue) in memberDict {
                         let isActive = booleanValue as! Bool
@@ -214,7 +285,7 @@ class SeeMembersViewController: UIViewController {
                             } else {
                                 self.users[2].append(user)
                             }
-                            reload()
+                            self.reload()
                         })
                     }
                     
@@ -224,14 +295,14 @@ class SeeMembersViewController: UIViewController {
             
             if snapshot.hasChild("admin_members") {
                 self.group.groupRef.child("admin_members").observeSingleEvent(of: .value, with: {(rootSnapshot) in
-                    
+                    //self.sections.append("Admin")
                     let adminMembersDict = rootSnapshot.value as! [String: Any]
                     for (key , booleanValue) in adminMembersDict {
                         let isActive = booleanValue as! Bool
                         self.rootRef.child("Users").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
                             let user = User(snap: snapshot)
                             self.users[3].append(user)
-                            reload()
+                            self.reload()
                         })
                     }
                     
@@ -241,10 +312,12 @@ class SeeMembersViewController: UIViewController {
             
         })
         
-        func reload() {
-            DispatchQueue.main.async {
-                self.seeMembersTableView.reloadData()
-            }
+        
+    }
+    
+    func reload() {
+        DispatchQueue.main.async {
+            self.seeMembersTableView.reloadData()
         }
     }
     
@@ -281,8 +354,11 @@ extension SeeMembersViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
+        if section == 0 && sections[section] == "Pending" {
             return tableView.sectionHeaderHeight + 17
+        }
+        if users[section].count == 0 {
+            return 0.0
         }
         return tableView.sectionHeaderHeight
     }
@@ -308,42 +384,42 @@ extension SeeMembersViewController: UITableViewDataSource {
         
         cell.memberImageView.layer.cornerRadius = cell.memberImageView.frame.size.width / 2
         
-        cell.memberCommandButton.layer.cornerRadius = cell.memberCommandButton.frame.height / 2
-        
-        cell.memberCommandButton.accessibilityLabel = "\(indexPath.section) \(indexPath.row)"
-        
-        cell.memberCommandButton.addTarget(self, action: #selector(self.commandAction(sender:)), for: .touchUpInside)
-        
-        cell.rootView.isUserInteractionEnabled = true
-        
-        
-        
-        
-        var isInPending = group.pendingMembers.contains(user)
-        
-        // TODO: if the user is admin
-        
-        if group.admins.contains(mainUser) {
-            
-            // if the user is in pending members of the group
-            
-            if isInPending {
-                // User is Pending
-                
-                cell.memberCommandButton.setTitle("Accept", for: .normal)
-            } else {
-                // TODO: Show User if active or not
-                
-            }
-        } else {
-            if isInPending {
-                // User is Pending
-                cell.memberCommandButton.setTitle("Pending", for: .normal)
-            } else {
-                // TODO: Show User if active or not
-                
-            }
-        }
+//        cell.memberCommandButton.layer.cornerRadius = cell.memberCommandButton.frame.height / 2
+//        
+//        cell.memberCommandButton.accessibilityLabel = "\(indexPath.section) \(indexPath.row)"
+//        
+//        cell.memberCommandButton.addTarget(self, action: #selector(self.commandAction(sender:)), for: .touchUpInside)
+//        
+//        cell.rootView.isUserInteractionEnabled = true
+//        
+//        
+//        
+//        
+//        var isInPending = group.pendingMembers.contains(user)
+//        
+//        // TODO: if the user is admin
+//        
+//        if group.admins.contains(mainUser) {
+//            
+//            // if the user is in pending members of the group
+//            
+//            if isInPending {
+//                // User is Pending
+//                
+//                cell.memberCommandButton.setTitle("Accept", for: .normal)
+//            } else {
+//                // TODO: Show User if active or not
+//                
+//            }
+//        } else {
+//            if isInPending {
+//                // User is Pending
+//                cell.memberCommandButton.setTitle("Pending", for: .normal)
+//            } else {
+//                // TODO: Show User if active or not
+//                
+//            }
+//        }
         
         return cell
         

@@ -419,7 +419,7 @@
             <objects>
                 <navigationController id="c8y-4v-Emc" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="GROUPS" image="groups" id="7O8-MM-UiY"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="8X2-Eg-HBa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8X2-Eg-HBa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -727,7 +727,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmk-s8-qj7">
-                                                    <rect key="frame" x="76" y="29" width="194" height="21"/>
+                                                    <rect key="frame" x="76" y="29" width="42" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="BLv-1D-dfX"/>
                                                     </constraints>
@@ -735,30 +735,15 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4xQ-Az-lFC">
-                                                    <rect key="frame" x="278" y="24" width="89" height="30"/>
-                                                    <color key="backgroundColor" red="0.0" green="0.74901960779999999" blue="0.61165268839999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="4tP-ZW-hU5"/>
-                                                        <constraint firstAttribute="width" constant="89" id="UzW-EE-Tcu"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Button">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="nmk-s8-qj7" firstAttribute="centerY" secondItem="q23-Wg-XHo" secondAttribute="centerY" id="8sy-Td-8W7"/>
                                                 <constraint firstItem="q23-Wg-XHo" firstAttribute="leading" secondItem="vzJ-wZ-wWZ" secondAttribute="leadingMargin" id="J3P-UM-Blc"/>
-                                                <constraint firstItem="4xQ-Az-lFC" firstAttribute="leading" secondItem="nmk-s8-qj7" secondAttribute="trailing" constant="8" id="XGt-P7-Brk"/>
-                                                <constraint firstItem="4xQ-Az-lFC" firstAttribute="top" secondItem="vzJ-wZ-wWZ" secondAttribute="topMargin" constant="16" id="bBZ-5N-fiG"/>
                                                 <constraint firstItem="nmk-s8-qj7" firstAttribute="leading" secondItem="q23-Wg-XHo" secondAttribute="trailing" constant="8" id="cP5-gC-8gY"/>
                                                 <constraint firstItem="q23-Wg-XHo" firstAttribute="top" secondItem="vzJ-wZ-wWZ" secondAttribute="topMargin" constant="1" id="mlz-M9-Qpm"/>
-                                                <constraint firstItem="4xQ-Az-lFC" firstAttribute="trailing" secondItem="vzJ-wZ-wWZ" secondAttribute="trailingMargin" id="rUx-a6-jQ9"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="memberCommandButton" destination="4xQ-Az-lFC" id="d1S-QK-0QJ"/>
                                             <outlet property="memberDisplayName" destination="nmk-s8-qj7" id="Mi9-DA-84P"/>
                                             <outlet property="memberImageView" destination="q23-Wg-XHo" id="IGc-15-eav"/>
                                             <outlet property="rootView" destination="vzJ-wZ-wWZ" id="Ez5-bv-TLX"/>
@@ -884,7 +869,7 @@
         <scene sceneID="MBz-Pi-gHD">
             <objects>
                 <navigationController id="s0c-4E-Y7Y" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TkC-dM-lhU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TkC-dM-lhU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1543,7 +1528,7 @@
             <objects>
                 <navigationController id="T1q-fT-hr7" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="HOME" image="home" id="AlF-dd-iGF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wZb-eD-spg">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wZb-eD-spg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

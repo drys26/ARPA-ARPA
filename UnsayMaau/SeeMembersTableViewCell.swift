@@ -13,7 +13,6 @@ class SeeMembersTableViewCell: UITableViewCell {
     
     @IBOutlet weak var memberImageView: UIImageView!
     @IBOutlet weak var memberDisplayName: UILabel!
-    @IBOutlet weak var memberCommandButton: UIButton!
     
     @IBOutlet weak var rootView: UIView!
     
