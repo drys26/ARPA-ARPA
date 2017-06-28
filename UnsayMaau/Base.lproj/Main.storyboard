@@ -761,6 +761,7 @@
                                             <outlet property="memberCommandButton" destination="4xQ-Az-lFC" id="d1S-QK-0QJ"/>
                                             <outlet property="memberDisplayName" destination="nmk-s8-qj7" id="Mi9-DA-84P"/>
                                             <outlet property="memberImageView" destination="q23-Wg-XHo" id="IGc-15-eav"/>
+                                            <outlet property="rootView" destination="vzJ-wZ-wWZ" id="Ez5-bv-TLX"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -769,10 +770,22 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="modelView" destination="lfn-3E-h7e" id="R2e-0C-zPe"/>
                         <outlet property="seeMembersTableView" destination="pkR-MN-5rJ" id="hXL-qE-sj9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y3I-Yt-dXS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="lfn-3E-h7e">
+                    <rect key="frame" x="0.0" y="0.0" width="290" height="187"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <stackView opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tnc-fW-L5I">
+                            <rect key="frame" x="0.0" y="0.0" width="292" height="186"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </objects>
             <point key="canvasLocation" x="1848.8" y="2527.2863568215894"/>
         </scene>
