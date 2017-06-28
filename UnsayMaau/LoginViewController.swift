@@ -9,10 +9,15 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import SkyFloatingLabelTextField
+import FontAwesome
 
 class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDelegate {
 
 
+    @IBOutlet weak var emailAddress: SkyFloatingLabelTextFieldWithIcon!
+    @IBOutlet weak var passWord: SkyFloatingLabelTextFieldWithIcon!
+    
     
     var databaseRef: DatabaseReference!
     
@@ -22,6 +27,12 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         databaseRef = Database.database().reference()
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
+        
+        emailAddress.iconFont = UIFont(name: "FontAwesome", size: 20)
+        emailAddress.iconText = "\u{f003}"
+        
+        passWord.iconFont = UIFont(name: "FontAwesome", size: 20)
+        passWord.iconText = "\u{f023}"
         
     }
     

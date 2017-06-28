@@ -45,6 +45,7 @@ PODS:
     - Firebase/Storage
     - SDWebImage (~> 4.0)
   - Floaty (3.0.0)
+  - FontAwesome (4.5.0)
   - GoogleSignIn (4.0.2):
     - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
     - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
@@ -87,6 +88,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - FirebaseUI/Storage
   - Floaty
+  - FontAwesome
   - GoogleSignIn
   - JSQMessagesViewController
   - PageMenu
@@ -108,6 +110,7 @@ SPEC CHECKSUMS:
   FirebaseStorage: 8110a1ed2034c8fbfd83890d2acc9cdbbd99afec
   FirebaseUI: b9de05bfb4768db05f64ea90fc2f6a07b819118f
   Floaty: d1be5d323094f0de422bb615452d00ba26ac74dd
+  FontAwesome: dd8c48bf965e771309d8af17c4d8579217b3e756
   GoogleSignIn: d7ad83f13480e1f30453471d00d19b5293ac46af
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMOAuth2: 7fc9c10f5c745f4d9850419ea88889fe3baa6b7d
@@ -119,6 +122,6 @@ SPEC CHECKSUMS:
   SkyFloatingLabelTextField: 26a92ad407044dd5a7c3e4e348738ff0991514fe
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
 
-PODFILE CHECKSUM: 3d5524f6f98da18b9a3bf0e64705e5d699086a35
+PODFILE CHECKSUM: 19c04e2919e3e6cb81bcedf5185a7afafa28b6fd
 
 COCOAPODS: 1.2.1
