@@ -48,7 +48,7 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
     
     
     
-    //private lazy var userIsTypingRef: DatabaseReference = self.databaseRef!.child("Topics").child(self.topic!.topicID!).child(self.senderId).child("isTyping")
+    private var userIsTypingRef: DatabaseReference!
     
     
     private var localTyping = false // 2
@@ -59,7 +59,7 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
         set {
             // 3
             localTyping = newValue
-            //userIsTypingRef.setValue(newValue)
+            userIsTypingRef.setValue(newValue)
         }
     }
     
@@ -391,6 +391,9 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
     private func observeTyping() {
         let typingIndicatorRef = group?.groupRef.child("typing_indicator")
         typingIndicatorRef?.child(senderId).setValue(isTyping)
+        
+        userIsTypingRef = typingIndicatorRef?.child(senderId)
+        userIsTypingRef.setValue(isTyping)
         
         // 1
         usersTypingQuery.observe(.value) { (data: DataSnapshot) in
