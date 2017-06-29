@@ -61,7 +61,6 @@ class GroupController: UIViewController {
                     DispatchQueue.main.async {
                         self.groupTableView.reloadData()
                     }
-                    
                 }
             }
         })
@@ -72,14 +71,20 @@ class GroupController: UIViewController {
         groupTableView.delegate = self
         groupTableView.dataSource = self
         rootRef = Database.database().reference()
-        refGroups = rootRef.child("Groups")
-        loadGroups()
+        rootRef.observeSingleEvent(of: .value, with: {(snapshot) in
+            if snapshot.hasChild("Groups") {
+                self.refGroups = self.rootRef.child("Groups")
+                self.loadGroups()
+            }
+        })
         getUserData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        refGroups.removeObserver(withHandle: refGroupsHandle)
+        if refGroups != nil {
+            refGroups.removeObserver(withHandle: refGroupsHandle)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -95,14 +100,14 @@ class GroupController: UIViewController {
     func clickCell(sender: UITapGestureRecognizer){
         if let rootView = sender.view as? UIView {
             let group = groups[rootView.tag]
-            if !group.admins.contains(user){
-                let pendingDictionary = ["pending_members": ["\(uid!)": true]]
-                refGroups.child(group.groupId).updateChildValues(pendingDictionary)
-                showAlertController(message: "Please wait for response", title: "Request Send")
-            } else {
+            if group.members.contains(user) || group.admins.contains(user) {
                 // TODO: Enter group view controller
                 // and display data
                 performSegue(withIdentifier: "goToGroupPage", sender: group)
+            } else if !group.admins.contains(user) || !group.members.contains(user) {
+                let pendingDictionary = ["pending_members": ["\(uid!)": true]]
+                refGroups.child(group.groupId).updateChildValues(pendingDictionary)
+                showAlertController(message: "Please wait for response", title: "Request Send")
             }
         }
     }
