@@ -24,115 +24,56 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="girl_shopping_street" translatesAutoresizingMaskIntoConstraints="NO" id="8qT-gx-24a">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zti-2e-vVg">
+                                <rect key="frame" x="32" y="308" width="311" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="50" maxY="0.0"/>
+                                <state key="normal" title="Google" image="icons8-google_logo">
+                                    <color key="titleColor" red="0.0" green="0.74901960779999999" blue="0.61165268839999998" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="googleSignInAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UDK-cK-aW7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pPF-Un-jwx">
+                                <rect key="frame" x="32" y="366" width="311" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="35" maxY="0.0"/>
+                                <state key="normal" title="Facebook" image="icons8-facebook">
+                                    <color key="titleColor" red="0.0" green="0.74901960779999999" blue="0.61165268839999998" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Um-4P-5vy">
+                                <rect key="frame" x="32" y="424" width="311" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Create Account">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WhatsBest2" translatesAutoresizingMaskIntoConstraints="NO" id="34G-d5-0me">
+                                <rect key="frame" x="32" y="290" width="311" height="85"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="311" id="heo-Oe-oL1"/>
+                                    <constraint firstAttribute="height" constant="85" id="xoc-Qt-MQJ"/>
+                                </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="It's not bad to choose" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uae-Cb-mZL">
-                                <rect key="frame" x="102" y="65" width="166" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="WhatsBest2" translatesAutoresizingMaskIntoConstraints="NO" id="34G-d5-0me">
-                                <rect key="frame" x="32" y="94" width="311" height="85"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <view alpha="0.65000000000000002" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wyp-OA-v08">
-                                <rect key="frame" x="16" y="208" width="343" height="328"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q9C-C9-g1R" customClass="SkyFloatingLabelTextFieldWithIcon" customModule="SkyFloatingLabelTextField">
-                                        <rect key="frame" x="16" y="15" width="311" height="47"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Email Address"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedIconColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="lineColor">
-                                                <color key="value" red="0.89135273280000005" green="0.89135273280000005" blue="0.89135273280000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
-                                                <color key="value" red="0.89135273280000005" green="0.89135273280000005" blue="0.89135273280000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedTitleColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                <color key="value" red="0.89135273280000005" green="0.89135273280000005" blue="0.89135273280000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
-                                                <color key="value" red="0.0" green="0.74901960779999999" blue="0.61165268839999998" alpha="1" colorSpace="calibratedRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="obu-Yr-w4C" customClass="SkyFloatingLabelTextFieldWithIcon" customModule="SkyFloatingLabelTextField">
-                                        <rect key="frame" x="16" y="70" width="311" height="47"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Password"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedIconColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="lineColor">
-                                                <color key="value" red="0.89135273280000005" green="0.89135273280000005" blue="0.89135273280000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
-                                                <color key="value" red="0.89135273280000005" green="0.89135273280000005" blue="0.89135273280000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedTitleColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                <color key="value" red="0.89135273280000005" green="0.89135273280000005" blue="0.89135273280000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
-                                                <color key="value" red="0.0" green="0.74901960779999999" blue="0.61165268839999998" alpha="1" colorSpace="calibratedRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zti-2e-vVg">
-                                        <rect key="frame" x="138" y="198" width="66" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Google"/>
-                                        <connections>
-                                            <action selector="googleSignInAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UDK-cK-aW7"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.16963347440011647" green="0.39548347928197247" blue="0.35073258801049417" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" red="0.0" green="0.74901960779999999" blue="0.61165268839999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="8qT-gx-24a" secondAttribute="trailing" id="aFx-mi-I7J"/>
-                            <constraint firstItem="8qT-gx-24a" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="bqT-eR-5Gk"/>
-                            <constraint firstItem="8qT-gx-24a" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ebL-BQ-lRN"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="8qT-gx-24a" secondAttribute="bottom" id="oM6-pY-quz"/>
+                            <constraint firstItem="34G-d5-0me" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="270" id="Xai-Jm-wwr"/>
+                            <constraint firstItem="34G-d5-0me" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ypg-ky-UTj"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="emailAddress" destination="q9C-C9-g1R" id="eIc-fO-S9b"/>
-                        <outlet property="passWord" destination="obu-Yr-w4C" id="ink-XW-OBa"/>
+                        <outlet property="createAccountButton" destination="9Um-4P-5vy" id="nWV-ms-DGY"/>
+                        <outlet property="facebookButton" destination="pPF-Un-jwx" id="PO0-hG-Zox"/>
+                        <outlet property="googleButton" destination="Zti-2e-vVg" id="XkS-Fm-bET"/>
+                        <outlet property="heightConstraint" destination="Xai-Jm-wwr" id="ugq-e1-EHt"/>
+                        <outlet property="whatsBestLogo" destination="34G-d5-0me" id="jkd-30-D97"/>
                         <segue destination="ATg-IB-uyg" kind="show" identifier="goToMainPage" id="89S-o5-vUV"/>
                     </connections>
                 </viewController>
@@ -959,11 +900,11 @@
                                     <size key="itemSize" width="358" height="587"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="10" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HomeFeedCell" id="YCF-rr-xxS" customClass="HomeFeedCollectionViewCell" customModule="UnsayMaau" customModuleProvider="target">
-                                        <rect key="frame" x="8.5" y="0.0" width="358" height="587"/>
+                                        <rect key="frame" x="8.5" y="10" width="358" height="587"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="587"/>
@@ -1175,11 +1116,11 @@
                                     <size key="itemSize" width="346" height="576"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="10" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HomeFeedCell" id="fZt-6y-CHI" customClass="HomeFeedCollectionViewCell" customModule="UnsayMaau" customModuleProvider="target">
-                                        <rect key="frame" x="14.5" y="0.0" width="346" height="576"/>
+                                        <rect key="frame" x="14.5" y="10" width="346" height="576"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="346" height="576"/>
@@ -1635,14 +1576,14 @@
                                     <inset key="sectionInset" minX="15" minY="15" maxX="15" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HomeFeedCell" id="XMt-yc-fUz" customClass="HomeFeedCollectionViewCell" customModule="UnsayMaau" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="5" contentMode="center" reuseIdentifier="HomeFeedCell" id="XMt-yc-fUz" customClass="HomeFeedCollectionViewCell" customModule="UnsayMaau" customModuleProvider="target">
                                         <rect key="frame" x="15" y="15" width="345" height="598"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="345" height="598"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2w9-fR-u7n">
+                                                <view tag="50" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2w9-fR-u7n">
                                                     <rect key="frame" x="0.0" y="0.0" width="345" height="48"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Vine-Vera-Beauty-Queen-Shopping-Intro" translatesAutoresizingMaskIntoConstraints="NO" id="MRE-Di-OvK">
@@ -1701,26 +1642,15 @@
                                                         <constraint firstItem="6Iw-qe-9UR" firstAttribute="leading" secondItem="MRE-Di-OvK" secondAttribute="trailing" constant="8" id="wT5-em-gRw"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vEw-YN-QHH">
+                                                <view tag="55" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vEw-YN-QHH">
                                                     <rect key="frame" x="8" y="56" width="329" height="200"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="vEw-YN-QHH" secondAttribute="height" multiplier="329:200" id="jzN-fl-CmW"/>
                                                     </constraints>
                                                 </view>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="yEK-yQ-4M9">
-                                                    <rect key="frame" x="16" y="264" width="313" height="177"/>
-                                                    <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="2m2-Q5-Zrz">
-                                                            <rect key="frame" x="0.0" y="0.0" width="313" height="87"/>
-                                                        </stackView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="C9f-vk-p89">
-                                                            <rect key="frame" x="0.0" y="90" width="313" height="87"/>
-                                                        </stackView>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="yEK-yQ-4M9" secondAttribute="height" multiplier="313:177" id="d6O-mj-AXZ"/>
-                                                    </constraints>
+                                                <stackView opaque="NO" tag="60" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yEK-yQ-4M9">
+                                                    <rect key="frame" x="8" y="264" width="329" height="114.5"/>
                                                 </stackView>
                                             </subviews>
                                         </view>
@@ -1728,11 +1658,11 @@
                                         <constraints>
                                             <constraint firstItem="vEw-YN-QHH" firstAttribute="top" secondItem="2w9-fR-u7n" secondAttribute="bottom" constant="8" id="3gv-fi-kWv"/>
                                             <constraint firstAttribute="trailing" secondItem="2w9-fR-u7n" secondAttribute="trailing" id="5Yy-L7-hUm"/>
-                                            <constraint firstItem="yEK-yQ-4M9" firstAttribute="leading" secondItem="XMt-yc-fUz" secondAttribute="leadingMargin" constant="8" id="JIZ-xV-I2u"/>
-                                            <constraint firstItem="yEK-yQ-4M9" firstAttribute="top" secondItem="vEw-YN-QHH" secondAttribute="bottom" constant="8" id="PxF-GX-fJz"/>
+                                            <constraint firstItem="yEK-yQ-4M9" firstAttribute="trailing" secondItem="XMt-yc-fUz" secondAttribute="trailingMargin" id="9WJ-Z3-gnc"/>
+                                            <constraint firstItem="yEK-yQ-4M9" firstAttribute="leading" secondItem="XMt-yc-fUz" secondAttribute="leadingMargin" id="PPW-UV-eQ7"/>
+                                            <constraint firstItem="yEK-yQ-4M9" firstAttribute="top" secondItem="vEw-YN-QHH" secondAttribute="bottom" constant="8" id="TKL-4n-aaK"/>
                                             <constraint firstItem="vEw-YN-QHH" firstAttribute="trailing" secondItem="XMt-yc-fUz" secondAttribute="trailingMargin" id="XXA-W6-u9y"/>
                                             <constraint firstItem="2w9-fR-u7n" firstAttribute="leading" secondItem="XMt-yc-fUz" secondAttribute="leading" id="ZZw-pj-aft"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="yEK-yQ-4M9" secondAttribute="trailing" constant="8" id="eiK-Ap-d8S"/>
                                             <constraint firstItem="vEw-YN-QHH" firstAttribute="leading" secondItem="XMt-yc-fUz" secondAttribute="leadingMargin" id="sFN-mB-Fs7"/>
                                             <constraint firstItem="2w9-fR-u7n" firstAttribute="top" secondItem="XMt-yc-fUz" secondAttribute="top" id="vy8-V7-lpV"/>
                                         </constraints>
@@ -1741,9 +1671,9 @@
                                             <outlet property="authorImageView" destination="MRE-Di-OvK" id="YCH-2h-8jf"/>
                                             <outlet property="commandButton" destination="9dZ-ci-QSS" id="kN0-9X-1nG"/>
                                             <outlet property="locationText" destination="jfb-Qf-oMN" id="aJC-OS-O9P"/>
-                                            <outlet property="rootCaption" destination="C9f-vk-p89" id="MqX-NO-Yxr"/>
-                                            <outlet property="rootDescription" destination="2m2-Q5-Zrz" id="cvY-R6-Cu4"/>
+                                            <outlet property="rootDescriptionCaption" destination="yEK-yQ-4M9" id="l3U-LY-RoD"/>
                                             <outlet property="rootView" destination="vEw-YN-QHH" id="FR9-ax-sex"/>
+                                            <outlet property="userInfoRootView" destination="2w9-fR-u7n" id="WrK-uu-Jcv"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -1782,7 +1712,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5I6-AU-tg4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4143" y="-173"/>
+            <point key="canvasLocation" x="4141.6000000000004" y="-173.16341829085459"/>
         </scene>
     </scenes>
     <resources>
@@ -1794,10 +1724,11 @@
         <image name="dogpic" width="314" height="314"/>
         <image name="equal_4x4" width="50" height="50"/>
         <image name="eye" width="29" height="17"/>
-        <image name="girl_shopping_street" width="2560" height="1600"/>
         <image name="groups" width="29" height="20"/>
         <image name="home" width="22" height="21"/>
         <image name="horizontal_3x3" width="100" height="100"/>
+        <image name="icons8-facebook" width="37" height="37"/>
+        <image name="icons8-google_logo" width="37" height="37"/>
         <image name="icons8-menu" width="32" height="32"/>
         <image name="pink" width="500" height="500"/>
         <image name="user" width="20" height="20"/>

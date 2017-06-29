@@ -48,6 +48,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             showPost()
         }
         
+        
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -92,10 +94,34 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-
-        return CGSize(width: view.frame.width - 20, height: 598)
-
+//        let cellIdentifier = "HomeFeedCell"
+//        
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? HomeFeedCollectionViewCell else {
+//            fatalError("The dequeued cell is not an instance of HomeFeedCell.")
+//        }
+//        
+//        let heightTotalHeight
+//
+//        var cellHeight = cell.userInfoRootView.frame.size.height + cell.rootView.frame.size.height + cell.rootDescriptionCaption.frame.size.height
         
+//        guard let cell = homeCollectionView.cellForItem(at: indexPath) as? HomeFeedCollectionViewCell else {
+//            fatalError("The dequeued cell is not an instance of HomeFeedCell.")
+//        }
+        
+//        let rootCell = collectionView.viewWithTag(5) as! UICollectionViewCell
+//        
+//        let userInfo = rootCell.viewWithTag(50) as! UIView
+//        let rootViewImage = rootCell.viewWithTag(55) as! UIStackView
+//        let rootDescriptionCaption = rootCell.viewWithTag(60) as! UIStackView
+//        
+//        var cellHeight = userInfo.frame.size.height + rootViewImage.frame.size.height + rootDescriptionCaption.frame.size.height
+//        print(cellHeight)
+        
+//        return CGSize(width: view.frame.width - 20, height: cellHeight)
+        
+        
+        
+        return CGSize(width: view.frame.width - 20, height: 598)
     }
     
     func reloadData(){
@@ -170,9 +196,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         }
         let post = posts[indexPath.row]
         cell.commandButton.layer.cornerRadius = 10
-        let separator: UIView = UIView(frame: CGRect(x: cell.rootDescription.frame.minX, y: cell.rootDescription.frame.maxY, width: cell.rootDescription.frame.size.width, height: 1))
-        separator.backgroundColor = UIColor.lightGray
-        
         
         cell.authorDisplayName.text = post.authorDisplayName
         cell.commandButton.tag = indexPath.row
@@ -188,7 +211,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         cell.authorImageView.sd_setImage(with: URL(string: post.authorImageUrl))
         let frameType = post.frameType
         
-        let (imageStack , label , caption) = returnHomeCellStackView(post: post, frameType: frameType, width: cell.rootView.frame.size.width , height: cell.rootView.frame.size.height , descriptionWidth: cell.rootDescription.frame.size.width , captionHeight: cell.rootCaption.frame.size.height,descriptionHeight: cell.rootDescription.frame.size.height)
+        let (imageStack , labels) = returnHomeCellStackView(post: post, frameType: frameType, width: cell.rootView.frame.size.width , height: cell.rootView.frame.size.height,labelWidth: cell.rootDescriptionCaption.frame.size.width)
         
         // Add the view in the root stack view
         
@@ -204,18 +227,18 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             cell.rootView.addConstraints([leading, trailing, top, bottom])
             
         }
-        
-        if cell.rootDescription.subviews.count == 0 {
-            cell.rootDescription.addSubview(separator)
-            for lbl in label {
-                cell.rootDescription.addArrangedSubview(lbl)
+        if cell.rootDescriptionCaption.subviews.count == 0 {
+            for label in labels {
+                cell.rootDescriptionCaption.addArrangedSubview(label)
             }
         }
-        if cell.rootCaption.subviews.count == 0 {
-            cell.rootCaption.addArrangedSubview(caption)
-        }
-        return cell
         
+        let cellHeight = cell.rootDescriptionCaption.frame.size.height + cell.rootView.frame.size.height + cell.userInfoRootView.frame.size.height
+        
+        
+//        cell.frame = CGRect(x: 0, y: 0, width: cell.frame.size.width, height: cellHeight)
+        
+        return cell
     }
 
     
@@ -237,7 +260,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         return count
     }
     
-    func returnHomeCellStackView(post: Post , frameType: String , width: CGFloat , height: CGFloat , descriptionWidth: CGFloat , captionHeight: CGFloat , descriptionHeight: CGFloat ) -> (UIStackView,[UILabel],UITextView) {
+    func returnHomeCellStackView(post: Post , frameType: String , width: CGFloat , height: CGFloat , labelWidth: CGFloat) -> (UIStackView,[UILabel]) {
         
         // (UIStackView,[UILabel],UITextView)
         // Array of Image Views
@@ -253,10 +276,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         // var label = UILabel(frame: CGRect(x: 0, y: 0, width: descriptionWidth, height:descriptionHeight))
         
         //   var textView = UITextView(frame: CGRect(x: 0, y: 0, width: descriptionWidth, height: captionHeight))
-        
-        var textView = UITextView()
-        
-        textView.text = "\(post.postDescription)"
         
         // Count for the image view objects to be instantiated
         
@@ -277,7 +296,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         for i in 0..<count {
             
-            let labelView = UILabel(frame: CGRect(x: 0, y: 0, width: descriptionWidth, height: 10))
+            let labelView = UILabel(frame: CGRect(x: 0, y: 0, width: labelWidth, height: 10))
             labelView.font = UIFont.systemFont(ofSize: 14)
             labelViews.append(labelView)
             
@@ -322,6 +341,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             voteLabel.tag = 1
             voteView.addSubview(voteLabel)
             
+            
+            
             // Create an Long Tap Gesture Recognizer
             
             let tap = UITapGestureRecognizer()
@@ -344,7 +365,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             ref.child("Images").child(post.postKey).child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
                 let postImage = PostImages(snap: snapshot)
                 imageViews[i].sd_setImage(with: URL(string: postImage.imageUrl))
-                labelViews[i].text = postImage.imageDescription
+                labelViews[i].text = "\(i + 1) \(postImage.imageDescription)"
             })
         }
         
@@ -373,9 +394,22 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                 returnStackView.addArrangedSubview(imageViews[i])
             }
         }
+        
+        
+        let separator: UIView = UIView(frame: CGRect(x: 0, y: labelViews[labelViews.count - 1].frame.minY, width: labelWidth, height: 1))
+        separator.backgroundColor = UIColor.lightGray
+        
+
+        
+        let desc = UILabel(frame: CGRect(x: 0, y: 0, width: labelWidth, height: 10))
+        desc.font = UIFont.systemFont(ofSize: 14)
+        desc.text = "\(post.postDescription)"
+        labelViews.append(desc)
+        
+        labelViews[labelViews.count - 1].addSubview(separator)
 
         //(returnStackView , labelViews , textView)
-        return (returnStackView , labelViews , textView)
+        return (returnStackView , labelViews)
     }
     
     func voteImage(sender: UITapGestureRecognizer){

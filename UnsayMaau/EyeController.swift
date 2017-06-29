@@ -26,6 +26,7 @@ class EyeController: UIViewController {
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
         
+        self.navigationItem.titleView = UIImageView(image: UIImage(named: "WhatsBest"))
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
