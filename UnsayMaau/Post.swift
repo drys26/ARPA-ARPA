@@ -22,13 +22,14 @@ class Post: Equatable {
 //    var postTimeCreated: Double
     var postDescription: String
     var frameType: String
-    
+    var postIsFinished: Bool
     
     var postKey: String
     
     
     init(post: DataSnapshot) {
         self.postKey = post.key
+        self.postIsFinished = false
         let postDictionary = post.value as! [String: Any]
         self.postDescription = postDictionary["post_description"] as! String
         //self.postImageUrl = postDictionary["post_photo_url"] as! String
@@ -43,6 +44,9 @@ class Post: Equatable {
         self.frameType = postDictionary["frame_type"] as! String
         self.frameImagesIDS.append(postDictionary["frame_one"] as! String)
         self.frameImagesIDS.append(postDictionary["frame_two"] as! String)
+        if post.hasChild("finished") {
+            self.postIsFinished = postDictionary["finished"] as! Bool
+        }
         if post.hasChild("frame_three") {
             self.frameImagesIDS.append(postDictionary["frame_three"] as! String)
             if post.hasChild("frame_four") {

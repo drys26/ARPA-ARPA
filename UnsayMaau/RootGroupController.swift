@@ -80,7 +80,11 @@ class RootGroupController: UIViewController {
         
         pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRect(x: 0.0, y: (self.navigationController?.navigationBar.frame.maxY)!, width: self.view.frame.width, height: self.view.frame.height), pageMenuOptions: parameters)
         
+        let extra: UIView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
+        self.view.addSubview(extra)
+            
         
+        self.addChildViewController(pageMenu!)
         self.view.addSubview(pageMenu!.view)
         
         

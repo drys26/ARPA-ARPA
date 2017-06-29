@@ -152,7 +152,17 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             if let rootPosts = snapshot.children.allObjects as? [DataSnapshot] {
                 for rootPost in rootPosts {
                     let post = Post(post: rootPost)
-                    if (self.uid! == post.authorImageID || self.user.followingIDs.contains(post.authorImageID)) && !self.posts.contains(post) {
+                    print(post.postKey)
+                    if self.posts.contains(post) && post.postIsFinished == true {
+                        if let index = self.posts.index(of: post) {
+                            self.posts.remove(at: index)
+                            DispatchQueue.main.async {
+                                self.homeCollectionView.reloadData()
+                            }
+                        }
+                    }
+                    
+                    if (self.uid! == post.authorImageID || self.user.followingIDs.contains(post.authorImageID)) && !self.posts.contains(post) && post.postIsFinished == false {
                         self.posts.append(post)
                         print("Post Count \(self.posts.count)")
                         DispatchQueue.main.async {
