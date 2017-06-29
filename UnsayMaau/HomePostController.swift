@@ -42,45 +42,44 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         print("View will appear ")
         // Set the Database Reference
         
-        if ref == nil {
-            ref = Database.database().reference()
-            getUserData()
-            //showPost()
-        }
-        
-        
         
     }
     
-//    override func viewDidDisappear(_ animated: Bool) {
-//        super.viewDidDisappear(animated)
-//        print("View Did Disapper")
-//        ref.removeObserver(withHandle: refUserHandle)
-//        ref.removeObserver(withHandle: refHandle)
-//        if let refVoteTemp = refVotePostHandle {
-//            ref.removeObserver(withHandle: refVotePostHandle!)
-//        }
-//        if let refVoteTemp = refVotePostTwoHandle {
-//            ref.removeObserver(withHandle: refVotePostTwoHandle!)
-//        }
-//        
-//    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("View Did Disapper")
+        ref.removeObserver(withHandle: refUserHandle)
+        //ref.removeObserver(withHandle: refHandle)
+        if let refVoteTemp = refVotePostHandle {
+            ref.removeObserver(withHandle: refVotePostHandle!)
+        }
+        if let refVoteTemp = refVotePostTwoHandle {
+            ref.removeObserver(withHandle: refVotePostTwoHandle!)
+        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         self.refresher = UIRefreshControl()
         self.refresher.attributedTitle = NSAttributedString(string: "pull to refresh")
-        refresher.addTarget(self, action: #selector(HomePostController.reloadData), for: .valueChanged)
+        refresher.addTarget(self, action: #selector(self.showPost), for: .valueChanged)
         
         
         if #available(iOS 10.0, *){
             homeCollectionView.refreshControl = refresher
         }else{
-        
+            
             homeCollectionView.addSubview(refresher)
         }
+        
+        if ref == nil {
+            ref = Database.database().reference()
+            getUserData()
+            showPost()
+        }
+        
         // Set the Delegates of the collection to self
         
         homeCollectionView.delegate = self
@@ -148,19 +147,22 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     }
     
     func showPost(){
-        refHandle = ref.child("Posts").observe(.childAdded, with: {(snapshot) in
-            let post = Post(post: snapshot)
-            
-            // Append post only if the post is by the user and the user followed
-            
-            if self.uid! == post.authorImageID || self.user.followingIDs.contains(post.authorImageID) {
-                self.posts.append(post)
-                print("Post Count \(self.posts.count)")
-                DispatchQueue.main.async {
-                    self.homeCollectionView.reloadData()
+        ref.child("Posts").observeSingleEvent(of: .value, with: {(snapshot) in
+            //print(snapshot)
+            if let rootPosts = snapshot.children.allObjects as? [DataSnapshot] {
+                for rootPost in rootPosts {
+                    let post = Post(post: rootPost)
+                    if (self.uid! == post.authorImageID || self.user.followingIDs.contains(post.authorImageID)) && !self.posts.contains(post) {
+                        self.posts.append(post)
+                        print("Post Count \(self.posts.count)")
+                        DispatchQueue.main.async {
+                            self.homeCollectionView.reloadData()
+                        }
+                    }
                 }
             }
         })
+        refresher.endRefreshing()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

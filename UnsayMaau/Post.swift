@@ -10,7 +10,7 @@ import Foundation
 import Firebase
 
 
-class Post {
+class Post: Equatable {
     
     var authorImageUrl: String
     var authorDisplayName: String
@@ -51,6 +51,10 @@ class Post {
         }
         
         //getImages(imageIds: self.frameImagesIDS)
+    }
+    
+    static func == (lhs: Post, rhs: Post) -> Bool {
+        return lhs.postKey == rhs.postKey
     }
     
 //    func getImages(imageIds: [String]){
