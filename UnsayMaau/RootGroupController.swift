@@ -8,11 +8,13 @@
 
 import UIKit
 import PageMenu
+import Firebase
 
 class RootGroupController: UIViewController {
 
     var group: Group!
     
+    var uid = Auth.auth().currentUser?.uid
     
     var pageMenu: CAPSPageMenu?
     
@@ -27,12 +29,32 @@ class RootGroupController: UIViewController {
         firstVC?.title = "FEED"
         
         
-        let secondVC = storyboard?.instantiateViewController(withIdentifier: "GroupChat")
-        secondVC?.title = "CHAT"
+        let secondVC = storyboard?.instantiateViewController(withIdentifier: "GroupChat") as! UINavigationController
+        
+        secondVC.title = "CHAT"
+        
+        let rootView = secondVC.viewControllers.first as! ChatViewController
+        
+        rootView.group = group
+//
+        
+//        let containerChatView = rootView.view.viewWithTag(5) as! UIView
+        
+        
+        
+        
+        
+//        containerChatView.senderId = "\(uid)"
+//        containerChatView.senderDisplayName = "Sample"
+        
+        
+        
+//        rootView.senderId = "\(uid)"
+//        rootView.senderDisplayName = "Sample"
         
         
         controllerArray.append(firstVC!)
-        controllerArray.append(secondVC!)
+        controllerArray.append(secondVC)
         
         // a bunch of random customization
         let parameters: [CAPSPageMenuOption] = [
@@ -69,6 +91,8 @@ class RootGroupController: UIViewController {
         
         
     }
+    
+    
     
     
     func goToSeeMembers(){

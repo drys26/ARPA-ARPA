@@ -61,7 +61,6 @@ class GroupController: UIViewController {
                     DispatchQueue.main.async {
                         self.groupTableView.reloadData()
                     }
-                    
                 }
             }
         })
@@ -72,14 +71,20 @@ class GroupController: UIViewController {
         groupTableView.delegate = self
         groupTableView.dataSource = self
         rootRef = Database.database().reference()
-        refGroups = rootRef.child("Groups")
-        loadGroups()
+        rootRef.observeSingleEvent(of: .value, with: {(snapshot) in
+            if snapshot.hasChild("Groups") {
+                self.refGroups = self.rootRef.child("Groups")
+                self.loadGroups()
+            }
+        })
         getUserData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        refGroups.removeObserver(withHandle: refGroupsHandle)
+        if refGroups != nil {
+            refGroups.removeObserver(withHandle: refGroupsHandle)
+        }
     }
     
     override func didReceiveMemoryWarning() {

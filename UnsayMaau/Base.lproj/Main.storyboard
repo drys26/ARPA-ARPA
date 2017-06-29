@@ -360,7 +360,7 @@
             <objects>
                 <navigationController id="c8y-4v-Emc" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="GROUPS" image="groups" id="7O8-MM-UiY"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="8X2-Eg-HBa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8X2-Eg-HBa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -555,10 +555,10 @@
             </objects>
             <point key="canvasLocation" x="989.60000000000002" y="1614.2428785607199"/>
         </scene>
-        <!--Messages View Controller-->
+        <!--Chat View Controller-->
         <scene sceneID="boS-rB-yT7">
             <objects>
-                <viewController storyboardIdentifier="GroupChat" id="QI2-to-s1E" customClass="JSQMessagesViewController" sceneMemberID="viewController">
+                <viewController id="QI2-to-s1E" customClass="ChatViewController" customModule="UnsayMaau" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sAq-B8-e11"/>
                         <viewControllerLayoutGuide type="bottom" id="o4A-bw-vIM"/>
@@ -566,12 +566,21 @@
                     <view key="view" contentMode="scaleToFill" id="qWp-LH-cpi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <containerView opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Jn-4B-qvo">
+                                <rect key="frame" x="0.0" y="64" width="375" height="493"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="jFh-Q1-uVJ" kind="embed" identifier="goToContainerChatView" id="2yk-xw-aOr"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
                     </view>
+                    <navigationItem key="navigationItem" id="Fkq-ML-pGk"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2MJ-Wv-qd6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-514" y="2526"/>
+            <point key="canvasLocation" x="-743.20000000000005" y="2507.4962518740631"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="2LA-cC-Vm3">
@@ -613,7 +622,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KSw-nB-1ps" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140" y="2526.3868065967017"/>
+            <point key="canvasLocation" x="1079.2" y="2526.3868065967017"/>
         </scene>
         <!--Root Group Controller-->
         <scene sceneID="FXO-Si-ghQ">
@@ -634,7 +643,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="br3-dI-csD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="990" y="2528"/>
+            <point key="canvasLocation" x="1928.8" y="2527.2863568215894"/>
         </scene>
         <!--See Members View Controller-->
         <scene sceneID="VRh-Xv-PRH">
@@ -713,7 +722,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1848.8" y="2527.2863568215894"/>
+            <point key="canvasLocation" x="2788" y="2527.2863568215894"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="rYE-7I-bjk">
@@ -810,7 +819,7 @@
         <scene sceneID="MBz-Pi-gHD">
             <objects>
                 <navigationController id="s0c-4E-Y7Y" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TkC-dM-lhU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TkC-dM-lhU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1469,7 +1478,7 @@
             <objects>
                 <navigationController id="T1q-fT-hr7" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="HOME" image="home" id="AlF-dd-iGF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wZb-eD-spg">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wZb-eD-spg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1713,6 +1722,37 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5I6-AU-tg4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4141.6000000000004" y="-173.16341829085459"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="eTf-sK-NOB">
+            <objects>
+                <navigationController storyboardIdentifier="GroupChat" automaticallyAdjustsScrollViewInsets="NO" id="z6j-kl-iP0" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oFg-1E-yr5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="QI2-to-s1E" kind="relationship" relationship="rootViewController" id="BxE-6K-dgM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hPY-Dp-JR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="121" y="2509"/>
+        </scene>
+        <!--Container Chat View Controller-->
+        <scene sceneID="sfu-Lu-92L">
+            <objects>
+                <viewController storyboardIdentifier="ContainerChatView" id="jFh-Q1-uVJ" customClass="ContainerChatViewController" customModule="UnsayMaau" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eF6-up-48o">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="493"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aIb-8d-Urg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-743" y="3288"/>
         </scene>
     </scenes>
     <resources>
