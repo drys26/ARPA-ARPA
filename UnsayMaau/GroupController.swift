@@ -151,7 +151,6 @@ extension GroupController: UITableViewDataSource {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickCell(sender:)))
         
         cell.rootView.addGestureRecognizer(tap)
-        
         cell.backgroundImageView.sd_setImage(with: URL(string: group.backgroundImageUrl))
         cell.groupDescriptionText.text = group.groupDescription
         cell.groupMembersText.text = "\(group.members.count)"

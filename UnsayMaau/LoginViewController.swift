@@ -26,6 +26,18 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+//        try! Auth.auth().signOut()
+//        GIDSignIn.sharedInstance().signOut()
+        
+        Auth.auth().addStateDidChangeListener { (auth, user) in
+            if user != nil{
+                self.performSegue(withIdentifier: "goToMainPage", sender: nil)
+            }
+        }
+        
+        
+        
         databaseRef = Database.database().reference()
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
@@ -61,6 +73,8 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        
         
         googleButton.alpha = 0
         facebookButton.alpha = 0
