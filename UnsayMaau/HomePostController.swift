@@ -233,7 +233,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             }
         }
         
-        let cellHeight = cell.rootDescriptionCaption.frame.size.height + cell.rootView.frame.size.height + cell.userInfoRootView.frame.size.height
+//        let cellHeight = cell.rootDescriptionCaption.frame.size.height + cell.rootView.frame.size.height + cell.userInfoRootView.frame.size.height
         
         
 //        cell.frame = CGRect(x: 0, y: 0, width: cell.frame.size.width, height: cellHeight)

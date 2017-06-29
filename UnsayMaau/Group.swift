@@ -52,6 +52,15 @@ class Group: Equatable {
                 })
             }
         }
+        if snap.hasChild("members") {
+            let pendingDict = groupDict["members"] as! [String: Any]
+            for (key , element) in pendingDict {
+                ref.child("Users").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
+                    let user = User(snap: snapshot)
+                    self.members.append(user)
+                })
+            }
+        }
     }
     
     static func == (lhs: Group, rhs: Group) -> Bool {
