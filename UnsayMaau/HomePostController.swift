@@ -45,26 +45,26 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         if ref == nil {
             ref = Database.database().reference()
             getUserData()
-            showPost()
+            //showPost()
         }
         
         
         
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        print("View Did Disapper")
-        ref.removeObserver(withHandle: refUserHandle)
-        ref.removeObserver(withHandle: refHandle)
-        if let refVoteTemp = refVotePostHandle {
-            ref.removeObserver(withHandle: refVotePostHandle!)
-        }
-        if let refVoteTemp = refVotePostTwoHandle {
-            ref.removeObserver(withHandle: refVotePostTwoHandle!)
-        }
-        
-    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        print("View Did Disapper")
+//        ref.removeObserver(withHandle: refUserHandle)
+//        ref.removeObserver(withHandle: refHandle)
+//        if let refVoteTemp = refVotePostHandle {
+//            ref.removeObserver(withHandle: refVotePostHandle!)
+//        }
+//        if let refVoteTemp = refVotePostTwoHandle {
+//            ref.removeObserver(withHandle: refVotePostTwoHandle!)
+//        }
+//        
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
