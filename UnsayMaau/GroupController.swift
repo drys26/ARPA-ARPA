@@ -17,6 +17,10 @@ class GroupController: UIViewController {
 
     @IBOutlet weak var floats: Floaty!
     
+    var refreshControl: UIRefreshControl = UIRefreshControl()
+    
+    
+    
     var groups = [Group]()
     
     var rootRef: DatabaseReference!
@@ -38,12 +42,31 @@ class GroupController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
-        
-    self.view.bringSubview(toFront: floats)
-
+        refreshControl.addTarget(self, action: #selector(GroupController.refreshData), for: .valueChanged)
         
         self.view.bringSubview(toFront: floats)
         
+        if #available(iOS 10.0, *){
+            groupTableView.refreshControl = refreshControl
+        }
+        else{
+            groupTableView.addSubview(refreshControl)
+        }
+    }
+    
+    func refreshData(){
+        refGroupsHandle = refGroups.observe(.childAdded, with: {(snapshot) in
+            let group = Group(snap: snapshot)
+            if !self.groups.contains(group) {
+                if group.groupStatus == false {
+                    self.groups.append(group)
+                    DispatchQueue.main.async {
+                        self.groupTableView.reloadData()
+                    }
+                }
+            }
+        })
+        refreshControl.endRefreshing()
     }
     
     func getUserData(){
@@ -104,7 +127,8 @@ class GroupController: UIViewController {
                 // TODO: Enter group view controller
                 // and display data
                 performSegue(withIdentifier: "goToGroupPage", sender: group)
-            } else if !group.admins.contains(user) || !group.members.contains(user) {
+            } else if !group.admins.contains(user) || !group.members.contains(user)  {
+
                 let pendingDictionary = ["pending_members": ["\(uid!)": true]]
                 refGroups.child(group.groupId).updateChildValues(pendingDictionary)
                 showAlertController(message: "Please wait for response", title: "Request Send")
