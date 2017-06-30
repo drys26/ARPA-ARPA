@@ -8,8 +8,11 @@
 
 import UIKit
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
+    
+    let picker = UIImagePickerController()
+    
     @IBOutlet weak var whatsBestLogo: UIImageView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -21,17 +24,40 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         
         setupDesign()
         
+        picker.delegate = self
+    }
+    
+    
+    @IBAction func pickImageButton(_ sender: Any) {
+        
+        picker.allowsEditing = true
+        picker.sourceType = .photoLibrary
+        self.present(picker, animated: true, completion: nil)
+
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let chosenImage = info[UIImagePickerControllerEditedImage] as! UIImage
+        
+        profileImage.image = chosenImage
+        
+        dismiss(animated: true, completion: nil)
         
     }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     
     func setupDesign(){
         
         whatsBestLogo.tintColor = UIColor(red: 0/255, green: 191/255, blue: 156/255, alpha: 1)
+        
+        profileImage.layer.cornerRadius = profileImage.frame.size.width / 2
         
         nameTextField.layer.cornerRadius = nameTextField.frame.size.height / 2
         nameTextField.layer.borderWidth = 2
@@ -85,11 +111,36 @@ class SignUpViewController: UIViewController {
         
     
     }
+
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return .lightContent
     }
     
+    @IBAction func toogleSignUp(_ sender: Any) {
+        
+//        if nameTextField.text == "" {
+//            nameTextField.rightViewMode = .always
+//            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+//            let image = UIImage(named: "icons8-cancel")
+//            imageView.image = image
+//            nameTextField.rightView = imageView
+//        }
+//        else if emailTextField.text == "" {
+//            emailTextField.rightViewMode = .always
+//        }
+//        else if passwordTextField.text == "" {
+//            passwordTextField.rightViewMode = .always
+//        }
+//        else if confirmTextField.text == "" {
+//            confirmTextField.rightViewMode = .always
+//        }
+
+        
+        
+        
+        
+    }
     
     @IBAction func backToLogin(_ sender: Any) {
         
