@@ -21,6 +21,7 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var facebookButton: UIButton!
     @IBOutlet weak var createAccountButton: UIButton!
+    @IBOutlet weak var loginExistingAccountButton: UIButton!
     
     
     var databaseRef: DatabaseReference!
@@ -136,7 +137,11 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
                 }, completion: { (true) in
                     UIView.animate(withDuration: 0.5, animations: {
                         self.createAccountButton.alpha = 1
-                    }, completion: nil)
+                    }, completion: { (true) in
+                        UIView.animate(withDuration: 0.5, animations: { 
+                            self.loginExistingAccountButton.alpha = 1
+                        })
+                    })
                 })
             })
         }
@@ -148,6 +153,7 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
     }
     
     func setupButton(){
+        loginExistingAccountButton.alpha = 0
         googleButton.alpha = 0
         facebookButton.alpha = 0
         createAccountButton.alpha = 0

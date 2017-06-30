@@ -243,6 +243,7 @@
                         <outlet property="facebookButton" destination="pPF-Un-jwx" id="PO0-hG-Zox"/>
                         <outlet property="googleButton" destination="Zti-2e-vVg" id="XkS-Fm-bET"/>
                         <outlet property="heightConstraint" destination="Xai-Jm-wwr" id="ugq-e1-EHt"/>
+                        <outlet property="loginExistingAccountButton" destination="Een-p8-ePe" id="SAL-eA-y8A"/>
                         <outlet property="whatsBestLogo" destination="34G-d5-0me" id="jkd-30-D97"/>
                         <segue destination="ATg-IB-uyg" kind="show" identifier="goToMainPage" id="89S-o5-vUV"/>
                         <segue destination="qZm-QQ-HsD" kind="show" identifier="goToRegister" id="DsW-EZ-WIP"/>
@@ -490,9 +491,9 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w7v-NM-vEO">
-                                <rect key="frame" x="284" y="162" width="46" height="30"/>
+                                <rect key="frame" x="277" y="162" width="60" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Sign Out"/>
                                 <connections>
                                     <action selector="signOutAction:" destination="71Y-BX-TJT" eventType="touchUpInside" id="6an-Fd-tgg"/>
                                 </connections>
