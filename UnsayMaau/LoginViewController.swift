@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import GoogleSignIn
 import FBSDKLoginKit
+import FBSDKCoreKit
 
 class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDelegate {
 
@@ -50,12 +51,13 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
     @IBAction func toogleFacebookLogin(_ sender: Any) {
         
         let fbLoginManager: FBSDKLoginManager = FBSDKLoginManager()
-        
+        fbLoginManager.loginBehavior = FBSDKLoginBehavior.web
         fbLoginManager.logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: self) { (result, error) in
             if error == nil {
                 let fbLoginResult: FBSDKLoginManagerLoginResult = result!
-                if (fbLoginResult.grantedPermissions.contains("email")){
-                
+                if (fbLoginResult.grantedPermissions != nil){
+                    if (fbLoginResult.grantedPermissions.contains("email")){
+                    
                     let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
                     Auth.auth().signIn(with: credential, completion: { (user, err) in
                         if let error = err{
@@ -75,8 +77,16 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
                         self.performSegue(withIdentifier: "goToMainPage", sender: nil)
                         
                     })
-                
+                    
+                    }
+                    else{
+                        print("Login Result didn't fetch Email")
+                    }
                 }
+                else{
+                    print("\(fbLoginResult.grantedPermissions)")
+                }
+                
             }
             else{
                 print(error?.localizedDescription ?? "")
