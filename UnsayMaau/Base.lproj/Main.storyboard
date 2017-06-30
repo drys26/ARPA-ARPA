@@ -62,7 +62,7 @@
                                     <constraint firstItem="TtQ-un-JHa" firstAttribute="centerY" secondItem="TuT-An-8Cb" secondAttribute="centerY" id="nww-mW-cCJ"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icons8-user_male_circle_filled-1" translatesAutoresizingMaskIntoConstraints="NO" id="qfJ-uS-G1a">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icons8-user_male_circle_filled-1" translatesAutoresizingMaskIntoConstraints="NO" id="qfJ-uS-G1a">
                                 <rect key="frame" x="137" y="96" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -73,6 +73,9 @@
                                 <state key="normal" title="Upload Photo">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="pickImageButton:" destination="qZm-QQ-HsD" eventType="touchUpInside" id="gEm-fT-DNS"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ILk-DZ-lNG">
                                 <rect key="frame" x="37" y="332" width="300" height="40"/>
@@ -103,6 +106,9 @@
                                 <state key="normal" title="SIGN UP">
                                     <color key="titleColor" red="0.0" green="0.74901960779999999" blue="0.61165268839999998" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="toogleSignUp:" destination="qZm-QQ-HsD" eventType="touchUpInside" id="Bcs-QX-MXt"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vUe-3u-Ana">
                                 <rect key="frame" x="37" y="524" width="300" height="24"/>
@@ -137,11 +143,12 @@
                         <outlet property="profileImage" destination="qfJ-uS-G1a" id="Hmg-dl-qJ1"/>
                         <outlet property="signUpButton" destination="Fhr-R5-9S4" id="B7R-xi-RO2"/>
                         <outlet property="whatsBestLogo" destination="EbN-D4-LhH" id="EbI-kd-Kew"/>
+                        <segue destination="ATg-IB-uyg" kind="show" identifier="goToMainPage" id="Cj5-qB-IWP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5T3-Qu-Etq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140" y="-532.98350824587715"/>
+            <point key="canvasLocation" x="-15" y="-739"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -900,6 +907,7 @@
                                         <connections>
                                             <outlet property="memberDisplayName" destination="nmk-s8-qj7" id="Mi9-DA-84P"/>
                                             <outlet property="memberImageView" destination="q23-Wg-XHo" id="IGc-15-eav"/>
+                                            <outlet property="rootButton" destination="NJe-uW-XNG" id="UmF-GD-atI"/>
                                             <outlet property="rootView" destination="vzJ-wZ-wWZ" id="Ez5-bv-TLX"/>
                                         </connections>
                                     </tableViewCell>
@@ -1986,4 +1994,7 @@
         <image name="vertical_3x3" width="100" height="100"/>
         <image name="watchlist" width="34" height="12"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Cj5-qB-IWP"/>
+    </inferredMetricsTieBreakers>
 </document>

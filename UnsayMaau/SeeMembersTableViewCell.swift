@@ -16,6 +16,7 @@ class SeeMembersTableViewCell: UITableViewCell {
     
     @IBOutlet weak var rootView: UIView!
     
+    @IBOutlet weak var rootButton: UIStackView!
     
 
     override func awakeFromNib() {

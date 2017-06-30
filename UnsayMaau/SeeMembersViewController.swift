@@ -41,11 +41,11 @@ class SeeMembersViewController: UIViewController {
         seeMembersTableView.delegate = self
         seeMembersTableView.dataSource = self
         
-        var tap = UILongPressGestureRecognizer(target: self, action: #selector(self.touchForOptions(recognizer:)))
-        
-        tap.minimumPressDuration = 1.0
-        
-        seeMembersTableView.addGestureRecognizer(tap)
+//        var tap = UILongPressGestureRecognizer(target: self, action: #selector(self.touchForOptions(recognizer:)))
+//        
+//        tap.minimumPressDuration = 1.0
+//        
+//        seeMembersTableView.addGestureRecognizer(tap)
         
         getUserData()
         
@@ -280,7 +280,8 @@ class SeeMembersViewController: UIViewController {
             // If there is pending members
             
             if snapshot.hasChild("pending_members") {
-                //self.sections.append("Pending")
+                self.sections.insert("Pending", at: 0)
+                self.sections.remove(at: 1)
                 self.group.groupRef.child("pending_members").observeSingleEvent(of: .value, with: {(rootSnapshot) in
                     let value = rootSnapshot.value as! [String: Any]
                     for (key , _) in value {
@@ -296,6 +297,10 @@ class SeeMembersViewController: UIViewController {
             // if there is active members
             
             if snapshot.hasChild("members") {
+                self.sections.insert("Active", at: 1)
+                self.sections.remove(at: 2)
+                self.sections.insert("Inactive", at: 2)
+                self.sections.remove(at: 3)
                 self.group.groupRef.child("members").observeSingleEvent(of: .value, with: {(rootSnapshot) in
                     //self.sections.append("Active")
                    // self.sections.append("Inactive")
@@ -318,6 +323,8 @@ class SeeMembersViewController: UIViewController {
             }
             
             if snapshot.hasChild("admin_members") {
+                self.sections.insert("Admin", at: 3)
+                self.sections.remove(at: 4)
                 self.group.groupRef.child("admin_members").observeSingleEvent(of: .value, with: {(rootSnapshot) in
                     //self.sections.append("Admin")
                     let adminMembersDict = rootSnapshot.value as! [String: Any]
@@ -389,7 +396,49 @@ extension SeeMembersViewController: UITableViewDelegate {
     }
 }
 
+
+
 extension SeeMembersViewController: UITableViewDataSource {
+    
+    func returnButtons(section: Int,row: Int) -> [UIButton] {
+        let sectionText = sections[section]
+        var buttons = [UIButton]()
+        
+        print(sectionText)
+        print(section)
+        
+        
+        func loopButton(count: Int){
+            for i in 0..<count {
+                buttons.append(UIButton())
+            }
+        }
+        
+        func loopButton2(){
+            for btn in buttons {
+                // Set access label
+                btn.accessibilityLabel = "\(section),\(row),\(btn.accessibilityLabel!)"
+                // Add Target
+                btn.addTarget(self, action: #selector(self.commandAction(sender:)), for: .touchUpInside)
+            }
+        }
+        
+        if section == 0 && sectionText == "Pending" {
+            loopButton(count: 2)
+//            let img = UIImage(named: "accept_members")
+            buttons[0].setImage(UIImage(named: "accept_member"), for: .normal)
+            //buttons[0].setImage(, for: <#T##UIControlState#>)
+            buttons[0].accessibilityLabel = "accept"
+            buttons[1].setImage(UIImage(named: "decline_member"), for: .normal)
+            buttons[1].accessibilityLabel = "decline"
+            
+            loopButton2()
+        }
+        
+        print(buttons.count)
+        return buttons
+        
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -408,6 +457,20 @@ extension SeeMembersViewController: UITableViewDataSource {
         cell.memberImageView.sd_setImage(with: URL(string: user.photoUrl))
         
         cell.memberImageView.layer.cornerRadius = cell.memberImageView.frame.size.width / 2
+        
+        if cell.rootButton.subviews.count == 0 {
+            
+            let buttons = returnButtons(section: indexPath.section, row: indexPath.row)
+            
+            for btn in buttons {
+                cell.rootButton.addArrangedSubview(btn)
+            }
+        }
+        
+        
+        
+        
+        
         
 //        cell.memberCommandButton.layer.cornerRadius = cell.memberCommandButton.frame.height / 2
 //        
@@ -457,15 +520,45 @@ extension SeeMembersViewController: UITableViewDataSource {
     
     func commandAction(sender: UIButton){
         
-        let arr = sender.accessibilityLabel?.components(separatedBy: " ")
-        let section = Int((arr?[0])!)
+        let arr = sender.accessibilityLabel?.components(separatedBy: ",")
+        let sectionCommand = Int((arr?[0])!)
         let row = Int((arr?[1])!)
+        let access = arr?[2]
         
-        let user = users[section!][row!]
+        let user = users[sectionCommand!][row!]
         
-        if section == 0 {
-            rootRef.child("Groups").child(group.groupId).child("pending_members").child(user.userId).removeValue()
-            rootRef.child("Groups").child(group.groupId).child("members").updateChildValues(["\(user.userId)": ["isActive":false,"isJoined":true]])
+//        if section == 0 {
+//            rootRef.child("Groups").child(group.groupId).child("pending_members").child(user.userId).removeValue()
+//            rootRef.child("Groups").child(group.groupId).child("members").updateChildValues(["\(user.userId)": ["isActive":false,"isJoined":true]])
+//        }
+        
+        func removeUsers(){
+            self.users[sectionCommand!].remove(at: row!)
+            self.seeMembersTableView.deleteRows(at: [IndexPath(row: row! , section: sectionCommand!)], with: .fade)
+//            if self.users[sectionCommand!].count == 0 {
+//                removeSection(sectionIndex: sectionCommand!)
+//            }
+            
+        }
+        
+        func removeSection(sectionIndex: Int){
+            self.seeMembersTableView.beginUpdates()
+            if users[sectionIndex].count == 0 {
+                let indexSet = NSMutableIndexSet()
+                indexSet.add(sectionCommand! - 1)
+                seeMembersTableView.deleteSections(indexSet as IndexSet, with: .fade)
+            }
+            self.seeMembersTableView.endUpdates()
+            
+        }
+        
+        if access! == "accept" {
+            group.groupRef.child("pending_members").child(user.userId).removeValue()
+            group.groupRef.child("members").updateChildValues(["\(user.userId)": true])
+            removeUsers()
+        } else if access! == "decline" {
+            group.groupRef.child("pending_members").child(user.userId).removeValue()
+            removeUsers()
         }
         
     }

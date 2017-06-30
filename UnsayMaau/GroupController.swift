@@ -13,18 +13,16 @@ import Firebase
 
 
 class GroupController: UIViewController,UISearchBarDelegate {
-
-
+    
+    
     @IBOutlet weak var floats: Floaty!
     
-<<<<<<< HEAD
     
     @IBOutlet weak var searchBar: UISearchBar!
-=======
+    
     var refreshControl: UIRefreshControl = UIRefreshControl()
     
     
->>>>>>> 56c0b196debfa2528e05b7f56cb97feaab8c7703
     
     var groups = [Group]()
     
@@ -46,23 +44,21 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.navigationItem.titleView = UIImageView(image: UIImage(named: "WhatsBest"))
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
-<<<<<<< HEAD
-//        self.navigationItem.titleView = searchBar
+        
         searchBar.delegate = self
         
-=======
-        refreshControl.addTarget(self, action: #selector(GroupController.refreshData), for: .valueChanged)
->>>>>>> 56c0b196debfa2528e05b7f56cb97feaab8c7703
         
-    self.view.bringSubview(toFront: floats)
+        refreshControl.addTarget(self, action: #selector(GroupController.refreshData), for: .valueChanged)
+        
+        
         self.view.bringSubview(toFront: floats)
-<<<<<<< HEAD
-=======
+        self.view.bringSubview(toFront: floats)
+        
         
         if #available(iOS 10.0, *){
             groupTableView.refreshControl = refreshControl
@@ -85,7 +81,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
             }
         })
         refreshControl.endRefreshing()
->>>>>>> 56c0b196debfa2528e05b7f56cb97feaab8c7703
+        
     }
     
     func getUserData(){
@@ -98,7 +94,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
         DispatchQueue.main.async {
             self.groupTableView.reloadData()
         }
-
+        
     }
     
     func loadGroups(){
@@ -113,10 +109,10 @@ class GroupController: UIViewController,UISearchBarDelegate {
         })
     }
     
-    func closeFloatingActionButton(){
-        floats.open()
-        floats.close()
-    }
+//    func closeFloatingActionButton(){
+//        floats.open()
+//        floats.close()
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -157,7 +153,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
                 // and display data
                 performSegue(withIdentifier: "goToGroupPage", sender: group)
             } else if !group.admins.contains(user) || !group.members.contains(user)  {
-
+                
                 let pendingDictionary = ["pending_members": ["\(uid!)": true]]
                 refGroups.child(group.groupId).updateChildValues(pendingDictionary)
                 showAlertController(message: "Please wait for response", title: "Request Send")
@@ -188,7 +184,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
 
 extension GroupController: UITableViewDelegate {
     
-
+    
     
 }
 
@@ -232,7 +228,7 @@ extension GroupController: UITableViewDataSource {
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        closeFloatingActionButton()
+       // closeFloatingActionButton()
         searchGroups.removeAll()
         isSearching = true
         reload()
@@ -254,7 +250,7 @@ extension GroupController: UITableViewDataSource {
     func loadSearchedGroups(){
         let searchText = searchBar.text
         print(searchText!)
-//        let strSearch = "je"
+        //        let strSearch = "je"
         rootRef.child("Groups").queryOrdered(byChild:  "group_name").queryStarting(atValue: searchText!).queryEnding(atValue: searchText! + "\u{f8ff}").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as! [String: Any]
@@ -263,32 +259,32 @@ extension GroupController: UITableViewDataSource {
                 print(child)
             }
             
-//            let key = value.keys.first
-//            
-//            self.rootRef.child("Groups").child(key!).observeSingleEvent(of: .value, with: {(snapshot1) in
-//                print(snapshot1)
-////                let group = Group(snap: snapshot1)
-////                self.searchGroups.append(group)
-////                self.reload()
-//            })
+            //            let key = value.keys.first
+            //
+            //            self.rootRef.child("Groups").child(key!).observeSingleEvent(of: .value, with: {(snapshot1) in
+            //                print(snapshot1)
+            ////                let group = Group(snap: snapshot1)
+            ////                self.searchGroups.append(group)
+            ////                self.reload()
+            //            })
         })
-//
-//        let searchRef = refGroups.queryOrdered(byChild: "group_name").queryEqual(toValue: searchText!)
-//        searchRef.observeSingleEvent(of: .value, with: {(snapshot) in
-//            if snapshot.exists() {
-//                for a in ((snapshot.value as AnyObject).allKeys)!{
-//                    print(a)
-//                    self.rootRef.child("Groups").child(a as! String).observeSingleEvent(of: .value, with: {(snapshot1) in
-//                        let group = Group(snap: snapshot1)
-//                        self.searchGroups.append(group)
-//                        self.reload()
-//                    })
-//                }
-//               // let key = ((snapshot.value as AnyObject).allKeys)!
-//            } else {
-//                print("we don't have that, add it to the DB now")
-//            }
-//        })
+        //
+        //        let searchRef = refGroups.queryOrdered(byChild: "group_name").queryEqual(toValue: searchText!)
+        //        searchRef.observeSingleEvent(of: .value, with: {(snapshot) in
+        //            if snapshot.exists() {
+        //                for a in ((snapshot.value as AnyObject).allKeys)!{
+        //                    print(a)
+        //                    self.rootRef.child("Groups").child(a as! String).observeSingleEvent(of: .value, with: {(snapshot1) in
+        //                        let group = Group(snap: snapshot1)
+        //                        self.searchGroups.append(group)
+        //                        self.reload()
+        //                    })
+        //                }
+        //               // let key = ((snapshot.value as AnyObject).allKeys)!
+        //            } else {
+        //                print("we don't have that, add it to the DB now")
+        //            }
+        //        })
     }
     
 }
