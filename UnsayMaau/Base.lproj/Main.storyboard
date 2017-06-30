@@ -567,6 +567,7 @@
                     <connections>
                         <outlet property="floats" destination="Mhq-Fn-fr3" id="QT1-xa-MKu"/>
                         <outlet property="groupTableView" destination="JRJ-4D-CIl" id="H8j-bg-OFF"/>
+                        <outlet property="searchBar" destination="8ul-cf-xna" id="RD7-th-kU1"/>
                         <segue destination="hba-3n-AZ8" kind="show" identifier="goToAddGroup" id="rFw-u4-RvP"/>
                         <segue destination="ck8-YO-PaW" kind="show" identifier="goToGroupPage" id="KWL-OC-M9e"/>
                     </connections>
