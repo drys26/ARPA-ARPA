@@ -30,6 +30,8 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
     
     var uid: String = (Auth.auth().currentUser?.uid)!
     
+    var postsDictionary = [String:Any]()
+    
     var user: User!
     
     override func viewDidLoad() {
@@ -583,16 +585,25 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
     
     func updateImagesDictionary(count: Int, temporaryImagesDictionary: [String : Any]) {
         ref.child("Images").child(postID).child(imageIDS[count]).setValue(temporaryImagesDictionary)
+        ref.child("Images").child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
+            if snapshot.childrenCount.hashValue == self.imageIDS.count {
+                self.ref.child("Posts").child(self.postID).setValue(self.postsDictionary)
+            }
+            print(snapshot.childrenCount)
+            print(snapshot.children.allObjects.count)
+            print(snapshot.childrenCount.hashValue)
+        })
     }
+    
+    func populateArray(count: Int) {
+        for i in 0..<count {
+            imageIDS.append(ref.childByAutoId().key)
+        }
+    }
+    
     func postAction() {
         print("Post Action")
         postID = ref.childByAutoId().key
-        imageIDS.append(ref.childByAutoId().key)
-        imageIDS.append(ref.childByAutoId().key)
-        imageIDS.append(ref.childByAutoId().key)
-        imageIDS.append(ref.childByAutoId().key)
-        uploadImage(datas: imageData)
-        var postsDictionary = [String:Any]()
         
         var uid = Auth.auth().currentUser?.uid
         
@@ -605,14 +616,17 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
         }
         
         if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
+            populateArray(count: 2)
             postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status] as [String : Any]
         } else if typeOfFrame == "FOUR_CROSS" {
+            populateArray(count: 4)
             postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status] as [String : Any]
         } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
+            populateArray(count: 3)
             postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status] as [String : Any]
         }
         
-        ref.child("Posts").child(postID).setValue(postsDictionary)
+        uploadImage(datas: imageData)
     }
     func uploadImage(datas: [Data]) {
         

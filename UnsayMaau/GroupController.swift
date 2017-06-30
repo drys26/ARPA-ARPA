@@ -100,11 +100,12 @@ class GroupController: UIViewController {
     func clickCell(sender: UITapGestureRecognizer){
         if let rootView = sender.view as? UIView {
             let group = groups[rootView.tag]
-            if !group.members.contains(user) || group.admins.contains(user) {
+            if group.members.contains(user) || group.admins.contains(user) {
                 // TODO: Enter group view controller
                 // and display data
                 performSegue(withIdentifier: "goToGroupPage", sender: group)
-            } else if !group.admins.contains(user)  {
+            } else if !group.admins.contains(user) || !group.members.contains(user)  {
+
                 let pendingDictionary = ["pending_members": ["\(uid!)": true]]
                 refGroups.child(group.groupId).updateChildValues(pendingDictionary)
                 showAlertController(message: "Please wait for response", title: "Request Send")
@@ -156,7 +157,6 @@ extension GroupController: UITableViewDataSource {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickCell(sender:)))
         
         cell.rootView.addGestureRecognizer(tap)
-        
         cell.backgroundImageView.sd_setImage(with: URL(string: group.backgroundImageUrl))
         cell.groupDescriptionText.text = group.groupDescription
         cell.groupMembersText.text = "\(group.members.count)"
