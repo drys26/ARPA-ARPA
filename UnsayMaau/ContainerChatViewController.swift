@@ -62,6 +62,7 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView?.collectionViewLayout.outgoingAvatarViewSize = CGSize(width: 0, height: 0)
         databaseRef = Database.database().reference()
         messageRef = self.databaseRef.child("Group_Messages").child(group.groupId)
         observeMessages()

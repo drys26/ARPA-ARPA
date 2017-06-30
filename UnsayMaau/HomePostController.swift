@@ -306,6 +306,13 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             returnStackView.axis = .vertical
         }
         
+        var arrOfVotes: [Int] = [Int]()
+        var max = 0
+        var index = 0
+//        let initializeLabelQ = DispatchQueue(label: "initializeQ", qos: .userInteractive, attributes: .concurrent, autoreleaseFrequency: .inherit, target: nil)
+//        
+//        initializeLabelQ.async {
+        
         for i in 0..<count {
             
             let labelView = UILabel(frame: CGRect(x: 0, y: 0, width: labelWidth, height: 10))
@@ -328,18 +335,48 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             voteView.alpha = 0.7
             imgView.addSubview(voteView)
             
+            
+            
             let voteLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 90, height: 20))
-            if post.authorImageID == uid! {
-                refVotePostHandle = ref.child("Vote_Post").child(post.frameImagesIDS[i]).observe(.value, with: {(snapshot) in
+            if post.authorImageID == self.uid! {
+                self.refVotePostHandle = self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observe(.value, with: {(snapshot) in
                     let voteCount = snapshot.childrenCount
-                    voteLabel.text = "\(voteCount)"
+                    if arrOfVotes.count == 1 {
+                        max = arrOfVotes[0]
+                        index = i
+                    }
+                    arrOfVotes.append(voteCount.hashValue)
+                    
+                    if arrOfVotes[i] > max {
+                        max = arrOfVotes[i]
+                        let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
+                        
+                        let imageAttach = NSTextAttachment()
+                        imageAttach.image = UIImage(named: "crown.png")
+                        
+                        let attribImage = NSAttributedString(attachment: imageAttach)
+                        
+                        let combi = NSMutableAttributedString()
+                        combi.append(attribImage)
+                        combi.append(attribText)
+                        
+                        voteLabel.attributedText = combi
+                    } else {
+                        voteLabel.text = "\(voteCount)"
+                    }
+                    
+                    
+                    
+                    
+                    
                 })
             } else {
-                refVotePostHandle = ref.child("Users").child(uid!).child("post_voted").observe(.value, with: {(snapshot) in
+                self.refVotePostHandle = self.ref.child("Users").child(self.uid!).child("post_voted").observe(.value, with: {(snapshot) in
                     if snapshot.hasChild(post.postKey) {
                         var handle = self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observe(.value
                             , with: {(snapshot) in
                                 let voteCount = snapshot.childrenCount
+                                arrOfVotes.append(voteCount.hashValue)
                                 voteLabel.text = "\(voteCount)"
                         })
                     } else {
@@ -372,6 +409,41 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             
             print("Count of First Loop \(i)")
         }
+//        }
+        
+        
+        
+//        let voteQ = DispatchQueue(label: "voteQ", qos: .utility, attributes: .concurrent, autoreleaseFrequency: .inherit, target: nil)
+//
+//
+//        voteQ.async {
+//            var max = arrOfVotes[0]
+//            var index = 0
+//            for i in 0..<arrOfVotes.count {
+//                if arrOfVotes[i] > max {
+//                    max = arrOfVotes[i]
+//                    index = i
+//                }
+//            }
+//            
+//            let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
+//            
+//            let imageAttach = NSTextAttachment()
+//            imageAttach.image = UIImage(named: "crown.png")
+//            
+//            let attribImage = NSAttributedString(attachment: imageAttach)
+//            
+//            let combi = NSMutableAttributedString()
+//            combi.append(attribImage)
+//            combi.append(attribText)
+//            
+//            labelViews[index].attributedText = combi
+//        }
+        
+        
+        
+        
+        
         
         for i in 0..<post.frameImagesIDS.count {
             ref.child("Images").child(post.postKey).child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
@@ -505,29 +577,32 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                             
                             refVote.child("Vote_Post").child(imageID).observe(.value, with: {(snapshot) in
                                 let voteCount = snapshot.childrenCount
-                                let label = imageView.viewWithTag(1) as! UILabel
+                                let rootView = imageView.viewWithTag(0) as! UIView
+                                let label = rootView.viewWithTag(1) as! UILabel
+//                                
+////                                let attribText = NSMutableAttributedString(string: " \(voteCount)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
+////                                
+////                                let imageAttach = NSTextAttachment()
+////                                imageAttach.image = UIImage(named: "crown.png")
+////                                
+////                                let attribImage = NSAttributedString(attachment: imageAttach)
+////                                
+////                                let combi = NSMutableAttributedString()
+////                                combi.append(attribImage)
+////                                combi.append(attribText)
+//                                
+//                                //label.attributedText = combi
+                                label.text = "\(voteCount)"
                                 
-                                let attribText = NSMutableAttributedString(string: " \(voteCount)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
-                                
-                                let imageAttach = NSTextAttachment()
-                                imageAttach.image = UIImage(named: "crown.png")
-                                
-                                let attribImage = NSAttributedString(attachment: imageAttach)
-                                
-                                let combi = NSMutableAttributedString()
-                                combi.append(attribImage)
-                                combi.append(attribText)
-                                
-                                label.attributedText = combi
-                                //                        if frameType.contains("TWO") || frameType.contains("THREE") {
-                                //                            let label = imageView.viewWithTag(1) as! UILabel
-                                //                            label.text = "\(voteCount)"
-                                //                        } else {
-                                //                            let rootImage = imageView.viewWithTag(1) as! UIImageView
-                                //                            let rootView = rootImage.viewWithTag(0) as! UIView
-                                //                            let label = rootView.viewWithTag(1) as! UILabel
-                                //                            label.text = "\(voteCount)"
-                                //                        }
+//                                if frameType.contains("TWO") || frameType.contains("THREE") {
+//                                    let label = imageView.viewWithTag(1) as! UILabel
+//                                    label.text = "\(voteCount)"
+//                                } else {
+//                                    let rootImage = imageView.viewWithTag(1) as! UIImageView
+//                                    let rootView = rootImage.viewWithTag(0) as! UIView
+//                                    let label = rootView.viewWithTag(1) as! UILabel
+//                                    label.text = "\(voteCount)"
+//                                }
                                 
                             })
                             refVote.removeAllObservers()
