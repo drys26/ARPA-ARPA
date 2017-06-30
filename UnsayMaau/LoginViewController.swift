@@ -26,6 +26,7 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupButton()
         
 //        try! Auth.auth().signOut()
 //        GIDSignIn.sharedInstance().signOut()
@@ -44,6 +45,13 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         whatsBestLogo.tintColor  = UIColor.white
        
     }
+    
+    @IBAction func SignUpButton(_ sender: Any) {
+        
+        performSegue(withIdentifier: "goToRegister", sender: nil)
+        
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
@@ -71,11 +79,7 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         return .lightContent
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
-        
-        
+    func setupButton(){
         googleButton.alpha = 0
         facebookButton.alpha = 0
         createAccountButton.alpha = 0
@@ -84,8 +88,6 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         createAccountButton.layer.cornerRadius = createAccountButton.frame.size.height / 2
         createAccountButton.layer.borderColor = UIColor.white.cgColor
         createAccountButton.layer.borderWidth = 2
-        
-        
     }
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
