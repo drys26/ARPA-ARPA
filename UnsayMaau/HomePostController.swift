@@ -95,32 +95,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-//        let cellIdentifier = "HomeFeedCell"
-//        
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? HomeFeedCollectionViewCell else {
-//            fatalError("The dequeued cell is not an instance of HomeFeedCell.")
-//        }
-//        
-//        let heightTotalHeight
-//
-//        var cellHeight = cell.userInfoRootView.frame.size.height + cell.rootView.frame.size.height + cell.rootDescriptionCaption.frame.size.height
-        
-//        guard let cell = homeCollectionView.cellForItem(at: indexPath) as? HomeFeedCollectionViewCell else {
-//            fatalError("The dequeued cell is not an instance of HomeFeedCell.")
-//        }
-        
-//        let rootCell = collectionView.viewWithTag(5) as! UICollectionViewCell
-//        
-//        let userInfo = rootCell.viewWithTag(50) as! UIView
-//        let rootViewImage = rootCell.viewWithTag(55) as! UIStackView
-//        let rootDescriptionCaption = rootCell.viewWithTag(60) as! UIStackView
-//        
-//        var cellHeight = userInfo.frame.size.height + rootViewImage.frame.size.height + rootDescriptionCaption.frame.size.height
-//        print(cellHeight)
-        
-//        return CGSize(width: view.frame.width - 20, height: cellHeight)
-        
+
         
         
         return CGSize(width: view.frame.width - 20, height: 598)

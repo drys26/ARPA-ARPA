@@ -17,8 +17,14 @@ class GroupController: UIViewController,UISearchBarDelegate {
 
     @IBOutlet weak var floats: Floaty!
     
+<<<<<<< HEAD
     
     @IBOutlet weak var searchBar: UISearchBar!
+=======
+    var refreshControl: UIRefreshControl = UIRefreshControl()
+    
+    
+>>>>>>> 56c0b196debfa2528e05b7f56cb97feaab8c7703
     
     var groups = [Group]()
     
@@ -45,12 +51,41 @@ class GroupController: UIViewController,UISearchBarDelegate {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
+<<<<<<< HEAD
 //        self.navigationItem.titleView = searchBar
         searchBar.delegate = self
         
+=======
+        refreshControl.addTarget(self, action: #selector(GroupController.refreshData), for: .valueChanged)
+>>>>>>> 56c0b196debfa2528e05b7f56cb97feaab8c7703
         
     self.view.bringSubview(toFront: floats)
         self.view.bringSubview(toFront: floats)
+<<<<<<< HEAD
+=======
+        
+        if #available(iOS 10.0, *){
+            groupTableView.refreshControl = refreshControl
+        }
+        else{
+            groupTableView.addSubview(refreshControl)
+        }
+    }
+    
+    func refreshData(){
+        refGroupsHandle = refGroups.observe(.childAdded, with: {(snapshot) in
+            let group = Group(snap: snapshot)
+            if !self.groups.contains(group) {
+                if group.groupStatus == false {
+                    self.groups.append(group)
+                    DispatchQueue.main.async {
+                        self.groupTableView.reloadData()
+                    }
+                }
+            }
+        })
+        refreshControl.endRefreshing()
+>>>>>>> 56c0b196debfa2528e05b7f56cb97feaab8c7703
     }
     
     func getUserData(){

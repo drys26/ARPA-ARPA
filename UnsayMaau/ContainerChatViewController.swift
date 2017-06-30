@@ -79,6 +79,8 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        
         usersTypingQuery = group.groupRef.child("typing_indicator").queryOrderedByValue().queryEqual(toValue: true)
         userIsTypingRef = self.databaseRef.child("Groups").child(group.groupId).child("typing_indicator")
         observeTyping()
@@ -392,9 +394,10 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
     
     private func observeTyping() {
         let typingIndicatorRef = group!.groupRef.child("typing_indicator")
+
+        //typingIndicatorRef?.child(senderId).setValue(isTyping)
         
         userIsTypingRef = typingIndicatorRef.child(senderId)
-        
         
         userIsTypingRef.setValue(isTyping)
         

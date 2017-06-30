@@ -16,6 +16,7 @@
 		101E3CED1F0224A9003621CC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CEC1F0224A9003621CC /* Group.swift */; };
 		101E3CEF1F02552C003621CC /* SeeMembersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CEE1F02552C003621CC /* SeeMembersTableViewCell.swift */; };
 		101E3CF11F0255BD003621CC /* SeeMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CF01F0255BD003621CC /* SeeMembersViewController.swift */; };
+		102329001F05F8010087A73A /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102328FF1F05F8010087A73A /* SignUpViewController.swift */; };
 		10259BEB1EF7A66F004E0A02 /* SelectImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10259BEA1EF7A66F004E0A02 /* SelectImageViewController.swift */; };
 		10259BED1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10259BEC1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift */; };
 		102AC63D1F04A48A00750D6A /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102AC63C1F04A48A00750D6A /* ChatViewController.swift */; };
@@ -71,6 +72,7 @@
 		101E3CEC1F0224A9003621CC /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		101E3CEE1F02552C003621CC /* SeeMembersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeMembersTableViewCell.swift; sourceTree = "<group>"; };
 		101E3CF01F0255BD003621CC /* SeeMembersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeMembersViewController.swift; sourceTree = "<group>"; };
+		102328FF1F05F8010087A73A /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		10259BEA1EF7A66F004E0A02 /* SelectImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectImageViewController.swift; sourceTree = "<group>"; };
 		10259BEC1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectImageFromLibraryViewController.swift; sourceTree = "<group>"; };
 		102AC63C1F04A48A00750D6A /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				101E3CF01F0255BD003621CC /* SeeMembersViewController.swift */,
 				102AC63C1F04A48A00750D6A /* ChatViewController.swift */,
 				102AC63E1F04B22A00750D6A /* ContainerChatViewController.swift */,
+				102328FF1F05F8010087A73A /* SignUpViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -587,6 +590,7 @@
 				10ABFF791EF2A25C0087F05F /* SelectFrameViewController.swift in Sources */,
 				1096784B1EF3C915006CE3E3 /* Post.swift in Sources */,
 				101E3CE91F02111C003621CC /* AddGroupViewController.swift in Sources */,
+				102329001F05F8010087A73A /* SignUpViewController.swift in Sources */,
 				10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

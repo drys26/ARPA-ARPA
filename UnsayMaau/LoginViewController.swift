@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import FBSDKLoginKit
 
 class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDelegate {
 
@@ -26,6 +27,7 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupButton()
         
 //        try! Auth.auth().signOut()
 //        GIDSignIn.sharedInstance().signOut()
@@ -44,6 +46,70 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         whatsBestLogo.tintColor  = UIColor.white
        
     }
+    
+    @IBAction func toogleFacebookLogin(_ sender: Any) {
+        
+        let fbLoginManager: FBSDKLoginManager = FBSDKLoginManager()
+        
+        fbLoginManager.logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: self) { (result, error) in
+            if error == nil {
+                let fbLoginResult: FBSDKLoginManagerLoginResult = result!
+                if (fbLoginResult.grantedPermissions.contains("email")){
+                
+                    let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+                    Auth.auth().signIn(with: credential, completion: { (user, err) in
+                        if let error = err{
+                            print("Failed to create a Firebase User with Facebook Account", error)
+                            return
+                        }
+                        
+                        print(user?.displayName ?? "")
+                        print(user?.email ?? "")
+                        print(user?.photoURL?.absoluteString ?? "")
+                        
+                        let userDictionary = ["display_name": (user?.displayName)!,"email_address": (user?.email)!, "photo_url": (user?.photoURL?.absoluteString)!, "cover_photo_url": (user?.photoURL?.absoluteString)!] as [String: Any]
+                        self.databaseRef.child("Users").child((user?.uid)!).setValue(userDictionary)
+                        
+                        self.getFBUserData()
+                        
+                        self.performSegue(withIdentifier: "goToMainPage", sender: nil)
+                        
+                    })
+                
+                }
+            }
+            else{
+                print(error?.localizedDescription ?? "")
+            }
+        }
+        
+    }
+    
+    func getFBUserData(){
+        if (FBSDKAccessToken.current().tokenString) != nil {
+            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, email, friends, birthday, cover, devices, picture.type(large)"]).start(completionHandler: { (connection, result, error) in
+                if error != nil {
+                    print("Failed to start graph request", error ?? "")
+                    return
+                    
+                }
+                
+                print("Successfully Created a Firebase User with Facebook Account")
+                print(result ?? "GG")
+                
+            })
+            
+            
+        }
+    }
+    
+    
+    @IBAction func SignUpButton(_ sender: Any) {
+        
+        performSegue(withIdentifier: "goToRegister", sender: nil)
+        
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
@@ -71,11 +137,7 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         return .lightContent
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
-        
-        
+    func setupButton(){
         googleButton.alpha = 0
         facebookButton.alpha = 0
         createAccountButton.alpha = 0
@@ -84,8 +146,6 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         createAccountButton.layer.cornerRadius = createAccountButton.frame.size.height / 2
         createAccountButton.layer.borderColor = UIColor.white.cgColor
         createAccountButton.layer.borderWidth = 2
-        
-        
     }
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {

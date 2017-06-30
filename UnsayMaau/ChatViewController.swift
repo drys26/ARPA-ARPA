@@ -135,9 +135,11 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate , UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
         
         // Hide the navigation bar on the this view controller
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+
         
         //add(asChildViewController: containerChatView)
 
