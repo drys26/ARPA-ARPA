@@ -24,4 +24,22 @@ class HomeFeedCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var userInfoRootView: UIView!
     
+    override func prepareForReuse() {
+        
+        authorImageView.image = nil
+        authorDisplayName.text = nil
+        locationText.text = nil
+        commandButton.setTitle(nil, for: .normal)
+        let rootViewsArr = rootView.subviews
+        let rootDescriptionArr = rootDescriptionCaption.subviews
+        for views in rootViewsArr {
+            views.removeFromSuperview()
+        }
+        for views in rootDescriptionArr {
+            views.removeFromSuperview()
+        }
+        
+        super.prepareForReuse()
+    }
+    
 }

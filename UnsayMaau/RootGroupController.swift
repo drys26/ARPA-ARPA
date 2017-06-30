@@ -57,18 +57,15 @@ class RootGroupController: UIViewController {
         ]
         
         
+        
         let extra: UIView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
-        
-        
+        self.view.addSubview(extra)
         let navheight = (navigationController?.navigationBar.frame.size.height ?? 0) + UIApplication.shared.statusBarFrame.size.height
         let frame = CGRect(x: 0, y: navheight, width: view.frame.width, height: view.frame.height)
         pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: frame, pageMenuOptions: parameters)
-        
+
         self.addChildViewController(pageMenu!)
-        
-        self.view.addSubview(extra)
         self.view.addSubview(pageMenu!.view)
-        pageMenu?.didMove(toParentViewController: self)
         
     }
     

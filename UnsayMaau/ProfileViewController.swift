@@ -74,6 +74,8 @@ class ProfileViewController: UIViewController {
         
         profileImage.layer.cornerRadius = profileImage.layer.frame.size.width / 2
         
+        
+        
     }
 
     override func didReceiveMemoryWarning() {

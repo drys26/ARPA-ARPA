@@ -46,10 +46,7 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
     
     private var usersTypingQuery: DatabaseQuery!
     
-    
-    
     private var userIsTypingRef: DatabaseReference!
-    
     
     private var localTyping = false // 2
     var isTyping: Bool {
@@ -65,6 +62,7 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView?.collectionViewLayout.outgoingAvatarViewSize = CGSize(width: 0, height: 0)
         databaseRef = Database.database().reference()
         messageRef = self.databaseRef.child("Group_Messages").child(group.groupId)
         observeMessages()
@@ -76,6 +74,8 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -394,9 +394,11 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
     
     private func observeTyping() {
         let typingIndicatorRef = group!.groupRef.child("typing_indicator")
+
         //typingIndicatorRef?.child(senderId).setValue(isTyping)
         
         userIsTypingRef = typingIndicatorRef.child(senderId)
+        
         userIsTypingRef.setValue(isTyping)
         
         // 1

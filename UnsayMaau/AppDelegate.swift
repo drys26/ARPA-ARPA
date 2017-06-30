@@ -25,10 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //configure google signin
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         //configure facebook login
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
 //        Database.database().isPersistenceEnabled = true
         
-        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         
         return true
     }
