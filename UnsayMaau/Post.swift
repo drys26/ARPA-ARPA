@@ -12,6 +12,7 @@ import Firebase
 
 class Post: Equatable {
     
+    var postRef: DatabaseReference
     var authorImageUrl: String
     var authorDisplayName: String
     var authorEmailAddress: String
@@ -28,6 +29,7 @@ class Post: Equatable {
     
     
     init(post: DataSnapshot) {
+        self.postRef = post.ref
         self.postKey = post.key
         self.postIsFinished = false
         let postDictionary = post.value as! [String: Any]

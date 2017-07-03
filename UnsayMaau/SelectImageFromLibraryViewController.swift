@@ -16,6 +16,7 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
     @IBOutlet weak var postDescription: UITextField!
     @IBOutlet weak var statusSegment: UISegmentedControl!
     
+    //var passArrayDelegate: PassPostDelegate?
     
     var imageData: [Data] = []
     var imageDescription: [String] = []
@@ -588,6 +589,10 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
         ref.child("Images").child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
             if snapshot.childrenCount.hashValue == self.imageIDS.count {
                 self.ref.child("Posts").child(self.postID).setValue(self.postsDictionary)
+//                let postRef = self.ref.child("Posts").child(self.postID)
+//                postRef.queryLimited(toLast: 1).observeSingleEvent(of: .value, with: {(snapshot) in
+//                    self.passArrayDelegate?.passPost(Post(post: snapshot))
+//                })
             }
             print(snapshot.childrenCount)
             print(snapshot.children.allObjects.count)
@@ -603,7 +608,8 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
     
     func postAction() {
         print("Post Action")
-        postID = ref.childByAutoId().key
+        let postRef = ref.child("Posts")
+        postID = postRef.childByAutoId().key
         
         var uid = Auth.auth().currentUser?.uid
         
@@ -615,15 +621,17 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
             status = true
         }
         
+        let timestamp = NSDate().timeIntervalSince1970 * 1000
+        
         if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
             populateArray(count: 2)
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status , "finished": false] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status , "finished": false,"timestamp": 0 - timestamp] as [String : Any]
         } else if typeOfFrame == "FOUR_CROSS" {
             populateArray(count: 4)
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status, "finished": false] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status, "finished": false , "timestamp": 0 - timestamp] as [String : Any]
         } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
             populateArray(count: 3)
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status, "finished": false] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status, "finished": false , "timestamp": 0 - timestamp] as [String : Any]
         }
         
         uploadImage(datas: imageData)
@@ -631,6 +639,8 @@ class SelectImageFromLibraryViewController: UIViewController , PostFrames , UIIm
     func uploadImage(datas: [Data]) {
         
         var stopper = 0
+        
+        
         
         if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
             stopper = 1

@@ -21,6 +21,9 @@
 		10259BED1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10259BEC1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift */; };
 		102AC63D1F04A48A00750D6A /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102AC63C1F04A48A00750D6A /* ChatViewController.swift */; };
 		102AC63F1F04B22A00750D6A /* ContainerChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102AC63E1F04B22A00750D6A /* ContainerChatViewController.swift */; };
+		102B25911F0A01D100049F16 /* ShowCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102B25901F0A01D100049F16 /* ShowCommentViewController.swift */; };
+		102B25931F0A095C00049F16 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102B25921F0A095C00049F16 /* CommentTableViewCell.swift */; };
+		102B25951F0A0EB200049F16 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102B25941F0A0EB200049F16 /* Comment.swift */; };
 		103A96B01EF8D42E001DAC9F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103A96AF1EF8D42E001DAC9F /* User.swift */; };
 		103A96B21EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103A96B11EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift */; };
 		103A96B41EF8DD18001DAC9F /* PostImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103A96B31EF8DD18001DAC9F /* PostImages.swift */; };
@@ -77,6 +80,9 @@
 		10259BEC1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectImageFromLibraryViewController.swift; sourceTree = "<group>"; };
 		102AC63C1F04A48A00750D6A /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		102AC63E1F04B22A00750D6A /* ContainerChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerChatViewController.swift; sourceTree = "<group>"; };
+		102B25901F0A01D100049F16 /* ShowCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowCommentViewController.swift; sourceTree = "<group>"; };
+		102B25921F0A095C00049F16 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		102B25941F0A0EB200049F16 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		103A96AF1EF8D42E001DAC9F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		103A96B11EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		103A96B31EF8DD18001DAC9F /* PostImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostImages.swift; sourceTree = "<group>"; };
@@ -217,6 +223,8 @@
 				102AC63C1F04A48A00750D6A /* ChatViewController.swift */,
 				102AC63E1F04B22A00750D6A /* ContainerChatViewController.swift */,
 				102328FF1F05F8010087A73A /* SignUpViewController.swift */,
+				102B25901F0A01D100049F16 /* ShowCommentViewController.swift */,
+				102B25921F0A095C00049F16 /* CommentTableViewCell.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -228,6 +236,7 @@
 				103A96AF1EF8D42E001DAC9F /* User.swift */,
 				103A96B31EF8DD18001DAC9F /* PostImages.swift */,
 				101E3CEC1F0224A9003621CC /* Group.swift */,
+				102B25941F0A0EB200049F16 /* Comment.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -577,6 +586,8 @@
 				10259BEB1EF7A66F004E0A02 /* SelectImageViewController.swift in Sources */,
 				10A45DB41EF930FC00880BD3 /* ProfileViewController.swift in Sources */,
 				102AC63D1F04A48A00750D6A /* ChatViewController.swift in Sources */,
+				102B25951F0A0EB200049F16 /* Comment.swift in Sources */,
+				102B25931F0A095C00049F16 /* CommentTableViewCell.swift in Sources */,
 				103A96B41EF8DD18001DAC9F /* PostImages.swift in Sources */,
 				101E3CEF1F02552C003621CC /* SeeMembersTableViewCell.swift in Sources */,
 				102AC63F1F04B22A00750D6A /* ContainerChatViewController.swift in Sources */,
@@ -591,6 +602,7 @@
 				1096784B1EF3C915006CE3E3 /* Post.swift in Sources */,
 				101E3CE91F02111C003621CC /* AddGroupViewController.swift in Sources */,
 				102329001F05F8010087A73A /* SignUpViewController.swift in Sources */,
+				102B25911F0A01D100049F16 /* ShowCommentViewController.swift in Sources */,
 				10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

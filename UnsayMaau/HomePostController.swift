@@ -41,7 +41,9 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         super.viewWillAppear(animated)
         print("View will appear ")
         // Set the Database Reference
-        
+//        if ref != nil {
+//            getUserPost()
+//        }
         
     }
     
@@ -49,12 +51,14 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         super.viewDidDisappear(animated)
         print("View Did Disapper")
         ref.removeObserver(withHandle: refUserHandle)
-        //ref.removeObserver(withHandle: refHandle)
-        if let refVoteTemp = refVotePostHandle {
-            ref.removeObserver(withHandle: refVotePostHandle!)
+        if let refHandle1 = refHandle {
+            ref.removeObserver(withHandle: refHandle1)
         }
-        if let refVoteTemp = refVotePostTwoHandle {
-            ref.removeObserver(withHandle: refVotePostTwoHandle!)
+        if let refVoteTemp = refVotePostHandle {
+            ref.removeObserver(withHandle: refVoteTemp)
+        }
+        if let refVoteTemp2 = refVotePostTwoHandle {
+            ref.removeObserver(withHandle: refVoteTemp2)
         }
         
     }
@@ -80,7 +84,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             DispatchQueue.main.async {
                 self.showPost()
             }
-            
         }
         
         // Set the Delegates of the collection to self
@@ -93,6 +96,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
 
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
@@ -113,9 +118,9 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             self.user = User(snap: snapshot)
             //this code is just to show the UserClass was populated.
             print(self.user.email)
-            print(self.user.displayName)
-            print(self.user.photoUrl)
-            print(self.user.followingIDs)
+//            print(self.user.displayName)
+//            print(self.user.photoUrl)
+//            print(self.user.followingIDs)
         })
     }
     
@@ -124,14 +129,53 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         // Dispose of any resources that can be recreated.
     }
     
+//    func showPost(){
+//        //        let postRef = ref.child("Posts").qu
+//        ref.child("Posts").queryOrdered(byChild: "timestamp").observeSingleEvent(of: .childAdded, with: {(snapshot) in
+//            //print(snapshot)
+////            if let rootPosts = snapshot.children.allObjects as? [DataSnapshot] {
+////            for rootPost in rootPosts {
+//            let post = Post(post: snapshot)
+//            print(post.postKey)
+//            self.getUserData()
+//            
+//            if (self.posts.contains(post) && post.postIsFinished == true) || !self.user.followingIDs.contains(post.authorImageID) {
+//                if let index = self.posts.index(of: post) {
+//                    self.posts.remove(at: index)
+//                    DispatchQueue.main.async {
+//                        self.homeCollectionView.reloadData()
+//                    }
+//                }
+//            }
+//            
+//            if (self.uid! == post.authorImageID || self.user.followingIDs.contains(post.authorImageID)) && !self.posts.contains(post) && post.postIsFinished == false {
+//                self.posts.append(post)
+//                //self.posts = self.posts.reversed()
+//                print("Post Count \(self.posts.count)")
+//                DispatchQueue.main.async {
+//                    self.homeCollectionView.reloadData()
+//                }
+//            }
+//            
+//            
+////            }
+////            }
+//        })
+//        refresher.endRefreshing()
+//        
+//        
+//    }
+    
     func showPost(){
-        ref.child("Posts").observeSingleEvent(of: .value, with: {(snapshot) in
+//        let postRef = ref.child("Posts").qu
+        ref.child("Posts").queryOrdered(byChild: "timestamp").observeSingleEvent(of: .value, with: {(snapshot) in
             //print(snapshot)
+            self.getUserData()
             if let rootPosts = snapshot.children.allObjects as? [DataSnapshot] {
                 for rootPost in rootPosts {
                     let post = Post(post: rootPost)
                     print(post.postKey)
-                    self.getUserData()
+                    
                     
                     if (self.posts.contains(post) && post.postIsFinished == true) || !self.user.followingIDs.contains(post.authorImageID) {
                         if let index = self.posts.index(of: post) {
@@ -144,6 +188,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                     
                     if (self.uid! == post.authorImageID || self.user.followingIDs.contains(post.authorImageID)) && !self.posts.contains(post) && post.postIsFinished == false {
                         self.posts.append(post)
+                        //self.posts = self.posts.reversed()
                         print("Post Count \(self.posts.count)")
                         DispatchQueue.main.async {
                             self.homeCollectionView.reloadData()
@@ -155,7 +200,21 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             }
         })
         refresher.endRefreshing()
+        
+        
     }
+    
+//    func getUserPost(){
+//        refHandle = ref.child("Posts").observe(.childAdded, with: {(snapshot) in
+//            let post = Post(post: snapshot)
+//            print(post.postKey)
+//            if post.authorImageID == self.uid! {
+//                self.posts.insert(post, at: 0)
+////                self.posts = self.posts.reversed()
+//                self.reloadData()
+//            }
+//        })
+//    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return posts.count
@@ -228,6 +287,11 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                     cell.rootDescriptionCaption.addArrangedSubview(textview)
                 }
             }
+            let viewCommentButton = UIButton(type: .system)
+            viewCommentButton.setTitle("View More Comments", for: .normal)
+            viewCommentButton.tag = indexPath.row
+            viewCommentButton.addTarget(self, action: #selector(self.viewCommentAction(sender:)), for: .touchUpInside)
+            cell.rootDescriptionCaption.addArrangedSubview(viewCommentButton)
         }
         
 //        let cellHeight = cell.rootDescriptionCaption.frame.size.height + cell.rootView.frame.size.height + cell.userInfoRootView.frame.size.height
@@ -236,6 +300,21 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
 //        cell.frame = CGRect(x: 0, y: 0, width: cell.frame.size.width, height: cellHeight)
         
         return cell
+    }
+    
+    func viewCommentAction(sender: UIButton){
+        let post = posts[sender.tag]
+        performSegue(withIdentifier: "goToCommentView", sender: post)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToCommentView" {
+            if let post = sender as? Post {
+                let root = segue.destination as! UINavigationController
+                let scvc = root.viewControllers.first as! ShowCommentViewController
+                scvc.post = post
+            }
+        }
     }
 
     
@@ -589,6 +668,10 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                             
                             // Insert to the database
                             
+                            let timestamp = NSDate().timeIntervalSince1970 * 1000
+                            
+                            refVote.child("Posts").child(postID).updateChildValues(["timestamp":0 - timestamp])
+                            
                             refVote.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
                             
                             refVote.child("Users").child(self.uid!).child("post_voted").updateChildValues(["\(postID)": true])
@@ -869,8 +952,18 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         alertController.addAction(alertAction)
         present(alertController, animated: true, completion: nil)
     }
-    
-    
-    
+
 }
+
+//extension HomePostController : PassPostDelegate{
+//    func passPost(_ postElement: Post) {
+//        self.posts.insert(postElement, at: 0)
+//        print(postElement.postKey)
+//        self.reloadData()
+//    }
+//}
+//
+//protocol PassPostDelegate {
+//    func passPost(_ postElement: Post)
+//}
 
