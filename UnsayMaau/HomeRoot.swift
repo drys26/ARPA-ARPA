@@ -20,6 +20,13 @@ class HomeRoot: UIViewController {
         self.performSegue(withIdentifier: "goToSelectFrame", sender: nil)
     }
     
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "goToSelectFrame" {
+//            let simvc = segue.destination as! SelectImageFromLibraryViewController
+//            simvc.passArrayDelegate = self as! PassPostDelegate
+//        }
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

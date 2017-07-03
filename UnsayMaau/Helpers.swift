@@ -34,3 +34,22 @@ public enum Frames {
 }
 
 
+protocol FeedProtocol {
+    
+    // MARK: Properties
+    var posts: [Post] {get set}
+    var ref: DatabaseReference {get set}
+    var uid: String {get set}
+    var user: User {get set}
+    var refresher:UIRefreshControl {get set}
+    
+    // Methods
+    
+    func reloadData()
+    func loadPostData()
+    func getUserData()
+    func commandAction(sender: UIButton)
+    
+}
+
+

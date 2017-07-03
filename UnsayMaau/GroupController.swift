@@ -147,17 +147,45 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     func clickCell(sender: UITapGestureRecognizer){
         if let rootView = sender.view as? UIView {
-            let group = groups[rootView.tag]
-            if group.members.contains(user) || group.admins.contains(user) {
+            
+            //loadGroups()
+            // Refresh Group
+            
+            var group1: Group!
+            if isSearching == false {
+                group1 = groups[rootView.tag]
+            } else {
+                group1 = searchGroups[rootView.tag]
+            }
+            
+            
+            
+//            group1.groupRef.observeSingleEvent(of: .value, with: {(snapshot) in
+//            
+//                let newGroup = Group(snap: snapshot)
+//                
+//                if newGroup.members.contains(self.user) || newGroup.admins.contains(self.user) {
+//                    // TODO: Enter group view controller
+//                    // and display data
+//                    self.performSegue(withIdentifier: "goToGroupPage", sender: newGroup)
+//                } else if !newGroup.admins.contains(self.user) || !newGroup.members.contains(self.user)  {
+//                    let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
+//                    self.refGroups.child(group1.groupId).updateChildValues(pendingDictionary)
+//                    self.showAlertController(message: "Please wait for response", title: "Request Send")
+//                }
+//            })
+            
+            if group1.members.contains(self.user) || group1.admins.contains(self.user) {
                 // TODO: Enter group view controller
                 // and display data
-                performSegue(withIdentifier: "goToGroupPage", sender: group)
-            } else if !group.admins.contains(user) || !group.members.contains(user)  {
-                
-                let pendingDictionary = ["pending_members": ["\(uid!)": true]]
-                refGroups.child(group.groupId).updateChildValues(pendingDictionary)
-                showAlertController(message: "Please wait for response", title: "Request Send")
+                self.performSegue(withIdentifier: "goToGroupPage", sender: group1)
+            } else if !group1.admins.contains(self.user) || !group1.members.contains(self.user)  {
+                let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
+                self.refGroups.child(group1.groupId).updateChildValues(pendingDictionary)
+                self.showAlertController(message: "Please wait for response", title: "Request Send")
             }
+            
+            
         }
     }
     
@@ -199,8 +227,13 @@ extension GroupController: UITableViewDataSource {
             fatalError("The dequeued cell is not an instance of MealTableViewCell.")
         }
         
+        var group: Group!
+        if isSearching == false {
+            group = groups[indexPath.row]
+        } else {
+            group = searchGroups[indexPath.row]
+        }
         
-        let group = groups[indexPath.row]
         
         cell.rootView.tag = indexPath.row
         
@@ -243,48 +276,21 @@ extension GroupController: UITableViewDataSource {
         
     }
     
-    
-    
-    
-    
     func loadSearchedGroups(){
         let searchText = searchBar.text
         print(searchText!)
         //        let strSearch = "je"
-        rootRef.child("Groups").queryOrdered(byChild:  "group_name").queryStarting(atValue: searchText!).queryEnding(atValue: searchText! + "\u{f8ff}").observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            let value = snapshot.value as! [String: Any]
-            
-            for child in snapshot.children {
-                print(child)
+        let query = rootRef.child("Groups").queryOrdered(byChild:  "search_name").queryStarting(atValue: searchText!.lowercased()).queryEnding(atValue: searchText!.lowercased() + "\u{f8ff}")
+        query.observeSingleEvent(of: .value, with: { (snapshot) in
+            for child in snapshot.children.allObjects as! [DataSnapshot] {
+                let group = Group(snap: child)
+                if group.groupStatus == false {
+                    self.searchGroups.append(group)
+                    self.reload()
+                }
             }
-            
-            //            let key = value.keys.first
-            //
-            //            self.rootRef.child("Groups").child(key!).observeSingleEvent(of: .value, with: {(snapshot1) in
-            //                print(snapshot1)
-            ////                let group = Group(snap: snapshot1)
-            ////                self.searchGroups.append(group)
-            ////                self.reload()
-            //            })
         })
-        //
-        //        let searchRef = refGroups.queryOrdered(byChild: "group_name").queryEqual(toValue: searchText!)
-        //        searchRef.observeSingleEvent(of: .value, with: {(snapshot) in
-        //            if snapshot.exists() {
-        //                for a in ((snapshot.value as AnyObject).allKeys)!{
-        //                    print(a)
-        //                    self.rootRef.child("Groups").child(a as! String).observeSingleEvent(of: .value, with: {(snapshot1) in
-        //                        let group = Group(snap: snapshot1)
-        //                        self.searchGroups.append(group)
-        //                        self.reload()
-        //                    })
-        //                }
-        //               // let key = ((snapshot.value as AnyObject).allKeys)!
-        //            } else {
-        //                print("we don't have that, add it to the DB now")
-        //            }
-        //        })
+
     }
     
 }

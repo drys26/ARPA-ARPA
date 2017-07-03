@@ -14,6 +14,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     var ref: DatabaseReference!
     let picker = UIImagePickerController()
     var imageData: Data?
+    
+    
+    @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var whatsBestLogo: UIImageView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -59,7 +62,24 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         let uID = Auth.auth().currentUser?.uid
         
-        let storageRef = Storage.storage().reference(withPath: "users/\(uID).jpg")
+        let storageRef = Storage.storage().reference(withPath: "users/\(String(describing: uID)).jpg")
+        let uploadMetaData = StorageMetadata()
+        uploadMetaData.contentType = "image/jpeg"
+        let uploadTask = storageRef.putData(data, metadata: uploadMetaData) { (metadata, error) in
+            if error != nil {
+                print("\(error?.localizedDescription ?? "")")
+            }
+            else{
+                print("Successfully complete! \(String(describing: metadata))")
+            }
+        }
+        uploadTask.observe(StorageTaskStatus.progress) { [weak self] (snapshot) in
+            guard let strongSelf = self else { return }
+            guard let progress = snapshot.progress else { return }
+            strongSelf.progressView.progress = Float(progress.fractionCompleted)
+            strongSelf.progressView.isHidden = false
+            
+        }
         
     }
     
@@ -68,7 +88,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage, let imageInfo = UIImageJPEGRepresentation(image, 0.8){
             imageData = imageInfo
             profileImage.image = image
-            uploadImageToFirebaseStorage(data: imageData!)
+            
         }
         picker.dismiss(animated: true, completion: nil)
 
@@ -167,7 +187,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                         
                         Auth.auth().signIn(withEmail: "\(self.emailTextField.text!)", password: "\(self.passwordTextField.text!)", completion: { (user1, err) in
                             
-                            
+                            self.uploadImageToFirebaseStorage(data: self.imageData!)
                             
                             
                         })

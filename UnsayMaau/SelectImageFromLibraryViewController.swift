@@ -14,6 +14,19 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
     
     @IBOutlet weak var collectionViewSelector: UICollectionView!
     @IBOutlet weak var rootStackView: UIStackView!
+    @IBOutlet weak var postDescription: UITextField!
+    @IBOutlet weak var statusSegment: UISegmentedControl!
+    
+    //var passArrayDelegate: PassPostDelegate?
+    
+    var imageData: [Data] = []
+    var imageDescription: [String] = []
+    var imageViews: [UIImageView] = []
+    var imageIDS: [String] = []
+    var frames: [Int] = []
+    var ref: DatabaseReference = Database.database().reference()
+    var postID: String = ""
+    var imageClickIndex: Int = 0
     
     var imageArray = [UIImage]()
     var typeOfFrame: String!
@@ -102,8 +115,22 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
     }
     
     
-    
-    
+
+//    func updateImagesDictionary(count: Int, temporaryImagesDictionary: [String : Any]) {
+//        ref.child("Images").child(postID).child(imageIDS[count]).setValue(temporaryImagesDictionary)
+//        ref.child("Images").child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
+//            if snapshot.childrenCount.hashValue == self.imageIDS.count {
+//                self.ref.child("Posts").child(self.postID).setValue(self.postsDictionary)
+////                let postRef = self.ref.child("Posts").child(self.postID)
+////                postRef.queryLimited(toLast: 1).observeSingleEvent(of: .value, with: {(snapshot) in
+////                    self.passArrayDelegate?.passPost(Post(post: snapshot))
+////                })
+//            }
+//            print(snapshot.childrenCount)
+//            print(snapshot.children.allObjects.count)
+//            print(snapshot.childrenCount.hashValue)
+//        })
+//    }
 //    @IBOutlet weak var postDescription: UITextField!
 //    @IBOutlet weak var statusSegment: UISegmentedControl!
 //    
@@ -754,6 +781,75 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
 //        // End Adding Post
 //        navigationController?.popToRootViewController(animated: true)
 //    }
+
+//    func postAction() {
+//        print("Post Action")
+//        let postRef = ref.child("Posts")
+//        postID = postRef.childByAutoId().key
+//        
+//        var uid = Auth.auth().currentUser?.uid
+//        
+//        var status: Bool!
+//        
+//        if statusSegment.selectedSegmentIndex == 0 {
+//            status = false
+//        } else {
+//            status = true
+//        }
+//        
+//        let timestamp = NSDate().timeIntervalSince1970 * 1000
+//        
+//        if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
+//            populateArray(count: 2)
+//            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status , "finished": false,"timestamp": 0 - timestamp] as [String : Any]
+//        } else if typeOfFrame == "FOUR_CROSS" {
+//            populateArray(count: 4)
+//            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status, "finished": false , "timestamp": 0 - timestamp] as [String : Any]
+//        } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
+//            populateArray(count: 3)
+//            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status, "finished": false , "timestamp": 0 - timestamp] as [String : Any]
+//        }
+//        
+//        uploadImage(datas: imageData)
+//    }
+//    func uploadImage(datas: [Data]) {
+//        
+//        var stopper = 0
+//        
+//        
+//        
+//        if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
+//            stopper = 1
+//        } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
+//            stopper = 2
+//        } else if typeOfFrame == "FOUR_CROSS" {
+//            stopper = 3
+//        }
+//        
+//        for i in 0...stopper {
+//            let storageRef = Storage.storage().reference(withPath: "Post_Images/\(imageIDS[i])")
+//            let uploadMetaData = StorageMetadata()
+//            uploadMetaData.contentType = "images/jpeg"
+//            print("Image Data \(imageData.count)")
+//            print("Image Description \(imageDescription.count)")
+//            print("Image Frames \(frames.count)")
+//            print(i)
+//            let uploadTask = storageRef.putData(imageData[i], metadata: uploadMetaData, completion: { (metadata,error) in
+//                if(error != nil){
+//                    print("I received an error! \(error?.localizedDescription ?? "null")")
+//                } else {
+//                    let downloadUrl = metadata!.downloadURL()?.absoluteString
+//                    print("Upload complete! Heres some metadata!! \(String(describing: metadata))")
+//                    print("Here's your download url \(downloadUrl!)")
+//                    let imageDict = ["image_url": downloadUrl!,"image_description":self.imageDescription[i],"frame_no": self.frames[i]] as [String : Any]
+//                    self.updateImagesDictionary(count: i,temporaryImagesDictionary: imageDict)
+//                }
+//            })
+//        }
+//        // End Adding Post
+//        navigationController?.popToRootViewController(animated: true)
+//    }
+
     
     
 }
