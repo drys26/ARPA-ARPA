@@ -674,7 +674,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                             
                             refVote.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
                             
-                            refVote.child("Users").child(self.uid!).child("post_voted").updateChildValues(["\(postID)": true])
+                            refVote.child("Users").child(self.uid!).child("post_voted").updateChildValues(["\(postID)": "\(imageView.tag + 1)"])
                             
                             refVote.child("Vote_Post").child(imageID).observeSingleEvent(of: .value, with: {(snapshot) in
                                 let voteCount = snapshot.childrenCount
