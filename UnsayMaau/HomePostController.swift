@@ -23,13 +23,13 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     // Firebase Handle
     
-    var refHandle: UInt!
+    var refHandle: DatabaseHandle!
     
-    var refUserHandle: UInt!
+    var refUserHandle: DatabaseHandle!
     
-    var refVotePostHandle: UInt?
+    var refVotePostHandle: DatabaseHandle?
     
-    var refVotePostTwoHandle: UInt?
+    var refVotePostTwoHandle: DatabaseHandle?
     
     var uid = Auth.auth().currentUser?.uid
     
@@ -359,29 +359,29 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                                 let voteCount = snapshot.childrenCount
                                // arrOfVotes.append(voteCount.hashValue)
                                // voteLabel.text = "\(voteCount)"
-                                if arrOfVotes.count == 1 {
-                                    max = arrOfVotes[0]
-                                    index = i
-                                }
-                                arrOfVotes.append(voteCount.hashValue)
-                                
-                                if arrOfVotes[i] > max {
-                                    max = arrOfVotes[i]
-                                    let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
-                                    
-                                    let imageAttach = NSTextAttachment()
-                                    imageAttach.image = UIImage(named: "crown.png")
-                                    
-                                    let attribImage = NSAttributedString(attachment: imageAttach)
-                                    
-                                    let combi = NSMutableAttributedString()
-                                    combi.append(attribImage)
-                                    combi.append(attribText)
-                                    
-                                    voteLabel.attributedText = combi
-                                } else {
+//                                if arrOfVotes.count == 1 {
+//                                    max = arrOfVotes[0]
+//                                    index = i
+//                                }
+//                                arrOfVotes.append(voteCount.hashValue)
+//                                
+//                                if arrOfVotes[i] > max {
+//                                    max = arrOfVotes[i]
+//                                    let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
+//                                    
+//                                    let imageAttach = NSTextAttachment()
+//                                    imageAttach.image = UIImage(named: "crown.png")
+//                                    
+//                                    let attribImage = NSAttributedString(attachment: imageAttach)
+//                                    
+//                                    let combi = NSMutableAttributedString()
+//                                    combi.append(attribImage)
+//                                    combi.append(attribText)
+//                                    
+//                                    voteLabel.attributedText = combi
+//                                } else {
                                     voteLabel.text = "\(voteCount)"
-                                }
+                                //}
                         })
                     } else {
                         voteLabel.text = "?"
@@ -552,10 +552,10 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             
             refVote.child("Posts").child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
                 
-                if snapshot.hasChild("finished") {
+                let value = snapshot.value as! [String : Any]
+                let finished = value["finished"] as! Bool
+                if finished == true {
                     self.showAlertController(message: "This post is already done", title: "Finished")
-                    
-                    
                 } else {
                     // Check if user already voted
                     

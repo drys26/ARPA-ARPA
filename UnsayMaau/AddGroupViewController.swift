@@ -70,7 +70,7 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
             groupDescription = groupShortDescription.text!
         }
         
-        postsDictionary = ["group_name":groupName!,"group_description":groupDescription,"private_status": status,"admin_members":["\(uid)":true]]
+        postsDictionary = ["group_name":groupName!,"group_description":groupDescription,"private_status": status,"search_name": groupName!.lowercased(),"admin_members":["\(uid)":true]]
         
         //ref.child("Posts").child(groupPostId).setValue(postsDictionary)
     }
