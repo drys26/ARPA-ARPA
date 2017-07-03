@@ -239,13 +239,24 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             
             let userDisplayName = value["display_name"] as! String
             
+            var imageVoteNumber: String = ""
+            
+            if snapshot.hasChild("post_voted") {
+                if snapshot.hasChild("post_voted/\(self.post.postKey)"){
+                    let post_voted = value["post_voted"] as! [String: Any]
+                    imageVoteNumber = post_voted[self.post.postKey] as! String
+                }
+            }
+            
+            
+            
             cell.commentImageView.sd_setImage(with: URL(string: imageUrl))
             
             cell.commentUserDisplayName.text = userDisplayName
             
+            cell.commentTextView.text = "\(comment.comment)  \(imageVoteNumber)"
         })
         
-        cell.commentTextView.text = comment.comment
         cell.commentTextView.isUserInteractionEnabled = false
         cell.commentTextView.delegate = self
         cell.commentTextView.tag = indexPath.row
