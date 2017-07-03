@@ -83,7 +83,7 @@ class RootGroupController: UIViewController {
         super.didReceiveMemoryWarning()
         
     }
-
+    
     func goToSeeMembers(){
         performSegue(withIdentifier: "goToSeeMembers", sender: nil)
     }

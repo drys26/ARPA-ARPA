@@ -34,10 +34,12 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
 //        try! Auth.auth().signOut()
 //        GIDSignIn.sharedInstance().signOut()
         
-        Auth.auth().addStateDidChangeListener { (auth, user) in
-            if user != nil{
-                self.performSegue(withIdentifier: "goToMainPage", sender: nil)
-            }
+        
+        if Auth.auth().currentUser != nil {
+            self.performSegue(withIdentifier: "goToMainPage", sender: nil)
+        }
+        else{
+            print("User Not Found!")
         }
         
         

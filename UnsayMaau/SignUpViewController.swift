@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import Firebase
 
 class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
-    
+    var ref: DatabaseReference!
     let picker = UIImagePickerController()
-    
+    var imageData: Data?
     @IBOutlet weak var whatsBestLogo: UIImageView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -20,7 +21,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,25 +31,51 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
-    @IBAction func pickImageButton(_ sender: Any) {
+    @IBAction func uploadPhoto(_ sender: Any) {
         
-        picker.allowsEditing = true
-        picker.sourceType = .photoLibrary
-        self.present(picker, animated: true, completion: nil)
-
+        let actionSheet = UIAlertController(title: "Photo Source", message: "Choose a source", preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action: UIAlertAction) in
+            if UIImagePickerController.isSourceTypeAvailable(.camera){
+                self.picker.sourceType = .camera
+                self.present(self.picker, animated: true, completion: nil)
+            }
+            else{
+                print("Camera not available")
+            }
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action: UIAlertAction) in
+            self.picker.sourceType = .photoLibrary
+            self.present(self.picker, animated: true, completion: nil)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func uploadImageToFirebaseStorage(data: Data){
+        
+        let uID = Auth.auth().currentUser?.uid
+        
+        let storageRef = Storage.storage().reference(withPath: "users/\(uID).jpg")
+        
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let chosenImage = info[UIImagePickerControllerEditedImage] as! UIImage
         
-        profileImage.image = chosenImage
-        
-        dismiss(animated: true, completion: nil)
-        
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage, let imageInfo = UIImageJPEGRepresentation(image, 0.8){
+            imageData = imageInfo
+            profileImage.image = image
+            uploadImageToFirebaseStorage(data: imageData!)
+        }
+        picker.dismiss(animated: true, completion: nil)
+
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
     }
     
     
@@ -119,25 +145,49 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBAction func toogleSignUp(_ sender: Any) {
         
-//        if nameTextField.text == "" {
-//            nameTextField.rightViewMode = .always
-//            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-//            let image = UIImage(named: "icons8-cancel")
-//            imageView.image = image
-//            nameTextField.rightView = imageView
-//        }
-//        else if emailTextField.text == "" {
-//            emailTextField.rightViewMode = .always
-//        }
-//        else if passwordTextField.text == "" {
-//            passwordTextField.rightViewMode = .always
-//        }
-//        else if confirmTextField.text == "" {
-//            confirmTextField.rightViewMode = .always
-//        }
-
+        if profileImage.image != UIImage(named: "icons8-user_male_circle_filled-1"){
         
+            if nameTextField.text == "" {
+                print("no name")
+            }
+            else if emailTextField.text == "" {
+                print("no email")
+            }
+            else if passwordTextField.text == ""{
+                print("no password")
+            }
+            else if passwordTextField.text != confirmTextField.text {
+                print("confirmed password not match")
+            }
+            else{
+                Auth.auth().createUser(withEmail: "\(emailTextField.text!)", password: "\(passwordTextField.text!)", completion: { (user, error) in
+                    if error == nil {
+                        
+                        print("successfully created account")
+                        
+                        Auth.auth().signIn(withEmail: "\(self.emailTextField.text!)", password: "\(self.passwordTextField.text!)", completion: { (user1, err) in
+                            
+                            
+                            
+                            
+                        })
+                        
+                        
+                    }
+                    else{
+                        let alert = UIAlertController(title: "Error", message: "\(error?.localizedDescription ?? "")", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    }
+                })
+            }
+            
         
+        }
+        else{
+            print("no image selected")
+        }
         
         
     }
@@ -148,11 +198,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
     }
     
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
 
 }

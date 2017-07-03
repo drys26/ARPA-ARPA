@@ -62,7 +62,7 @@
                                     <constraint firstItem="TtQ-un-JHa" firstAttribute="centerY" secondItem="TuT-An-8Cb" secondAttribute="centerY" id="nww-mW-cCJ"/>
                                 </constraints>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icons8-user_male_circle_filled-1" translatesAutoresizingMaskIntoConstraints="NO" id="qfJ-uS-G1a">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icons8-user_male_circle_filled-1" translatesAutoresizingMaskIntoConstraints="NO" id="qfJ-uS-G1a">
                                 <rect key="frame" x="137" y="96" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -74,7 +74,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pickImageButton:" destination="qZm-QQ-HsD" eventType="touchUpInside" id="gEm-fT-DNS"/>
+                                    <action selector="uploadPhoto:" destination="qZm-QQ-HsD" eventType="touchUpInside" id="upz-8c-tTX"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ILk-DZ-lNG">
@@ -143,11 +143,12 @@
                         <outlet property="profileImage" destination="qfJ-uS-G1a" id="Hmg-dl-qJ1"/>
                         <outlet property="signUpButton" destination="Fhr-R5-9S4" id="B7R-xi-RO2"/>
                         <outlet property="whatsBestLogo" destination="EbN-D4-LhH" id="EbI-kd-Kew"/>
+                        <segue destination="ATg-IB-uyg" kind="show" identifier="goToMainPage" id="Cj5-qB-IWP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5T3-Qu-Etq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140" y="-532.98350824587715"/>
+            <point key="canvasLocation" x="-15" y="-739"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -739,6 +740,7 @@
                     <connections>
                         <outlet property="floats" destination="Mhq-Fn-fr3" id="QT1-xa-MKu"/>
                         <outlet property="groupTableView" destination="JRJ-4D-CIl" id="H8j-bg-OFF"/>
+                        <outlet property="searchBar" destination="8ul-cf-xna" id="RD7-th-kU1"/>
                         <segue destination="hba-3n-AZ8" kind="show" identifier="goToAddGroup" id="rFw-u4-RvP"/>
                         <segue destination="ck8-YO-PaW" kind="show" identifier="goToGroupPage" id="KWL-OC-M9e"/>
                     </connections>
@@ -906,6 +908,7 @@
                                         <connections>
                                             <outlet property="memberDisplayName" destination="nmk-s8-qj7" id="Mi9-DA-84P"/>
                                             <outlet property="memberImageView" destination="q23-Wg-XHo" id="IGc-15-eav"/>
+                                            <outlet property="rootButton" destination="NJe-uW-XNG" id="UmF-GD-atI"/>
                                             <outlet property="rootView" destination="vzJ-wZ-wWZ" id="Ez5-bv-TLX"/>
                                         </connections>
                                     </tableViewCell>
@@ -1623,7 +1626,7 @@
         <!--Select Image From Library View Controller-->
         <scene sceneID="Dsk-Ub-xk1">
             <objects>
-                <viewController id="fhR-n7-kfV" customClass="SelectImageFromLibraryViewController" customModule="UnsayMaau" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="fhR-n7-kfV" customClass="SelectImageFromLibraryViewController" customModule="UnsayMaau" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="n0A-1c-0HN"/>
                         <viewControllerLayoutGuide type="bottom" id="pby-Zw-7hF"/>
@@ -1632,37 +1635,93 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="I0I-YV-7YP">
-                                <rect key="frame" x="16" y="102" width="343" height="267"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="K4C-12-D77">
+                                <rect key="frame" x="0.0" y="347" width="375" height="271"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="K4C-12-D77" secondAttribute="height" multiplier="375:271" id="1kZ-xQ-WEx"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0L7-S7-996">
+                                    <size key="itemSize" width="113" height="125"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="hku-tP-9Hw">
+                                        <rect key="frame" x="0.0" y="0.0" width="113" height="125"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="113" height="125"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Vine-Vera-Beauty-Queen-Shopping-Intro" translatesAutoresizingMaskIntoConstraints="NO" id="hZh-XR-yMR">
+                                                    <rect key="frame" x="0.0" y="0.0" width="113" height="125"/>
+                                                    <gestureRecognizers/>
+                                                </imageView>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="accept_member" translatesAutoresizingMaskIntoConstraints="NO" id="nON-6P-szw">
+                                                    <rect key="frame" x="88" y="0.0" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="FFd-hu-dVC"/>
+                                                        <constraint firstAttribute="height" constant="25" id="PO1-UQ-Zeh"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="hZh-XR-yMR" firstAttribute="centerY" secondItem="hku-tP-9Hw" secondAttribute="centerY" id="3lP-m9-DtS"/>
+                                            <constraint firstAttribute="trailing" secondItem="nON-6P-szw" secondAttribute="trailing" id="3r2-s6-QTm"/>
+                                            <constraint firstItem="hZh-XR-yMR" firstAttribute="height" secondItem="hku-tP-9Hw" secondAttribute="height" id="C3k-rV-fTx"/>
+                                            <constraint firstItem="nON-6P-szw" firstAttribute="top" secondItem="hku-tP-9Hw" secondAttribute="top" id="K4w-Hl-1UA"/>
+                                            <constraint firstItem="hZh-XR-yMR" firstAttribute="centerX" secondItem="hku-tP-9Hw" secondAttribute="centerX" id="ToB-xN-M2E"/>
+                                            <constraint firstItem="hZh-XR-yMR" firstAttribute="width" secondItem="hku-tP-9Hw" secondAttribute="width" id="z30-tC-gVb"/>
+                                        </constraints>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="I0I-YV-7YP">
+                                <rect key="frame" x="16" y="72" width="343" height="267"/>
                             </stackView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Post Description" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rwd-J4-T6C">
-                                <rect key="frame" x="16" y="377" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gsU-XH-iWC">
-                                <rect key="frame" x="16" y="415" width="343" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="Public"/>
-                                    <segment title="Private"/>
-                                </segments>
-                            </segmentedControl>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="K4C-12-D77" secondAttribute="trailing" id="Dr3-wO-cZI"/>
+                            <constraint firstItem="K4C-12-D77" firstAttribute="leading" secondItem="Fob-ae-VPZ" secondAttribute="leading" id="MEH-OP-KsY"/>
+                            <constraint firstItem="I0I-YV-7YP" firstAttribute="trailing" secondItem="Fob-ae-VPZ" secondAttribute="trailingMargin" id="MUY-0I-6UN"/>
+                            <constraint firstItem="pby-Zw-7hF" firstAttribute="top" secondItem="K4C-12-D77" secondAttribute="bottom" id="Ued-AS-fey"/>
+                            <constraint firstItem="I0I-YV-7YP" firstAttribute="leading" secondItem="Fob-ae-VPZ" secondAttribute="leadingMargin" id="euv-sd-JEx"/>
+                            <constraint firstItem="I0I-YV-7YP" firstAttribute="top" secondItem="n0A-1c-0HN" secondAttribute="bottom" constant="8" id="wGd-QM-GqV"/>
+                            <constraint firstItem="K4C-12-D77" firstAttribute="top" secondItem="I0I-YV-7YP" secondAttribute="bottom" constant="8" id="zHk-eg-zQf"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="postDescription" destination="rwd-J4-T6C" id="ZIZ-5e-pvx"/>
-                        <outlet property="rootStackView" destination="I0I-YV-7YP" id="rjO-p0-avV"/>
-                        <outlet property="statusSegment" destination="gsU-XH-iWC" id="aRj-cl-ozD"/>
+                        <outlet property="RootStackView" destination="I0I-YV-7YP" id="Yey-YD-6jY"/>
+                        <outlet property="collectionViewSelector" destination="K4C-12-D77" id="AP2-H8-epB"/>
+                        <outlet property="rootStackView" destination="I0I-YV-7YP" id="uIM-q8-26X"/>
+                        <segue destination="auA-Xz-UXc" kind="show" id="aIV-Yp-9Hn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vhS-BR-zJ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3740" y="-2781.8590704647677"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="AcP-8l-dGa">
+            <objects>
+                <viewController id="auA-Xz-UXc" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rpw-KE-NKW"/>
+                        <viewControllerLayoutGuide type="bottom" id="rZd-Bf-gZV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8Ru-oY-dym">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zar-oR-BtM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4719" y="-2782"/>
         </scene>
         <!--WATCHLIST-->
         <scene sceneID="sqx-xK-I1j">
@@ -1973,6 +2032,7 @@
     <resources>
         <image name="Vine-Vera-Beauty-Queen-Shopping-Intro" width="1000" height="677"/>
         <image name="WhatsBest2" width="605" height="170"/>
+        <image name="accept_member" width="32" height="32"/>
         <image name="bag1" width="500" height="400"/>
         <image name="big_horizontal_2x2" width="100" height="100"/>
         <image name="big_vertical_2x2" width="50" height="50"/>
@@ -1992,4 +2052,7 @@
         <image name="vertical_3x3" width="100" height="100"/>
         <image name="watchlist" width="34" height="12"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Cj5-qB-IWP"/>
+    </inferredMetricsTieBreakers>
 </document>
