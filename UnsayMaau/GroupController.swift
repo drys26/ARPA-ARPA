@@ -28,7 +28,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     var searchGroups = [Group]()
     
-    var isSearching = false
+    var isSearching: Bool!
     
     var rootRef: DatabaseReference!
     
@@ -49,6 +49,8 @@ class GroupController: UIViewController,UISearchBarDelegate {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
+        
+        isSearching = false
         
         searchBar.delegate = self
         
@@ -98,25 +100,34 @@ class GroupController: UIViewController,UISearchBarDelegate {
     }
     
     func loadGroups(){
-        refGroups.observeSingleEvent(of: .value, with: {(snapshot) in
-            if let rootGroups = snapshot.children.allObjects as? [DataSnapshot] {
-                for rootGroup in rootGroups {
-                    let group = Group(snap: rootGroup)
-                    if !self.groups.contains(group) {
-                        if group.groupStatus == false {
-                            self.groups.append(group)
-                            self.reload()
+        if isSearching == true {
+            searchGroups.removeAll()
+            loadSearchedGroups()
+        } else {
+            refGroups.observeSingleEvent(of: .value, with: {(snapshot) in
+                if let rootGroups = snapshot.children.allObjects as? [DataSnapshot] {
+                    for rootGroup in rootGroups {
+                        let group = Group(snap: rootGroup)
+                        if !self.groups.contains(group) {
+                            if group.groupStatus == false {
+                                self.groups.append(group)
+                                self.reload()
+                            }
+                        }
+                        if self.groups.contains(group) && group.groupStatus == true {
+                            if let index = self.groups.index(of: group) {
+                                self.groups.remove(at: index)
+                                DispatchQueue.main.async {
+                                    self.groupTableView.reloadData()
+                                }
+                            }
                         }
                     }
                 }
-            }
-        })
+            })
+        }
+        refreshControl.endRefreshing()
     }
-    
-//    func closeFloatingActionButton(){
-//        floats.open()
-//        floats.close()
-//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -134,9 +145,9 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if refGroups != nil {
-            refGroups.removeObserver(withHandle: refGroupsHandle)
-        }
+//        if refGroups != nil {
+//            refGroups.removeObserver(withHandle: refGroupsHandle)
+//        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -266,15 +277,31 @@ extension GroupController: UITableViewDataSource {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
        // closeFloatingActionButton()
-        searchGroups.removeAll()
-        isSearching = true
-        reload()
+        
+        if searchBar.text != nil {
+            if isSearching == false {
+                searchGroups.removeAll()
+                isSearching = true
+            } else {
+                reload()
+            }
+        } else {
+            searchBar.returnKeyType = .done
+            isSearching = true
+        }
     }
+    
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        if sear
+//    }
+    
+   
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         // TODO: Show Groups
         if searchBar.text != nil {
+            searchGroups.removeAll()
             loadSearchedGroups()
         }
         
@@ -294,7 +321,6 @@ extension GroupController: UITableViewDataSource {
                 }
             }
         })
-
     }
     
 }

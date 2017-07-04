@@ -17,9 +17,11 @@ class User: Equatable {
     var followersIDs: [String] = []
     var followingIDs: [String] = []
     var userId: String
+    var userRef: DatabaseReference
     
     
     init(snap: DataSnapshot) {
+        self.userRef = snap.ref
         userId = snap.key
         let userDict = snap.value as! [String: Any]
         self.email = userDict["email_address"] as! String

@@ -176,7 +176,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                     let post = Post(post: rootPost)
                     print(post.postKey)
                     
-                    
                     if (self.posts.contains(post) && post.postIsFinished == true) || !self.user.followingIDs.contains(post.authorImageID) {
                         if let index = self.posts.index(of: post) {
                             self.posts.remove(at: index)

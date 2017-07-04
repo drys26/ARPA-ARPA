@@ -94,14 +94,16 @@ class RootGroupController: UIViewController {
     }
     
     func goToSearchMembers(){
-       // performSegue(withIdentifier: "goToSeeMembers", sender: nil)
-        print("Search")
+        performSegue(withIdentifier: "goToSearchMembers", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToSeeMembers" {
             let smvc = segue.destination as! SeeMembersViewController
             smvc.group = group
+        } else if segue.identifier == "goToSearchMembers" {
+            let sguvc = segue.destination as! SearchGroupUsersViewController
+            sguvc.group = group
         }
     }
     
