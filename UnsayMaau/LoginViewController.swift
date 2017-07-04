@@ -31,16 +31,15 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         
         setupButton()
         
-//        try! Auth.auth().signOut()
-//        GIDSignIn.sharedInstance().signOut()
         
-        
-        if Auth.auth().currentUser != nil {
-            self.performSegue(withIdentifier: "goToMainPage", sender: nil)
-        }
-        else{
-            print("User Not Found!")
-        }
+         Auth.auth().addStateDidChangeListener({ (auth, user) in
+            if user != nil {
+                self.performSegue(withIdentifier: "goToMainPage", sender: nil)
+            }
+            else{
+                print("no user")
+            }
+        })
         
         
         
@@ -189,6 +188,10 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         GIDSignIn.sharedInstance().signIn()
     }
     
+    @IBAction func toogleLoginEmail(_ sender: Any) {
+        performSegue(withIdentifier: "goToLogin", sender: nil)
+        
+    }
     
     
 }

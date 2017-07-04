@@ -114,6 +114,20 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
         return imageArray.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let cell = collectionView.cellForItem(at: indexPath)
+        
+        if cell?.viewWithTag(2)?.isHidden == true {
+            cell?.viewWithTag(2)?.isHidden = false
+        }
+        else {
+            cell?.viewWithTag(2)?.isHidden = true
+        }
+        
+        
+        
+    }
     
 
 //    func updateImagesDictionary(count: Int, temporaryImagesDictionary: [String : Any]) {

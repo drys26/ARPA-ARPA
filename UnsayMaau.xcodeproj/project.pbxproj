@@ -11,6 +11,7 @@
 		100F2F731F024DC6005E7F27 /* RootGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100F2F721F024DC6005E7F27 /* RootGroupController.swift */; };
 		101406411EF8CB2100662E1E /* EyeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406401EF8CB2100662E1E /* EyeController.swift */; };
 		101406431EF8CDAC00662E1E /* GroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406421EF8CDAC00662E1E /* GroupController.swift */; };
+		101665371F0B43CB00042798 /* LoginWithEmailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101665361F0B43CB00042798 /* LoginWithEmailController.swift */; };
 		101E3CE91F02111C003621CC /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CE81F02111C003621CC /* AddGroupViewController.swift */; };
 		101E3CEB1F02238B003621CC /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CEA1F02238B003621CC /* GroupTableViewCell.swift */; };
 		101E3CED1F0224A9003621CC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CEC1F0224A9003621CC /* Group.swift */; };
@@ -71,6 +72,7 @@
 		100F2F721F024DC6005E7F27 /* RootGroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootGroupController.swift; sourceTree = "<group>"; };
 		101406401EF8CB2100662E1E /* EyeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeController.swift; sourceTree = "<group>"; };
 		101406421EF8CDAC00662E1E /* GroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupController.swift; sourceTree = "<group>"; };
+		101665361F0B43CB00042798 /* LoginWithEmailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWithEmailController.swift; sourceTree = "<group>"; };
 		101E3CE81F02111C003621CC /* AddGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupViewController.swift; sourceTree = "<group>"; };
 		101E3CEA1F02238B003621CC /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		101E3CEC1F0224A9003621CC /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				102328FF1F05F8010087A73A /* SignUpViewController.swift */,
 				102B25901F0A01D100049F16 /* ShowCommentViewController.swift */,
 				102B25921F0A095C00049F16 /* CommentTableViewCell.swift */,
+				101665361F0B43CB00042798 /* LoginWithEmailController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -608,6 +611,7 @@
 				102329001F05F8010087A73A /* SignUpViewController.swift in Sources */,
 				102B25911F0A01D100049F16 /* ShowCommentViewController.swift in Sources */,
 				10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */,
+				101665371F0B43CB00042798 /* LoginWithEmailController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
