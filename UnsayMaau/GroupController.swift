@@ -53,7 +53,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
         searchBar.delegate = self
         
         
-        refreshControl.addTarget(self, action: #selector(GroupController.refreshData), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(self.loadGroups), for: .valueChanged)
         
         
         self.view.bringSubview(toFront: floats)
@@ -98,12 +98,16 @@ class GroupController: UIViewController,UISearchBarDelegate {
     }
     
     func loadGroups(){
-        refGroupsHandle = refGroups.observe(.childAdded, with: {(snapshot) in
-            let group = Group(snap: snapshot)
-            if !self.groups.contains(group) {
-                if group.groupStatus == false {
-                    self.groups.append(group)
-                    self.reload()
+        refGroups.observeSingleEvent(of: .value, with: {(snapshot) in
+            if let rootGroups = snapshot.children.allObjects as? [DataSnapshot] {
+                for rootGroup in rootGroups {
+                    let group = Group(snap: rootGroup)
+                    if !self.groups.contains(group) {
+                        if group.groupStatus == false {
+                            self.groups.append(group)
+                            self.reload()
+                        }
+                    }
                 }
             }
         })

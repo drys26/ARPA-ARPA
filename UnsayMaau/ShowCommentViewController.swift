@@ -241,12 +241,12 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             
             var imageVoteNumber: String = ""
             
-            if snapshot.hasChild("post_voted") {
-                if snapshot.hasChild("post_voted/\(self.post.postKey)"){
-                    let post_voted = value["post_voted"] as! [String: Any]
-                    imageVoteNumber = post_voted[self.post.postKey] as! String
-                }
+            
+            if snapshot.hasChild("post_voted/\(self.post.postKey)"){
+                let post_voted = value["post_voted"] as! [String: Any]
+                imageVoteNumber = post_voted[self.post.postKey] as! String
             }
+            
             
             
             

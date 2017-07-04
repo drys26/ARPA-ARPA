@@ -21,7 +21,12 @@ class RootGroupController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "See Members", style: .plain, target: self, action: #selector(self.goToSeeMembers))
+        let rightBarSeeMembers = UIBarButtonItem(image: UIImage(named:"see_members_group"), style: .plain, target: self, action: #selector(self.goToSeeMembers))
+        
+        let rightBarSearch = UIBarButtonItem(image: UIImage(named:"search_group_user"), style: .plain, target: self, action: #selector(self.goToSearchMembers))
+        
+        
+        navigationItem.rightBarButtonItems = ([rightBarSeeMembers,rightBarSearch])
 
         var controllerArray: [UIViewController] = []
         
@@ -86,6 +91,11 @@ class RootGroupController: UIViewController {
     
     func goToSeeMembers(){
         performSegue(withIdentifier: "goToSeeMembers", sender: nil)
+    }
+    
+    func goToSearchMembers(){
+       // performSegue(withIdentifier: "goToSeeMembers", sender: nil)
+        print("Search")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
