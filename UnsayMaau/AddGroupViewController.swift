@@ -112,6 +112,20 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
         })
     }
     
+    func removeUsersNotChecked(){
+//        for user in isInvitedUser {
+//            if !searchUsers.contains(user) {
+//                searchUsers.remove(at: searchUsers.index(of: user)!)
+//            }
+//        }
+        
+        for user in searchUsers {
+            if !isInvitedUser.contains(user) {
+                searchUsers.remove(at: searchUsers.index(of: user)!)
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Table view cells are reused and should be dequeued using a cell identifier.
@@ -168,6 +182,7 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("Return")
         //searchUsers.removeAll()
+        removeUsersNotChecked()
         loadSearchUsers()
         return true
     }
@@ -220,6 +235,13 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
     func updatePostDictionary(){
         ref.child("Groups").child(groupPostId).setValue(postsDictionary)
         ref.child("Users_Groups").child(uid).child("Member_Groups").updateChildValues([groupPostId:true])
+        if isInvitedUser.count != 0 {
+            for user in isInvitedUser {
+                ref.child("Groups").child(groupPostId).child("invited_pending_members").updateChildValues(["\(user.userId)": true])
+                ref.child("Users_Groups").child(user.userId).child("Pending_Groups").updateChildValues([groupPostId:uid])
+            }
+        }
+        
     }
 
     /*
