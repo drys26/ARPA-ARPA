@@ -13,10 +13,12 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
     
     
     @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var groupNameText: UITextField!
     @IBOutlet weak var groupShortDescription: UITextField!
+    @IBOutlet weak var searchTextField: UITextField!
     
     @IBOutlet weak var groupStatusSegment: UISegmentedControl!
+    
+    let textFieldTitle = UITextField(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
     
     var postsDictionary = [String:Any]()
     
@@ -39,10 +41,19 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
         
         // Set the Done Button in right bar button
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.postAction))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .done, target: self, action: #selector(self.postAction))
         
         // Do any additional setup after loading the view.
         
+        
+        textFieldTitle.placeholder = "Group Name"
+        textFieldTitle.borderStyle = .roundedRect
+        textFieldTitle.textAlignment = .center
+        self.navigationItem.titleView = textFieldTitle
+        
+        let lineView = UIView(frame: CGRect(x: 0, y: searchTextField.center.y, width: searchTextField.frame.width, height: 2.0))
+        lineView.backgroundColor = UIColor.darkGray
+        searchTextField.addSubview(lineView)
     }
     
     func postAction() {
@@ -62,7 +73,7 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
             status = true
         }
         
-        let groupName = groupNameText.text
+        let groupName = textFieldTitle.text
         
         var groupDescription: String = "NULL"
         
@@ -90,6 +101,7 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
         guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage , let imageData = UIImageJPEGRepresentation(selectedImage, 0.2) else {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
+        backgroundImageView.contentMode = .scaleAspectFill
         backgroundImageView.image = selectedImage
         imageDataTemp = imageData
         dismiss(animated: true, completion: nil)
@@ -100,7 +112,6 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
     }
     
     func presentImagePickerController(){
-        print("Clicked the image view")
         let imagePickerController = UIImagePickerController()
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.delegate = self

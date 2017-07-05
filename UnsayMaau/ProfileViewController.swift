@@ -22,6 +22,9 @@ class ProfileViewController: UIViewController {
     
     var pageMenu: CAPSPageMenu?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle{
+        return .lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,16 +80,19 @@ class ProfileViewController: UIViewController {
         
         
     }
+    
+
+    @IBAction func toogleSettings(_ sender: Any) {
+        
+        performSegue(withIdentifier: "goToSettings", sender: nil)
+        
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func signOutAction(_ sender: Any) {
-        GIDSignIn.sharedInstance().signOut()
-        try! Auth.auth().signOut()
-        dismiss(animated: true, completion: nil)
-    }
 
 }

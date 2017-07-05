@@ -41,7 +41,12 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
         collectionViewSelector.dataSource = self
         collectionViewSelector.delegate = self
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem()
+        
+        
     }
+    
+    
     
     
     
@@ -184,6 +189,7 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
 //        // Set the Done Button in right bar button
 //        
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(postAction))
+    
 //        
 //        // Use switch to know what type of frame the user choose
 //        
