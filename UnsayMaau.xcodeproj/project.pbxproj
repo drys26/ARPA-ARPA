@@ -11,6 +11,7 @@
 		100F2F731F024DC6005E7F27 /* RootGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100F2F721F024DC6005E7F27 /* RootGroupController.swift */; };
 		101406411EF8CB2100662E1E /* EyeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406401EF8CB2100662E1E /* EyeController.swift */; };
 		101406431EF8CDAC00662E1E /* GroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406421EF8CDAC00662E1E /* GroupController.swift */; };
+		101665371F0B43CB00042798 /* LoginWithEmailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101665361F0B43CB00042798 /* LoginWithEmailController.swift */; };
 		101E3CE91F02111C003621CC /* AddGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CE81F02111C003621CC /* AddGroupViewController.swift */; };
 		101E3CEB1F02238B003621CC /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CEA1F02238B003621CC /* GroupTableViewCell.swift */; };
 		101E3CED1F0224A9003621CC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101E3CEC1F0224A9003621CC /* Group.swift */; };
@@ -44,6 +45,7 @@
 		10ABFF641EF250950087F05F /* UnsayMaauUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF631EF250950087F05F /* UnsayMaauUITests.swift */; };
 		10ABFF771EF258230087F05F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 10ABFF761EF258230087F05F /* GoogleService-Info.plist */; };
 		10ABFF791EF2A25C0087F05F /* SelectFrameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ABFF781EF2A25C0087F05F /* SelectFrameViewController.swift */; };
+		10BDC1941F0B8FD900541C1A /* NextPhaseAddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BDC1931F0B8FD900541C1A /* NextPhaseAddPostViewController.swift */; };
 		10D294941EF27184008F84B2 /* HomeRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D294931EF27184008F84B2 /* HomeRoot.swift */; };
 		10D294961EF27774008F84B2 /* HomePostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D294951EF27774008F84B2 /* HomePostController.swift */; };
 		73FFA8EDB762139FAC9B42A8 /* Pods_UnsayMaauTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D60FF120BBA4BABB1BAE40C9 /* Pods_UnsayMaauTests.framework */; };
@@ -73,6 +75,7 @@
 		100F2F721F024DC6005E7F27 /* RootGroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootGroupController.swift; sourceTree = "<group>"; };
 		101406401EF8CB2100662E1E /* EyeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeController.swift; sourceTree = "<group>"; };
 		101406421EF8CDAC00662E1E /* GroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupController.swift; sourceTree = "<group>"; };
+		101665361F0B43CB00042798 /* LoginWithEmailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWithEmailController.swift; sourceTree = "<group>"; };
 		101E3CE81F02111C003621CC /* AddGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupViewController.swift; sourceTree = "<group>"; };
 		101E3CEA1F02238B003621CC /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		101E3CEC1F0224A9003621CC /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
@@ -112,6 +115,7 @@
 		10ABFF651EF250950087F05F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		10ABFF761EF258230087F05F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		10ABFF781EF2A25C0087F05F /* SelectFrameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectFrameViewController.swift; sourceTree = "<group>"; };
+		10BDC1931F0B8FD900541C1A /* NextPhaseAddPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextPhaseAddPostViewController.swift; sourceTree = "<group>"; };
 		10D294931EF27184008F84B2 /* HomeRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRoot.swift; sourceTree = "<group>"; };
 		10D294951EF27774008F84B2 /* HomePostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePostController.swift; sourceTree = "<group>"; };
 		1673A9EBECCD2AE697E814CE /* Pods-UnsayMaauUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsayMaauUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UnsayMaauUITests/Pods-UnsayMaauUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -233,6 +237,8 @@
 				102B25921F0A095C00049F16 /* CommentTableViewCell.swift */,
 				104CE02C1F0B479F00D658CB /* SearchGroupUsersViewController.swift */,
 				104CE02E1F0B47D700D658CB /* SearchUsersTableViewCell.swift */,
+				101665361F0B43CB00042798 /* LoginWithEmailController.swift */,
+				10BDC1931F0B8FD900541C1A /* NextPhaseAddPostViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -605,6 +611,7 @@
 				103A96B01EF8D42E001DAC9F /* User.swift in Sources */,
 				1091A6621F0A0A8A00A62E5D /* AddPostCell.swift in Sources */,
 				10D294961EF27774008F84B2 /* HomePostController.swift in Sources */,
+				10BDC1941F0B8FD900541C1A /* NextPhaseAddPostViewController.swift in Sources */,
 				1096784D1EF3CB68006CE3E3 /* Helpers.swift in Sources */,
 				101E3CF11F0255BD003621CC /* SeeMembersViewController.swift in Sources */,
 				10D294941EF27184008F84B2 /* HomeRoot.swift in Sources */,
@@ -616,6 +623,7 @@
 				102329001F05F8010087A73A /* SignUpViewController.swift in Sources */,
 				102B25911F0A01D100049F16 /* ShowCommentViewController.swift in Sources */,
 				10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */,
+				101665371F0B43CB00042798 /* LoginWithEmailController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

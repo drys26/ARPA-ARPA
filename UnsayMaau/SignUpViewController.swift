@@ -14,7 +14,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     var ref: DatabaseReference!
     let picker = UIImagePickerController()
     var imageData: Data?
-    
+    var URL: String?
     
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var whatsBestLogo: UIImageView!
@@ -62,7 +62,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         let uID = Auth.auth().currentUser?.uid
         
-        let storageRef = Storage.storage().reference(withPath: "users/\(String(describing: uID)).jpg")
+        let storageRef = Storage.storage().reference(withPath: "users/\(uID!).jpg")
         let uploadMetaData = StorageMetadata()
         uploadMetaData.contentType = "image/jpeg"
         let uploadTask = storageRef.putData(data, metadata: uploadMetaData) { (metadata, error) in
@@ -70,14 +70,23 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                 print("\(error?.localizedDescription ?? "")")
             }
             else{
-                print("Successfully complete! \(String(describing: metadata))")
+                print("Successfully complete! \(metadata?.downloadURL()?.absoluteString ?? "")")
+                self.URL = metadata?.downloadURL()?.absoluteString
+                self.ref = Database.database().reference()
+                let userDictionary = ["display_name": self.nameTextField.text! , "email_address": self.emailTextField.text! , "cover_photo_url": self.URL! , "photo_url": self.URL!] as [String: Any]
+                
+                self.ref.child("Users").child("\(Auth.auth().currentUser?.uid ?? "no user")").setValue(userDictionary)
+                
+                self.performSegue(withIdentifier: "goToMain", sender: nil)
+                
             }
         }
         uploadTask.observe(StorageTaskStatus.progress) { [weak self] (snapshot) in
             guard let strongSelf = self else { return }
             guard let progress = snapshot.progress else { return }
-            strongSelf.progressView.progress = Float(progress.fractionCompleted)
             strongSelf.progressView.isHidden = false
+            strongSelf.progressView.progress = Float(progress.fractionCompleted)
+            strongSelf.progressView.isHidden = true
             
         }
         
@@ -189,6 +198,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                             
                             self.uploadImageToFirebaseStorage(data: self.imageData!)
                             
+
                             
                         })
                         

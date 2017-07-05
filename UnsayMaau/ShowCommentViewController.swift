@@ -241,21 +241,71 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             
             var imageVoteNumber: String = ""
             
+            let attribText = NSMutableAttributedString(string: "\(userDisplayName) ", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
+            
+            cell.commentUserDisplayName.attributedText = attribText
+            
+            let imageAttach = NSTextAttachment()
             
             if snapshot.hasChild("post_voted/\(self.post.postKey)"){
                 let post_voted = value["post_voted"] as! [String: Any]
                 imageVoteNumber = post_voted[self.post.postKey] as! String
+
+                switch imageVoteNumber {
+                case "1":
+                    imageAttach.image = UIImage(named: "vote_image1")
+                    break
+                case "2":
+                    imageAttach.image = UIImage(named: "vote_image2")
+                    break
+                case "3":
+                    imageAttach.image = UIImage(named: "vote_image3")
+                    break
+                case "4":
+                    imageAttach.image = UIImage(named: "vote_image4")
+                    break
+                default:
+                    print("no image")
+                    break
+                }
+                
+                let attribImage = NSAttributedString(attachment: imageAttach)
+                
+                let combi = NSMutableAttributedString()
+                combi.append(attribText)
+                combi.append(attribImage)
+                cell.commentUserDisplayName.attributedText = combi
             }
             
             
-            
-            
+            if comment.userCommentID == self.post.authorImageID {
+                
+                let imageAttach = NSTextAttachment()
+                imageAttach.image = UIImage(named: "owner_post")
+                let attribImage = NSAttributedString(attachment: imageAttach)
+                
+                let combi = NSMutableAttributedString()
+                
+                combi.append(cell.commentUserDisplayName.attributedText!)
+                
+                combi.append(attribImage)
+                
+                cell.commentUserDisplayName.attributedText = combi
+                
+//                cell.commentTextView.attributedText = combi
+                
+            }
+
             cell.commentImageView.sd_setImage(with: URL(string: imageUrl))
             
-            cell.commentUserDisplayName.text = userDisplayName
             
-            cell.commentTextView.text = "\(comment.comment)  \(imageVoteNumber)"
+            
+           // cell.commentTextView.text = "\(comment.comment)  \(imageVoteNumber)"
         })
+        
+        
+        cell.commentTextView.text = comment.comment
+        
         
         cell.commentTextView.isUserInteractionEnabled = false
         cell.commentTextView.delegate = self
