@@ -27,15 +27,23 @@ class AcceptGroupViewController: UIViewController , UITableViewDelegate , UITabl
             for child in snapshot.children.allObjects as! [DataSnapshot] {
                 let pendingGroup = PendingGroup(snap: child)
                 self.pendingGroups.append(pendingGroup)
+                self.reload()
             }
         })
+    }
+    
+    func reload(){
+        DispatchQueue.main.async {
+            self.acceptGroupTable.reloadData()
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        
+        acceptGroupTable.delegate = self
+        acceptGroupTable.dataSource = self
         // Do any additional setup after loading the view.
     }
     
@@ -63,6 +71,8 @@ class AcceptGroupViewController: UIViewController , UITableViewDelegate , UITabl
             let attribText = NSMutableAttributedString(string: userDisplayName, attributes: attrib)
             
             cell.userInvitedImageView.sd_setImage(with: URL(string: userImageUrl))
+            cell.userInvitedImageView.layer.cornerRadius = cell.userInvitedImageView.frame.size.width / 2
+            cell.userInvitedImageView.clipsToBounds = true
             description.append(attribText)
             
             self.rootRef.child("Groups").child(pendingGroup.groupId).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -102,16 +112,14 @@ class AcceptGroupViewController: UIViewController , UITableViewDelegate , UITabl
                 buttons[i].setImage(UIImage(named:"invite_members"), for: .normal)
                 buttons[i].accessibilityLabel = "accept"
             } else {
-                buttons[i].setImage(UIImage(named:"decline_members"), for: .normal)
+                buttons[i].setImage(UIImage(named:"decline_member"), for: .normal)
                 buttons[i].accessibilityLabel = "decline"
             }
-            
             buttons[i].addTarget(self, action: #selector(self.inviteAction(sender:)), for: .touchUpInside)
-            
+            cell.rootButtonStackView.addArrangedSubview(buttons[i])
         }
         
         return cell
-        
     }
     
     func inviteAction(sender: UIButton) {
@@ -119,11 +127,25 @@ class AcceptGroupViewController: UIViewController , UITableViewDelegate , UITabl
         
         let access = sender.accessibilityLabel!
         
+        let pendingGroup = pendingGroups[sender.tag]
+        
+        func removeAction(){
+            pendingGroup.ref.removeValue()
+            rootRef.child("Groups").child(pendingGroup.groupId).child("invited_pending_members").child(uid!).removeValue()
+            pendingGroups.remove(at: sender.tag)
+            self.reload()
+        }
+        
+        
         if access == "accept" {
             print("accept")
+            rootRef.child("Groups").child(pendingGroup.groupId).child("members").updateChildValues([uid!:true])
+            removeAction()
         } else {
             print("decline")
+            removeAction()
         }
+        
         
 //        let user = users[sender.tag]
 //        let uid = Auth.auth().currentUser?.uid
