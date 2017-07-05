@@ -179,7 +179,7 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
                     self.databaseRef.child("Users").child((user1?.uid)!).setValue(userDictionary)
                     
                 }
-                self.performSegue(withIdentifier: "goToMainPage", sender: nil)
+                //self.performSegue(withIdentifier: "goToMainPage", sender: nil)
             })
         }
     }

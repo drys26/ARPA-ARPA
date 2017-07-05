@@ -53,6 +53,7 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
         collectionViewSelector.dataSource = self
         collectionViewSelector.delegate = self
         
+
         frames = [1,2,3,4]
         
         print(imageTapCount)
@@ -88,6 +89,7 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
             break
         }
         
+
         
         
     }
@@ -105,6 +107,8 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
             nextPhaseVC.typeOfFrame = self.typeOfFrame
         }
     }
+    
+    
     
     func grabPhotos(){
         let imgManager = PHImageManager.default()
@@ -196,21 +200,24 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
             if cell?.viewWithTag(2)?.isHidden == true {
                 cell?.viewWithTag(2)?.isHidden = false
             }
-//            else {
-//                cell?.viewWithTag(2)?.isHidden = true
-//            }
+            //            else {
+            //                cell?.viewWithTag(2)?.isHidden = true
+            //            }
             
             if userImageTapCount != tappedImageViews.count {
+                
                 var i = userImageTapCount
                 
                 if i != 0 {
                     i -= 1
                 }
                 
-                tappedImageViews[i].isHidden = true
-                tappedImageViews.remove(at: i)
-                self.imageData.remove(at: i)
-                self.pickImageArray.remove(at: i)
+                
+                tappedImageViews[0].isHidden = true
+                print("Hide image view \(0)")
+                self.tappedImageViews.remove(at: 0)
+                self.imageData.remove(at: 0)
+                self.pickImageArray.remove(at: 0)
                 print("is hidded tapped imageViews \(userImageTapCount)")
             }
             
@@ -304,6 +311,7 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
 //        // Set the Done Button in right bar button
 //        
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(postAction))
+    
 //        
 //        // Use switch to know what type of frame the user choose
 //        

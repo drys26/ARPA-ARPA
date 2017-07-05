@@ -120,12 +120,13 @@ class SearchGroupUsersViewController: UIViewController , UITableViewDelegate , U
     
     func inviteAction(sender: UIButton) {
         let user = users[sender.tag]
+        let uid = Auth.auth().currentUser?.uid
         group.groupRef.child("invited_pending_members").updateChildValues(["\(user.userId)": true])
+        rootRef.child("Users_Groups").child(user.userId).child("Pending_Groups").updateChildValues([group.groupId:uid!])
         users.remove(at: sender.tag)
         let indexPath = IndexPath(row: sender.tag, section: 0)
         self.reload()
     }
-    
     
 
     override func didReceiveMemoryWarning() {

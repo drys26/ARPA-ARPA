@@ -191,7 +191,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         let row = Int((arr?[0])!)
         let access = arr?[1]
         
-        let user = comments[row!]
+        let comment = comments[row!]
         
         func removeUsers(){
             self.comments.remove(at: row!)
@@ -211,6 +211,16 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         } else if access! == "delete" {
 //            group.groupRef.child("pending_members").child(user.userId).removeValue()
 //            removeUsers()
+            let alertController = UIAlertController(title: "Confirmation", message: "Do you want to delete this comment?", preferredStyle: .alert)
+            let yesButton = UIAlertAction(title: "Yes", style: .default, handler: { (alert) in
+                comment.ref.removeValue()
+                self.comments.remove(at: row!)
+                self.reload()
+            })
+            let noButton = UIAlertAction(title: "No", style: .cancel, handler: nil)
+            alertController.addAction(yesButton)
+            alertController.addAction(noButton)
+            self.present(alertController, animated: true, completion: nil)
             print("delete")
         }
         

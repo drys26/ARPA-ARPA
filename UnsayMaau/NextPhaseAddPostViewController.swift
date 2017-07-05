@@ -178,6 +178,7 @@ class NextPhaseAddPostViewController: UIViewController {
         ref.child("Images").child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
             if snapshot.childrenCount.hashValue == self.imageIDS.count {
                 self.ref.child("Posts").child(self.postID).setValue(self.postsDictionary)
+                self.ref.child("Users_Posts").child(self.user.userId).updateChildValues([self.postID:true])
             }
             print(snapshot.childrenCount)
             print(snapshot.children.allObjects.count)
@@ -205,6 +206,12 @@ class NextPhaseAddPostViewController: UIViewController {
             rootTextFieldsStackView.addArrangedSubview(textfield)
         }
         
+        rootTextFieldsStackView.addArrangedSubview(returnTextView())
+        
+    }
+    
+    func returnTextView() -> UITextView {
+        
         let postTextField = UITextView(frame: CGRect(x: 0, y: 0, width: rootTextFieldsStackView.frame.size.width, height: 30))
         
         postTextField.layer.borderWidth = 0.5
@@ -216,7 +223,7 @@ class NextPhaseAddPostViewController: UIViewController {
         let height = postTextField.sizeThatFits(CGSize(width: postTextField.frame.size.width, height: CGFloat.greatestFiniteMagnitude)).height
         postTextField.contentSize.height = height
         
-        rootTextFieldsStackView.addArrangedSubview(postTextField)
+        return postTextField
     }
     
     func fourCrossFrames(){
@@ -237,40 +244,59 @@ class NextPhaseAddPostViewController: UIViewController {
         lower.distribution = .fillEqually
         lower.axis = .horizontal
         
+        for i in 0..<4 {
+            let imageView = UIImageView(image: images[i])
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
+            imageViews.append(imageView)
+            rootImageStackView.addArrangedSubview(imageView)
+            
+            let textfield = UITextField()
+            textfield.borderStyle = .roundedRect
+            
+            textfield.placeholder = "Enter image \(i + 1) description"
+            
+            textfieldDescriptions.append(textfield)
+            
+            rootTextFieldsStackView.addArrangedSubview(textfield)
+        }
         
-        // Create an UIImageView Object
         
-        let firstImageView = UIImageView(image: images[0])
-        let secondImageView = UIImageView(image: images[1])
-        let thirdImageView = UIImageView(image: images[2])
-        let fourthImageView = UIImageView(image: images[3])
+        rootTextFieldsStackView.addArrangedSubview(returnTextView())
         
-        // Set the properties to clip to bounds and content mode
-        
-        firstImageView.contentMode = .scaleAspectFill
-        secondImageView.contentMode = .scaleAspectFill
-        thirdImageView.contentMode = .scaleAspectFill
-        fourthImageView.contentMode = .scaleAspectFill
-        
-        firstImageView.clipsToBounds = true
-        secondImageView.clipsToBounds = true
-        thirdImageView.clipsToBounds = true
-        fourthImageView.clipsToBounds = true
+//        // Create an UIImageView Object
+//        
+//        let firstImageView = UIImageView(image: images[0])
+//        let secondImageView = UIImageView(image: images[1])
+//        let thirdImageView = UIImageView(image: images[2])
+//        let fourthImageView = UIImageView(image: images[3])
+//        
+//        // Set the properties to clip to bounds and content mode
+//        
+//        firstImageView.contentMode = .scaleAspectFill
+//        secondImageView.contentMode = .scaleAspectFill
+//        thirdImageView.contentMode = .scaleAspectFill
+//        fourthImageView.contentMode = .scaleAspectFill
+//        
+//        firstImageView.clipsToBounds = true
+//        secondImageView.clipsToBounds = true
+//        thirdImageView.clipsToBounds = true
+//        fourthImageView.clipsToBounds = true
         
         // Add to the array of image views
         
-        imageViews.append(firstImageView)
-        imageViews.append(secondImageView)
-        imageViews.append(thirdImageView)
-        imageViews.append(fourthImageView)
+//        imageViews.append(firstImageView)
+//        imageViews.append(secondImageView)
+//        imageViews.append(thirdImageView)
+//        imageViews.append(fourthImageView)
         
         // add view to upper and lower stackviews
         
-        upper.addArrangedSubview(firstImageView)
-        upper.addArrangedSubview(secondImageView)
+        upper.addArrangedSubview(imageViews[0])
+        upper.addArrangedSubview(imageViews[1])
         
-        lower.addArrangedSubview(thirdImageView)
-        lower.addArrangedSubview(fourthImageView)
+        lower.addArrangedSubview(imageViews[2])
+        lower.addArrangedSubview(imageViews[3])
         
         // Add to the root stack view
         rootImageStackView.addArrangedSubview(upper)
