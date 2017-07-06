@@ -233,6 +233,7 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
     }
     
     func updatePostDictionary(){
+        postsDictionary["timestamp"] = 0 - (NSDate().timeIntervalSince1970 * 1000)
         ref.child("Groups").child(groupPostId).setValue(postsDictionary)
         ref.child("Users_Groups").child(uid).child("Member_Groups").updateChildValues([groupPostId:true])
         if isInvitedUser.count != 0 {
