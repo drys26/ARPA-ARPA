@@ -21,6 +21,7 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var facebookButton: UIButton!
     @IBOutlet weak var createAccountButton: UIButton!
+    @IBOutlet weak var loginExistingAccountButton: UIButton!
     
     
     var databaseRef: DatabaseReference!
@@ -30,14 +31,15 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         
         setupButton()
         
-//        try! Auth.auth().signOut()
-//        GIDSignIn.sharedInstance().signOut()
         
-        Auth.auth().addStateDidChangeListener { (auth, user) in
-            if user != nil{
+         Auth.auth().addStateDidChangeListener({ (auth, user) in
+            if user != nil {
                 self.performSegue(withIdentifier: "goToMainPage", sender: nil)
             }
-        }
+            else{
+                print("no user")
+            }
+        })
         
         
         
@@ -136,7 +138,11 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
                 }, completion: { (true) in
                     UIView.animate(withDuration: 0.5, animations: {
                         self.createAccountButton.alpha = 1
-                    }, completion: nil)
+                    }, completion: { (true) in
+                        UIView.animate(withDuration: 0.5, animations: { 
+                            self.loginExistingAccountButton.alpha = 1
+                        })
+                    })
                 })
             })
         }
@@ -148,6 +154,7 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
     }
     
     func setupButton(){
+        loginExistingAccountButton.alpha = 0
         googleButton.alpha = 0
         facebookButton.alpha = 0
         createAccountButton.alpha = 0
@@ -168,11 +175,11 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
             self.databaseRef.child("Users").child((user1?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
                 let snapshot = snapshot.value as? NSDictionary
                 if snapshot == nil {
-                    let userDictionary = ["display_name": (user1?.displayName)! ,"email_address" : (user1?.email)! , "photo_url" : (user1?.photoURL?.absoluteString)!, "cover_photo_url": (user1?.photoURL?.absoluteString)!] as [String : Any]
+                    let userDictionary = ["display_name": (user1?.displayName)! ,"email_address" : (user1?.email)! , "photo_url" : (user1?.photoURL?.absoluteString)!, "cover_photo_url": (user1?.photoURL?.absoluteString)!,"search_name": user1?.displayName?.lowercased()] as [String : Any]
                     self.databaseRef.child("Users").child((user1?.uid)!).setValue(userDictionary)
                     
                 }
-                self.performSegue(withIdentifier: "goToMainPage", sender: nil)
+                //self.performSegue(withIdentifier: "goToMainPage", sender: nil)
             })
         }
     }
@@ -181,6 +188,10 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         GIDSignIn.sharedInstance().signIn()
     }
     
+    @IBAction func toogleLoginEmail(_ sender: Any) {
+        performSegue(withIdentifier: "goToLogin", sender: nil)
+        
+    }
     
     
 }

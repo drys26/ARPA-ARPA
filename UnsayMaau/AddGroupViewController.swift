@@ -9,16 +9,24 @@
 import UIKit
 import Firebase
 
-class AddGroupViewController: UIViewController , UINavigationControllerDelegate , UIImagePickerControllerDelegate {
+class AddGroupViewController: UIViewController , UINavigationControllerDelegate , UIImagePickerControllerDelegate, UITextFieldDelegate , UITableViewDelegate , UITableViewDataSource {
     
     
     @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var groupNameText: UITextField!
     @IBOutlet weak var groupShortDescription: UITextField!
+    @IBOutlet weak var searchTextField: UITextField!
     
     @IBOutlet weak var groupStatusSegment: UISegmentedControl!
     
+    @IBOutlet weak var usersTableView: UITableView!
+    
+    let textFieldTitle = UITextField(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
+    
     var postsDictionary = [String:Any]()
+    
+    var searchUsers = [User]()
+    
+    var isInvitedUser = [User]()
     
     var ref: DatabaseReference!
     
@@ -37,12 +45,26 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
 
         ref = Database.database().reference()
         
+        usersTableView.delegate = self
+        usersTableView.dataSource = self
+        
+        searchTextField.delegate = self
+        
         // Set the Done Button in right bar button
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.postAction))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .done, target: self, action: #selector(self.postAction))
         
         // Do any additional setup after loading the view.
         
+        
+        textFieldTitle.placeholder = "Group Name"
+        textFieldTitle.borderStyle = .roundedRect
+        textFieldTitle.textAlignment = .center
+        self.navigationItem.titleView = textFieldTitle
+        
+        let lineView = UIView(frame: CGRect(x: 0, y: searchTextField.center.y, width: searchTextField.frame.width, height: 2.0))
+        lineView.backgroundColor = UIColor.darkGray
+        searchTextField.addSubview(lineView)
     }
     
     func postAction() {
@@ -62,7 +84,7 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
             status = true
         }
         
-        let groupName = groupNameText.text
+        let groupName = textFieldTitle.text
         
         var groupDescription: String = "NULL"
         
@@ -75,11 +97,96 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
         //ref.child("Posts").child(groupPostId).setValue(postsDictionary)
     }
     
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func loadSearchUsers(){
+        let searchText = searchTextField.text!
+        let userRef = ref.child("Users").queryOrdered(byChild: "search_name").queryStarting(atValue: searchText.lowercased()).queryEnding(atValue: searchText.lowercased() + "\u{f8ff}")
+        userRef.observeSingleEvent(of: .value, with: {(snapshot) in
+            for child in snapshot.children.allObjects as! [DataSnapshot] {
+                let user = User(snap: child)
+                print(user.displayName)
+                if !child.hasChild("account_status") && user.userId != self.uid && !self.searchUsers.contains(user) {
+                    self.searchUsers.insert(user, at: 0)
+                    self.reload()
+                }
+            }
+        })
     }
+    
+    func removeUsersNotChecked(){
+//        for user in isInvitedUser {
+//            if !searchUsers.contains(user) {
+//                searchUsers.remove(at: searchUsers.index(of: user)!)
+//            }
+//        }
+        
+        for user in searchUsers {
+            if !isInvitedUser.contains(user) {
+                searchUsers.remove(at: searchUsers.index(of: user)!)
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        // Table view cells are reused and should be dequeued using a cell identifier.
+        
+        let cellIdentifier = "searchUsersCell"
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? InviteMembersTableViewCell else {
+            fatalError("The dequeued cell is not an instance of searchUsersCell.")
+        }
+        
+        let user = searchUsers[indexPath.row]
+        cell.userDisplayName.text = user.displayName
+        cell.userImageView.sd_setImage(with: URL(string: user.photoUrl))
+        cell.userImageView.layer.cornerRadius = cell.userImageView.frame.size.width / 2
+        cell.userImageView.clipsToBounds = true
+        
+        if isInvitedUser.contains(user) {
+            cell.userSwitch.isOn = true
+        } else {
+            cell.userSwitch.isOn = false
+        }
+        cell.userSwitch.tag = indexPath.row
+        cell.userSwitch.addTarget(self, action: #selector(self.inviteUser(sender:)), for: .touchUpInside)
+        return cell
+        
+    }
+    
+    func inviteUser(sender: UISwitch){
+        let user = searchUsers[sender.tag]
+        if sender.isOn == true {
+            isInvitedUser.append(user)
+        } else {
+            if isInvitedUser.contains(user) {
+                let index = isInvitedUser.index(of: user)
+                isInvitedUser.remove(at: index!)
+            }
+        }
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchUsers.count
+    }
+    
+    func reload(){
+        DispatchQueue.main.async {
+            self.usersTableView.reloadData()
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("Return")
+        //searchUsers.removeAll()
+        removeUsersNotChecked()
+        loadSearchUsers()
+        return true
+    }
+    
     
     
     @IBAction func selectImageFromLibrary(_ sender: Any) {
@@ -90,6 +197,7 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
         guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage , let imageData = UIImageJPEGRepresentation(selectedImage, 0.2) else {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
+        backgroundImageView.contentMode = .scaleAspectFill
         backgroundImageView.image = selectedImage
         imageDataTemp = imageData
         dismiss(animated: true, completion: nil)
@@ -100,7 +208,6 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
     }
     
     func presentImagePickerController(){
-        print("Clicked the image view")
         let imagePickerController = UIImagePickerController()
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.delegate = self
@@ -126,7 +233,16 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
     }
     
     func updatePostDictionary(){
+        postsDictionary["timestamp"] = 0 - (NSDate().timeIntervalSince1970 * 1000)
         ref.child("Groups").child(groupPostId).setValue(postsDictionary)
+        ref.child("Users_Groups").child(uid).child("Member_Groups").updateChildValues([groupPostId:true])
+        if isInvitedUser.count != 0 {
+            for user in isInvitedUser {
+                ref.child("Groups").child(groupPostId).child("invited_pending_members").updateChildValues(["\(user.userId)": true])
+                ref.child("Users_Groups").child(user.userId).child("Pending_Groups").updateChildValues([groupPostId:uid])
+            }
+        }
+        
     }
 
     /*

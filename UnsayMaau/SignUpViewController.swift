@@ -11,9 +11,12 @@ import Firebase
 
 class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
-    
+    var ref: DatabaseReference!
     let picker = UIImagePickerController()
+    var imageData: Data?
+    var URL: String?
     
+    @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var whatsBestLogo: UIImageView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -22,33 +25,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var confirmTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
     
-    
-    var imageDataTemp: Data!
-    
-    var email: String!
-    
-    var pass: String!
-    
-    var userId: String!
-    
-    var imageUrl: String!
-    
-    var databaseRef: DatabaseReference!
-    
-    var userDictionary = [String: Any]()
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        databaseRef = Database.database().reference()
-        
-        Auth.auth().addStateDidChangeListener { (auth, user) in
-            if user != nil{
-                self.performSegue(withIdentifier: "goToMainPage", sender: nil)
-            }
-        }
-        
         
         setupDesign()
         
@@ -56,72 +34,77 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
-    @IBAction func pickImageButton(_ sender: Any) {
+    @IBAction func uploadPhoto(_ sender: Any) {
         
-//        picker.allowsEditing = true
-//        picker.sourceType = .photoLibrary
-//        self.present(picker, animated: true, completion: nil)
+        let actionSheet = UIAlertController(title: "Photo Source", message: "Choose a source", preferredStyle: .actionSheet)
         
-        presentImagePickerController()
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action: UIAlertAction) in
+            if UIImagePickerController.isSourceTypeAvailable(.camera){
+                self.picker.sourceType = .camera
+                self.present(self.picker, animated: true, completion: nil)
+            }
+            else{
+                print("Camera not available")
+            }
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action: UIAlertAction) in
+            self.picker.sourceType = .photoLibrary
+            self.present(self.picker, animated: true, completion: nil)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func uploadImageToFirebaseStorage(data: Data){
+        
+        let uID = Auth.auth().currentUser?.uid
+        
+        let storageRef = Storage.storage().reference(withPath: "users/\(uID!).jpg")
+        let uploadMetaData = StorageMetadata()
+        uploadMetaData.contentType = "image/jpeg"
+        let uploadTask = storageRef.putData(data, metadata: uploadMetaData) { (metadata, error) in
+            if error != nil {
+                print("\(error?.localizedDescription ?? "")")
+            }
+            else{
+                print("Successfully complete! \(metadata?.downloadURL()?.absoluteString ?? "")")
+                self.URL = metadata?.downloadURL()?.absoluteString
+                self.ref = Database.database().reference()
+                let userDictionary = ["display_name": self.nameTextField.text! , "email_address": self.emailTextField.text! , "cover_photo_url": self.URL! , "photo_url": self.URL!] as [String: Any]
+                
+                self.ref.child("Users").child("\(Auth.auth().currentUser?.uid ?? "no user")").setValue(userDictionary)
+                
+                self.performSegue(withIdentifier: "goToMain", sender: nil)
+                
+            }
+        }
+        uploadTask.observe(StorageTaskStatus.progress) { [weak self] (snapshot) in
+            guard let strongSelf = self else { return }
+            guard let progress = snapshot.progress else { return }
+            strongSelf.progressView.isHidden = false
+            strongSelf.progressView.progress = Float(progress.fractionCompleted)
+            strongSelf.progressView.isHidden = true
+            
+        }
+        
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage, let imageInfo = UIImageJPEGRepresentation(image, 0.8){
+            imageData = imageInfo
+            profileImage.image = image
+            
+        }
+        picker.dismiss(animated: true, completion: nil)
 
     }
     
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        guard let selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage , let imageData = UIImageJPEGRepresentation(selectedImage, 0.2) else {
-            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
-        }
-        profileImage.image = selectedImage
-        imageDataTemp = imageData
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func presentImagePickerController(){
-        print("Clicked the image view")
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.sourceType = .photoLibrary
-        imagePickerController.delegate = self
-        imagePickerController.allowsEditing = true
-        present(imagePickerController, animated: true, completion: nil)
-    }
-    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-    //if request.auth != null
-    // "auth != null"
-    func uploadImagePartTwo(data: Data){
-        let storageRef = Storage.storage().reference(withPath: "Profile_Images/\(databaseRef.childByAutoId().key).jpg")
-        let uploadMetaData = StorageMetadata()
-        uploadMetaData.contentType = "images/jpeg"
-        let uploadTask = storageRef.putData(data, metadata: uploadMetaData, completion: { (metadata,error) in
-            if(error != nil){
-                print("I received an error! \(error?.localizedDescription ?? "null")")
-            } else {
-                let downloadUrl = metadata!.downloadURL()
-                self.imageUrl = downloadUrl?.absoluteString
-                print("Upload complete! Heres some metadata!! \(String(describing: metadata))")
-                print("Here's your download url \(downloadUrl!)")
-                self.updateUserDictionary()
-                //self.navigationController?.popViewController(animated: true)
-                //self.performSegue(withIdentifier: "unwindSegueAddTopic", sender: nil)
-                //self.updateTopicDictionary(topicDictionary: &self.topicDictionary)
-                //                let userImagesDictionary = ["user_image_url" : "\(downloadUrl!)","about_me_display": aboutDisplay , "gender": userGender , "phone" : phone , "username" : username , "location": location]
-                //                self.updateProfile(userDictionary: userImagesDictionary as! [String : String], uid: uid)
-            }
-        })
-    }
-    
-    func updateUserDictionary(){
-        userDictionary["photo_url"] = imageUrl
-        userDictionary["cover_photo_url"] = imageUrl
-        databaseRef.child("Users").child(userId!).setValue(userDictionary)
-        
-        Auth.auth().signIn(withEmail: email!, password: pass! , completion: {(user,error) in
-            if error == nil {
-                print("Login Success")
-            }
-        })
+        picker.dismiss(animated: true, completion: nil)
     }
     
     
@@ -191,46 +174,51 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBAction func toogleSignUp(_ sender: Any) {
         
-//        if nameTextField.text == "" {
-//            nameTextField.rightViewMode = .always
-//            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-//            let image = UIImage(named: "icons8-cancel")
-//            imageView.image = image
-//            nameTextField.rightView = imageView
-//        }
-//        else if emailTextField.text == "" {
-//            emailTextField.rightViewMode = .always
-//        }
-//        else if passwordTextField.text == "" {
-//            passwordTextField.rightViewMode = .always
-//        }
-//        else if confirmTextField.text == "" {
-//            confirmTextField.rightViewMode = .always
-//        }
-
-        let name = nameTextField.text
-        email = emailTextField.text
-        pass = passwordTextField.text
+        if profileImage.image != UIImage(named: "icons8-user_male_circle_filled-1"){
         
-       
-        
-        
-        
-        userDictionary["display_name"] = name!
-        userDictionary["email_address"] = email!
-        
-        Auth.auth().createUser(withEmail: email!, password: pass!, completion: {(user, error) in
-            
-            if error == nil {
-                print("Success")
-                
-                self.userId = user?.uid
-                
-                
+            if nameTextField.text == "" {
+                print("no name")
             }
-        })
+            else if emailTextField.text == "" {
+                print("no email")
+            }
+            else if passwordTextField.text == ""{
+                print("no password")
+            }
+            else if passwordTextField.text != confirmTextField.text {
+                print("confirmed password not match")
+            }
+            else{
+                Auth.auth().createUser(withEmail: "\(emailTextField.text!)", password: "\(passwordTextField.text!)", completion: { (user, error) in
+                    if error == nil {
+                        
+                        print("successfully created account")
+                        
+                        Auth.auth().signIn(withEmail: "\(self.emailTextField.text!)", password: "\(self.passwordTextField.text!)", completion: { (user1, err) in
+                            
+                            self.uploadImageToFirebaseStorage(data: self.imageData!)
+                            
+
+                            
+                        })
+                        
+                        
+                    }
+                    else{
+                        let alert = UIAlertController(title: "Error", message: "\(error?.localizedDescription ?? "")", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    }
+                })
+            }
+            
         
-        uploadImagePartTwo(data: imageDataTemp)
+        }
+        else{
+            print("no image selected")
+        }
+        
         
     }
     
@@ -240,11 +228,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
     }
     
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
 
 }

@@ -458,6 +458,8 @@ extension SeeMembersViewController: UITableViewDataSource {
         
         cell.memberImageView.layer.cornerRadius = cell.memberImageView.frame.size.width / 2
         
+        cell.viewWithTag(1)?.layer.cornerRadius = (cell.viewWithTag(1)?.frame.size.width)! / 2
+        
         if cell.rootButton.subviews.count == 0 {
             
             let buttons = returnButtons(section: indexPath.section, row: indexPath.row)
