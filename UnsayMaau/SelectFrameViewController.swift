@@ -61,6 +61,13 @@ class SelectFrameViewController: UIViewController {
         if segue.identifier == "goToFrames" {
             let sic = segue.destination as! SelectImageFromLibraryViewController
             sic.typeOfFrame = typeOfFrame
+            if typeOfFrame.contains("TWO") {
+                sic.imageTapCount = 2
+            } else if typeOfFrame.contains("THREE") {
+                sic.imageTapCount = 3
+            } else {
+                sic.imageTapCount = 4
+            }
         }
     }
     

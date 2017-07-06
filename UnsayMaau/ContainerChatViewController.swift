@@ -192,6 +192,8 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
         
         itemRef.setValue(messageItem) // 3
         
+        group.groupRef.updateChildValues(["timestamp": 0 - (NSDate().timeIntervalSince1970 * 1000)])
+        
         JSQSystemSoundPlayer.jsq_playMessageSentSound() // 4
         
         finishSendingMessage() // 5

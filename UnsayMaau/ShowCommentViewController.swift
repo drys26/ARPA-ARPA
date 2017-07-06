@@ -14,6 +14,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     // MARK: Properties
     
+    @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var commentView: UIView!
@@ -42,41 +43,64 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     @IBAction func commentAction(_ sender: Any) {
         
-        let commentRef = ref.child("Post_Comment").child(post.postKey)
-        
-        let commentID = commentRef.childByAutoId().key
-        
-        
-        let commentDictionary = ["sender_id":uid!,"comment": userCommentTextView.text,"comment_type": "text"] as [String : Any]
-        
-        commentRef.child(commentID).setValue(commentDictionary)
-        
-        let timestamp = NSDate().timeIntervalSince1970 * 1000
-        
-        post.postRef.updateChildValues(["timestamp": 0 - timestamp])
-        
-        userCommentTextView.text = ""
+
+            let commentRef = ref.child("Post_Comment").child(post.postKey)
+            
+            let commentID = commentRef.childByAutoId().key
+            
+            
+            let commentDictionary = ["sender_id":uid!,"comment": userCommentTextView.text,"comment_type": "text"] as [String : Any]
+            
+            commentRef.child(commentID).setValue(commentDictionary)
+            
+            let timestamp = NSDate().timeIntervalSince1970 * 1000
+            
+            post.postRef.updateChildValues(["timestamp": 0 - timestamp])
+            
+            userCommentTextView.text = ""
+            heightConstraint.constant = 50
         
         
     }
 
     
     func textViewDidChange(_ textView: UITextView) {
-        let fixedWidth = textView.frame.size.width
-        let fixedHeight = textView.frame.size.height
-        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
-        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
-        var newFrame = textView.frame
-        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
-        textView.frame = newFrame
         
-            if textView.frame.size.height > fixedHeight {
+        if textView == userCommentTextView {
+            
+            let fixedWidth = textView.frame.size.width
+            let fixedHeight = textView.frame.size.height
+            textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+            let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+            var newFrame = textView.frame
+            newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+            textView.frame = newFrame
+            
+            if textView.frame.size.height != fixedHeight {
                 heightConstraint.constant = 10 + textView.frame.size.height + 8
-                
             }
+            
+            if textView.text == "" {
+                commentButton.isEnabled = false
+            }
+            else{
+                commentButton.isEnabled = true
+            }
+        }
+        else {
+            
+            let currentOffset = commentTable.contentOffset
+            UIView.setAnimationsEnabled(false)
+            commentTable.beginUpdates()
+            commentTable.endUpdates()
+            UIView.setAnimationsEnabled(true)
+            commentTable.setContentOffset(currentOffset, animated: false)
+            
+        }
         
         
     }
+    
     
     
     
@@ -132,9 +156,11 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         loadComments()
         
         
-        commentTable.estimatedRowHeight = 80
+        commentTable.estimatedRowHeight = 70
+        
         commentTable.rowHeight = UITableViewAutomaticDimension
         
+        commentTable.tableFooterView = UIView()
     }
     
     func backViewController(){
@@ -218,14 +244,24 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
             
-            textView.resignFirstResponder()
-            textView.isUserInteractionEnabled = false
+            if textView != userCommentTextView {
             
-            let comment = comments[textView.tag]
+                textView.resignFirstResponder()
+                textView.isUserInteractionEnabled = false
+                
+                let comment = comments[textView.tag]
+                
+                textView.isEditable = false
+                textView.layer.borderWidth = 0
+                textView.layer.borderColor = UIColor.clear.cgColor
+                
+                commentRef.child(comment.commentKey).updateChildValues(["comment": textView.text])
+                
+                return false
+
             
-            commentRef.child(comment.commentKey).updateChildValues(["comment": textView.text])
+            }
             
-            return false
         }
         return true
     }
@@ -236,7 +272,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         let row = Int((arr?[0])!)
         let access = arr?[1]
         
-        let user = comments[row!]
+        let comment = comments[row!]
         
         func removeUsers(){
             self.comments.remove(at: row!)
@@ -251,11 +287,25 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             let cell = commentTable.cellForRow(at: IndexPath(row: row!, section: 0)) as! CommentTableViewCell
             
             cell.commentTextView.isUserInteractionEnabled = true
+            cell.commentTextView.isEditable = true
+            cell.commentTextView.layer.borderWidth = 1
+            cell.commentTextView.layer.borderColor = UIColor.lightGray.cgColor
+            cell.commentTextView.becomeFirstResponder()
             
             print("edit")
         } else if access! == "delete" {
 //            group.groupRef.child("pending_members").child(user.userId).removeValue()
 //            removeUsers()
+            let alertController = UIAlertController(title: "Confirmation", message: "Do you want to delete this comment?", preferredStyle: .alert)
+            let yesButton = UIAlertAction(title: "Yes", style: .default, handler: { (alert) in
+                comment.ref.removeValue()
+                self.comments.remove(at: row!)
+                self.reload()
+            })
+            let noButton = UIAlertAction(title: "No", style: .cancel, handler: nil)
+            alertController.addAction(yesButton)
+            alertController.addAction(noButton)
+            self.present(alertController, animated: true, completion: nil)
             print("delete")
         }
         
@@ -286,25 +336,77 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             
             var imageVoteNumber: String = ""
             
-            if snapshot.hasChild("post_voted") {
-                if snapshot.hasChild("post_voted/\(self.post.postKey)"){
-                    let post_voted = value["post_voted"] as! [String: Any]
-                    imageVoteNumber = post_voted[self.post.postKey] as! String
+            let attribText = NSMutableAttributedString(string: "\(userDisplayName) ", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
+            
+            cell.commentUserDisplayName.attributedText = attribText
+            
+            let imageAttach = NSTextAttachment()
+            
+            if snapshot.hasChild("post_voted/\(self.post.postKey)"){
+                let post_voted = value["post_voted"] as! [String: Any]
+                imageVoteNumber = post_voted[self.post.postKey] as! String
+
+                switch imageVoteNumber {
+                case "1":
+                    imageAttach.image = UIImage(named: "vote_image1")
+                    break
+                case "2":
+                    imageAttach.image = UIImage(named: "vote_image2")
+                    break
+                case "3":
+                    imageAttach.image = UIImage(named: "vote_image3")
+                    break
+                case "4":
+                    imageAttach.image = UIImage(named: "vote_image4")
+                    break
+                default:
+                    print("no image")
+                    break
                 }
+                
+                let attribImage = NSAttributedString(attachment: imageAttach)
+                
+                let combi = NSMutableAttributedString()
+                combi.append(attribText)
+                combi.append(attribImage)
+                cell.commentUserDisplayName.attributedText = combi
             }
             
             
-            
+            if comment.userCommentID == self.post.authorImageID {
+                
+                let imageAttach = NSTextAttachment()
+                imageAttach.image = UIImage(named: "owner_post")
+                let attribImage = NSAttributedString(attachment: imageAttach)
+                
+                let combi = NSMutableAttributedString()
+                
+                combi.append(cell.commentUserDisplayName.attributedText!)
+                
+                combi.append(attribImage)
+                
+                cell.commentUserDisplayName.attributedText = combi
+                
+//                cell.commentTextView.attributedText = combi
+                
+            }
+
             cell.commentImageView.sd_setImage(with: URL(string: imageUrl))
             
-            cell.commentUserDisplayName.text = userDisplayName
             
-            cell.commentTextView.text = "\(comment.comment)  \(imageVoteNumber)"
+            
+           // cell.commentTextView.text = "\(comment.comment)  \(imageVoteNumber)"
         })
+        
+        
+        cell.commentTextView.text = comment.comment
+        
         
         cell.commentTextView.isUserInteractionEnabled = false
         cell.commentTextView.delegate = self
         cell.commentTextView.tag = indexPath.row
+        
+        cell.commentImageView.layer.cornerRadius = cell.commentImageView.frame.size.width / 2
         
         if cell.buttonStackView.subviews.count == 0 {
             if comment.userCommentID == uid! {

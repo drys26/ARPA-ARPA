@@ -176,11 +176,11 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
             self.databaseRef.child("Users").child((user1?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
                 let snapshot = snapshot.value as? NSDictionary
                 if snapshot == nil {
-                    let userDictionary = ["display_name": (user1?.displayName)! ,"email_address" : (user1?.email)! , "photo_url" : (user1?.photoURL?.absoluteString)!, "cover_photo_url": (user1?.photoURL?.absoluteString)!] as [String : Any]
+                    let userDictionary = ["display_name": (user1?.displayName)! ,"email_address" : (user1?.email)! , "photo_url" : (user1?.photoURL?.absoluteString)!, "cover_photo_url": (user1?.photoURL?.absoluteString)!,"search_name": user1?.displayName?.lowercased()] as [String : Any]
                     self.databaseRef.child("Users").child((user1?.uid)!).setValue(userDictionary)
                     
                 }
-                self.performSegue(withIdentifier: "goToMainPage", sender: nil)
+                //self.performSegue(withIdentifier: "goToMainPage", sender: nil)
             })
         }
     }

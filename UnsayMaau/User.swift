@@ -13,16 +13,22 @@ class User: Equatable {
     
     var email = ""
     var photoUrl = ""
+    var coverPhotoUrl = ""
     var displayName: String = ""
     var followersIDs: [String] = []
     var followingIDs: [String] = []
     var userId: String
+    var userRef: DatabaseReference
+    var postIds: [String] = []
+    var groupIds: [String] = []
     
     
     init(snap: DataSnapshot) {
+        self.userRef = snap.ref
         userId = snap.key
         let userDict = snap.value as! [String: Any]
         self.email = userDict["email_address"] as! String
+        self.coverPhotoUrl = userDict["cover_photo_url"] as! String
         self.displayName = userDict["display_name"] as! String
         self.photoUrl = userDict["photo_url"] as! String
         if snap.hasChild("following") {

@@ -17,6 +17,7 @@ class Group: Equatable {
     var groupName: String
     var members: [User]
     var pendingMembers: [User]
+    var invitedPendingMembers: [User]
     var admins: [User]
     var groupStatus: Bool
     var groupRef: DatabaseReference
@@ -29,6 +30,7 @@ class Group: Equatable {
         groupId = snap.key
         members = [User]()
         admins = [User]()
+        invitedPendingMembers = [User]()
         pendingMembers = [User]()
         backgroundImageUrl = groupDict["background_image_url"] as! String
         groupDescription = groupDict["group_description"] as! String
@@ -43,6 +45,17 @@ class Group: Equatable {
                 })
             }
         }
+        
+        if snap.hasChild("invited_pending_members") {
+            let adminDict = groupDict["invited_pending_members"] as! [String: Any]
+            for (key , element) in adminDict {
+                ref.child("Users").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
+                    let user = User(snap: snapshot)
+                    self.invitedPendingMembers.append(user)
+                })
+            }
+        }
+        
         if snap.hasChild("pending_members") {
             let pendingDict = groupDict["pending_members"] as! [String: Any]
             for (key , element) in pendingDict {

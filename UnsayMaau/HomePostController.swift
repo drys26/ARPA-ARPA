@@ -176,7 +176,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                     let post = Post(post: rootPost)
                     print(post.postKey)
                     
-                    
                     if (self.posts.contains(post) && post.postIsFinished == true) || !self.user.followingIDs.contains(post.authorImageID) {
                         if let index = self.posts.index(of: post) {
                             self.posts.remove(at: index)
@@ -304,7 +303,15 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     func viewCommentAction(sender: UIButton){
         let post = posts[sender.tag]
-        performSegue(withIdentifier: "goToCommentView", sender: post)
+        getUserData()
+        user.userRef.observeSingleEvent(of: .value, with: {(snapshot) in
+            if snapshot.hasChild("post_voted/\(post.postKey)") || post.authorImageID == self.user.userId {
+                self.performSegue(withIdentifier: "goToCommentView", sender: post)
+            } else {
+                self.showAlertController(message: "You need to vote to comment.", title: "Vote First")
+            }
+        })
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

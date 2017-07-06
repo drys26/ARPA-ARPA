@@ -24,11 +24,11 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     
     
-    var groups = [Group]()
+    var groups = [[Group]]()
     
     var searchGroups = [Group]()
     
-    var isSearching = false
+    var isSearching: Bool!
     
     var rootRef: DatabaseReference!
     
@@ -40,6 +40,8 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     var uid = Auth.auth().currentUser?.uid
     
+    var sections = ["Your Group","Trending"]
+    
     @IBOutlet weak var groupTableView: UITableView!
     
     override func viewDidLoad() {
@@ -50,10 +52,12 @@ class GroupController: UIViewController,UISearchBarDelegate {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         
+        isSearching = false
+        
         searchBar.delegate = self
         
         
-        refreshControl.addTarget(self, action: #selector(GroupController.refreshData), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(self.loadGroups), for: .valueChanged)
         
         
         self.view.bringSubview(toFront: floats)
@@ -68,21 +72,21 @@ class GroupController: UIViewController,UISearchBarDelegate {
         }
     }
     
-    func refreshData(){
-        refGroupsHandle = refGroups.observe(.childAdded, with: {(snapshot) in
-            let group = Group(snap: snapshot)
-            if !self.groups.contains(group) {
-                if group.groupStatus == false {
-                    self.groups.append(group)
-                    DispatchQueue.main.async {
-                        self.groupTableView.reloadData()
-                    }
-                }
-            }
-        })
-        refreshControl.endRefreshing()
-        
-    }
+//    func refreshData(){
+//        refGroupsHandle = refGroups.observe(.childAdded, with: {(snapshot) in
+//            let group = Group(snap: snapshot)
+//            if !self.groups.contains(group) {
+//                if group.groupStatus == false {
+//                    self.groups.append(group)
+//                    DispatchQueue.main.async {
+//                        self.groupTableView.reloadData()
+//                    }
+//                }
+//            }
+//        })
+//        refreshControl.endRefreshing()
+//        
+//    }
     
     func getUserData(){
         rootRef.child("Users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
@@ -98,21 +102,65 @@ class GroupController: UIViewController,UISearchBarDelegate {
     }
     
     func loadGroups(){
-        refGroupsHandle = refGroups.observe(.childAdded, with: {(snapshot) in
-            let group = Group(snap: snapshot)
-            if !self.groups.contains(group) {
-                if group.groupStatus == false {
-                    self.groups.append(group)
-                    self.reload()
+//        if isSearching == true {
+//            searchGroups.removeAll()
+//            loadSearchedGroups()
+//        } else {
+//            refGroups.observeSingleEvent(of: .value, with: {(snapshot) in
+//                if let rootGroups = snapshot.children.allObjects as? [DataSnapshot] {
+//                    for rootGroup in rootGroups {
+//                        let group = Group(snap: rootGroup)
+//                        if !self.groups.contains(group) {
+//                            if group.groupStatus == false {
+//                                self.groups.append(group)
+//                                self.reload()
+//                            }
+//                        }
+//                        if self.groups.contains(group) && group.groupStatus == true {
+//                            if let index = self.groups.index(of: group) {
+//                                self.groups.remove(at: index)
+//                                DispatchQueue.main.async {
+//                                    self.groupTableView.reloadData()
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            })
+//        }
+        
+        // If there is pending members
+        
+//        if snapshot.hasChild("pending_members") {
+//            self.sections.insert("Pending", at: 0)
+//            self.sections.remove(at: 1)
+//            self.group.groupRef.child("pending_members").observeSingleEvent(of: .value, with: {(rootSnapshot) in
+//                let value = rootSnapshot.value as! [String: Any]
+//                for (key , _) in value {
+//                    self.rootRef.child("Users").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
+//                        let user = User(snap: snapshot)
+//                        self.users[0].append(user)
+//                        self.reload()
+//                    })
+//                }
+//            })
+//        }
+        
+        
+        if isSearching == true {
+            searchGroups.removeAll()
+            loadSearchedGroups()
+        } else {
+            refGroups.queryOrdered(byChild: "timestamp").observeSingleEvent(of: .value, with: { (snapshot) in
+                if let rootPosts = snapshot.children.allObjects as? [DataSnapshot] {
+                    
                 }
-            }
-        })
+                    
+            })
+        }
+        
+        refreshControl.endRefreshing()
     }
-    
-//    func closeFloatingActionButton(){
-//        floats.open()
-//        floats.close()
-//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -130,9 +178,9 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if refGroups != nil {
-            refGroups.removeObserver(withHandle: refGroupsHandle)
-        }
+//        if refGroups != nil {
+//            refGroups.removeObserver(withHandle: refGroupsHandle)
+//        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -151,12 +199,19 @@ class GroupController: UIViewController,UISearchBarDelegate {
             //loadGroups()
             // Refresh Group
             
+            let arr = rootView.accessibilityLabel!.components(separatedBy: ",")
+            
+            let section = Int(arr[0])!
+            let row = Int(arr[1])!
+            
             var group1: Group!
             if isSearching == false {
-                group1 = groups[rootView.tag]
+                group1 = groups[section][row]
             } else {
                 group1 = searchGroups[rootView.tag]
             }
+            
+            print(group1.groupId)
             
             
             
@@ -175,15 +230,15 @@ class GroupController: UIViewController,UISearchBarDelegate {
 //                }
 //            })
             
-            if group1.members.contains(self.user) || group1.admins.contains(self.user) {
-                // TODO: Enter group view controller
-                // and display data
-                self.performSegue(withIdentifier: "goToGroupPage", sender: group1)
-            } else if !group1.admins.contains(self.user) || !group1.members.contains(self.user)  {
-                let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
-                self.refGroups.child(group1.groupId).updateChildValues(pendingDictionary)
-                self.showAlertController(message: "Please wait for response", title: "Request Send")
-            }
+//            if group1.members.contains(self.user) || group1.admins.contains(self.user) {
+//                // TODO: Enter group view controller
+//                // and display data
+//                self.performSegue(withIdentifier: "goToGroupPage", sender: group1)
+//            } else if !group1.admins.contains(self.user) || !group1.members.contains(self.user)  {
+//                let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
+//                self.refGroups.child(group1.groupId).updateChildValues(pendingDictionary)
+//                self.showAlertController(message: "Please wait for response", title: "Request Send")
+//            }
             
             
         }
@@ -212,7 +267,28 @@ class GroupController: UIViewController,UISearchBarDelegate {
 
 extension GroupController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return self.groups[section].count
+        
+    }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section < sections.count && groups[section].count > 0 {
+            return sections[section]
+        }
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 && sections[section] == "Your Group" {
+            return tableView.sectionHeaderHeight + 17
+        }
+        if groups[section].count == 0 {
+            return 0.0
+        }
+        return tableView.sectionHeaderHeight
+    }
     
 }
 
@@ -229,13 +305,15 @@ extension GroupController: UITableViewDataSource {
         
         var group: Group!
         if isSearching == false {
-            group = groups[indexPath.row]
+            group = groups[indexPath.section][indexPath.row]
         } else {
-            group = searchGroups[indexPath.row]
+            //group = searchGroups[indexPath.section][indexPath.row]
         }
         
         
         cell.rootView.tag = indexPath.row
+        
+        cell.rootView.accessibilityLabel = "\(indexPath.section),\(indexPath.row)"
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickCell(sender:)))
         
@@ -250,27 +328,44 @@ extension GroupController: UITableViewDataSource {
         return cell
         
     }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection
-        section: Int) -> Int {
-        if isSearching == false {
-            return groups.count
-        } else {
-            return searchGroups.count
-        }
-        return 0
-    }
+    
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection
+//        section: Int) -> Int {
+//        if isSearching == false {
+//            return groups.count
+//        } else {
+//            return searchGroups.count
+//        }
+//        return 0
+//    }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
        // closeFloatingActionButton()
-        searchGroups.removeAll()
-        isSearching = true
-        reload()
+        
+        if searchBar.text != nil {
+            if isSearching == false {
+                searchGroups.removeAll()
+                isSearching = true
+            } else {
+                reload()
+            }
+        } else {
+            searchBar.returnKeyType = .done
+            isSearching = true
+        }
     }
+    
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        if sear
+//    }
+    
+   
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         // TODO: Show Groups
         if searchBar.text != nil {
+            searchGroups.removeAll()
             loadSearchedGroups()
         }
         
@@ -290,7 +385,6 @@ extension GroupController: UITableViewDataSource {
                 }
             }
         })
-
     }
     
 }
