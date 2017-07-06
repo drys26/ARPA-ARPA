@@ -31,6 +31,7 @@ class LoginViewController: UIViewController , GIDSignInDelegate , GIDSignInUIDel
         
         setupButton()
         
+        try! Auth.auth().signOut()
         
          Auth.auth().addStateDidChangeListener({ (auth, user) in
             if user != nil {

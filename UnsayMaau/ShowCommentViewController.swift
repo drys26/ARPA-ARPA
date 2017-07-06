@@ -14,6 +14,12 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     // MARK: Properties
     
+    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var commentView: UIView!
+    
+    var heightAdded: Bool = false
+    
     var comments = [Comment]()
     
     var post: Post!
@@ -30,9 +36,6 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     var isImage = false
     
-    
-    @IBOutlet weak var userImageView: UIImageView!
-    
     @IBOutlet weak var userCommentTextView: UITextView!
     
     @IBOutlet weak var commentTable: UITableView!
@@ -44,7 +47,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         let commentID = commentRef.childByAutoId().key
         
         
-        var commentDictionary = ["sender_id":uid!,"comment": userCommentTextView.text,"comment_type": "text"] as [String : Any]
+        let commentDictionary = ["sender_id":uid!,"comment": userCommentTextView.text,"comment_type": "text"] as [String : Any]
         
         commentRef.child(commentID).setValue(commentDictionary)
         
@@ -54,21 +57,58 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         
         userCommentTextView.text = ""
         
-    }  
+        
+    }
 
+    
+    func textViewDidChange(_ textView: UITextView) {
+        let fixedWidth = textView.frame.size.width
+        let fixedHeight = textView.frame.size.height
+        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        var newFrame = textView.frame
+        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+        textView.frame = newFrame
+        
+            if textView.frame.size.height > fixedHeight {
+                heightConstraint.constant = 10 + textView.frame.size.height + 8
+                
+            }
+        
+        
+    }
+    
+    
+    
+    func keyboardWillShow(notification: Notification){
+    
+        
+    }
+    
+    func keyboardWillHide(notification: Notification){
+    
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        userCommentTextView.delegate = self
         
         // Set the border
         
-        userCommentTextView.layer.borderWidth = 0.5
-        userCommentTextView.layer.borderColor = UIColor.blue.cgColor
-        userCommentTextView.isScrollEnabled = true
-        
-        
-        
+        userCommentTextView.layer.borderWidth = 0.6
+        userCommentTextView.layer.borderColor = UIColor.lightGray.cgColor
+        userCommentTextView.isScrollEnabled = false
+        userCommentTextView.textColor = UIColor.darkText
+        userCommentTextView.layer.cornerRadius = 5
+//        userCommentTextView.sizeToFit()
+        userCommentTextView.layoutIfNeeded()
+        let height = userCommentTextView.sizeThatFits(CGSize(width: userCommentTextView.frame.size.width, height: CGFloat.greatestFiniteMagnitude)).height
+        userCommentTextView.contentSize.height = height
         // set the datasource and delegate
         
         commentTable.delegate = self
@@ -90,6 +130,11 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         getUserData()
         
         loadComments()
+        
+        
+        commentTable.estimatedRowHeight = 80
+        commentTable.rowHeight = UITableViewAutomaticDimension
+        
     }
     
     func backViewController(){
@@ -134,7 +179,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             self.user = User(snap: snapshot)
             //this code is just to show the UserClass was populated.
             print(self.user.displayName)
-            self.userImageView.sd_setImage(with: URL(string: self.user.photoUrl))
+//            self.userImageView.sd_setImage(with: URL(string: self.user.photoUrl))
         })
     }
     
