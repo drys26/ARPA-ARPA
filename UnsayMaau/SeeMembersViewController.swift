@@ -368,6 +368,7 @@ class SeeMembersViewController: UIViewController {
 }
 
 extension SeeMembersViewController: UITableViewDelegate {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return users.count
     }

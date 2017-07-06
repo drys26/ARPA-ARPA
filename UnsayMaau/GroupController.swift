@@ -40,7 +40,9 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     var uid = Auth.auth().currentUser?.uid
     
-    var sections = ["Your Group","Trending"]
+    var sections = [String]()
+    
+    //["Your Group","Trending"]
     
     @IBOutlet weak var groupTableView: UITableView!
     
@@ -52,7 +54,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         
-        isSearching = false
+        
         
         searchBar.delegate = self
         
@@ -146,24 +148,97 @@ class GroupController: UIViewController,UISearchBarDelegate {
 //            })
 //        }
         
-        
+        if groups.count == 0 {
+            self.groups.append([Group]())
+            self.groups.append([Group]())
+            self.sections.append("Your Group")
+            self.sections.append("Trending")
+        }
+
         if isSearching == true {
             searchGroups.removeAll()
             loadSearchedGroups()
         } else {
-            refGroups.queryOrdered(byChild: "timestamp").observeSingleEvent(of: .value, with: { (snapshot) in
-                if let rootPosts = snapshot.children.allObjects as? [DataSnapshot] {
+            rootRef.child("Users_Groups").child(uid!).child("Member_Groups").observeSingleEvent(of: .value, with: { (rootSnapshot) in
+                if rootSnapshot.childrenCount != 0 {
                     
+                    if self.sections[0] == "Trending" {
+                        self.sections.insert("Your Group", at: 0)
+                        self.groups.insert([Group](), at: 0)
+                        //self.sections.remove(at: 1)
+                    }
+
+                    
+                    let valueDictionary = rootSnapshot.value as! [String: Any]
+                    
+                    for (key,_) in valueDictionary {
+                        
+                        self.refGroups.child(key).observeSingleEvent(of: .value, with: { (snapshot) in
+                            
+                            let yourGroup = Group(snap: snapshot)
+                            
+                            // Get your joined groups
+                            
+                            if !self.groups[0].contains(yourGroup) {
+                                self.groups[0].append(yourGroup)
+                                self.reload()
+                            }
+                            
+                        })
+                    }
+                    
+                } else {
+                    if self.sections[0] == "Your Group" {
+                        self.sections.remove(at: 0)
+                        self.groups.remove(at: 0)
+                    }
                 }
+                
+                self.refGroups.queryOrdered(byChild: "timestamp").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let rootGroups = snapshot.children.allObjects as? [DataSnapshot] {
+                        
+                        if rootGroups.count != 0 {
+                            
+                            if !self.sections.contains("Trending") {
+                                self.sections.insert("Trending", at: self.sections.count - 1)
+                                //self.sections.remove(at: self.sections.count - 1)
+                            }
+                            
+                            
+                            
+                            for groupSnap in rootGroups {
+                                
+                                let trendingGroup = Group(snap: groupSnap)
+                                
+                                print(trendingGroup.groupName)
+                                
+                                
+                                let i = self.groups.count - 1
+                                
+                                if !self.groups[i - 1].contains(trendingGroup) && !self.groups[i].contains(trendingGroup) && trendingGroup.groupStatus == false {
+                                    self.groups[i].append(trendingGroup)
+                                    print(trendingGroup.groupId)
+                                    self.reload()
+                                }
+                            }
+                            
+                        }
+                        
+                        
+                    }
                     
+                })
+                
+                
             })
+            
         }
-        
         refreshControl.endRefreshing()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        isSearching = false
         groupTableView.delegate = self
         groupTableView.dataSource = self
         rootRef = Database.database().reference()
@@ -211,14 +286,21 @@ class GroupController: UIViewController,UISearchBarDelegate {
                 group1 = searchGroups[rootView.tag]
             }
             
-            print(group1.groupId)
+            print("Group 1 \(group1.groupId)")
+            print("Group 1 \(group1.members.count)")
+            print("Group 1 \(group1.admins.count)")
+
+            rootRef.child("Groups").child(group1.groupId).observeSingleEvent(of: .value, with: {(snapshot) in
             
-            
-            
-//            group1.groupRef.observeSingleEvent(of: .value, with: {(snapshot) in
-//            
-//                let newGroup = Group(snap: snapshot)
-//                
+                let newGroup = Group(snap: snapshot)
+                
+                print(snapshot)
+                
+                print("NewGroup \(newGroup.groupId)")
+                print("NewGroup \(newGroup.members.count)")
+                print("NewGroup \(newGroup.admins.count)")
+                
+                
 //                if newGroup.members.contains(self.user) || newGroup.admins.contains(self.user) {
 //                    // TODO: Enter group view controller
 //                    // and display data
@@ -228,7 +310,17 @@ class GroupController: UIViewController,UISearchBarDelegate {
 //                    self.refGroups.child(group1.groupId).updateChildValues(pendingDictionary)
 //                    self.showAlertController(message: "Please wait for response", title: "Request Send")
 //                }
-//            })
+                
+                if newGroup.members.contains(self.user) || newGroup.admins.contains(self.user) {
+                    // TODO: Enter group view controller
+                    // and display data
+                    self.performSegue(withIdentifier: "goToGroupPage", sender: newGroup)
+                } else if !newGroup.admins.contains(self.user) || !newGroup.members.contains(self.user)  {
+                    let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
+                    self.refGroups.child(newGroup.groupId).updateChildValues(pendingDictionary)
+                    self.showAlertController(message: "Please wait for response", title: "Request Send")
+                }
+            })
             
 //            if group1.members.contains(self.user) || group1.admins.contains(self.user) {
 //                // TODO: Enter group view controller
@@ -267,6 +359,10 @@ class GroupController: UIViewController,UISearchBarDelegate {
 
 extension GroupController: UITableViewDelegate {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return self.groups[section].count
@@ -274,19 +370,19 @@ extension GroupController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section < sections.count && groups[section].count > 0 {
+        if section < sections.count { //&& groups[section].count > 0
             return sections[section]
         }
         return nil
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 && sections[section] == "Your Group" {
-            return tableView.sectionHeaderHeight + 17
+        if section == 0 {
+            return tableView.sectionHeaderHeight + 35
         }
-        if groups[section].count == 0 {
-            return 0.0
-        }
+//        if groups[section].count == 0 {
+//            return 0.01
+//        }
         return tableView.sectionHeaderHeight
     }
     
