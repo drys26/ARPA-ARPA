@@ -150,7 +150,6 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
         cell.userSwitch.tag = indexPath.row
         cell.userSwitch.addTarget(self, action: #selector(self.inviteUser(sender:)), for: .touchUpInside)
         return cell
-        
     }
     
     func inviteUser(sender: UISwitch){

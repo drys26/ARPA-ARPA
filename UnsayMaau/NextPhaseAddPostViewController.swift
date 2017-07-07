@@ -216,6 +216,7 @@ class NextPhaseAddPostViewController: UIViewController {
         
         postTextField.layer.borderWidth = 0.5
         postTextField.layer.borderColor = UIColor.blue.cgColor
+        postTextField.layer.cornerRadius = 5
         postTextField.isScrollEnabled = false
         
         postTextField.sizeToFit()

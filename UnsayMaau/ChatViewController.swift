@@ -33,8 +33,11 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate , UI
         // Add View Controller as Child View Controller
         self.add(asChildViewController: viewController)
         
+        
+        
         return viewController
     }()
+    
     
     // MARK: Properties
 //    var messages = [JSQMessage]()
@@ -139,7 +142,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate , UI
         
         // Hide the navigation bar on the this view controller
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-
+        
         
         //add(asChildViewController: containerChatView)
 

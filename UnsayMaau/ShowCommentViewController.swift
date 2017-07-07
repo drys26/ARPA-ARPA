@@ -14,6 +14,13 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     // MARK: Properties
     
+    @IBOutlet weak var commentButton: UIButton!
+    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var commentView: UIView!
+    
+    var heightAdded: Bool = false
+    
     var comments = [Comment]()
     
     var post: Post!
@@ -30,45 +37,115 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     var isImage = false
     
-    
-    @IBOutlet weak var userImageView: UIImageView!
-    
     @IBOutlet weak var userCommentTextView: UITextView!
     
     @IBOutlet weak var commentTable: UITableView!
     
     @IBAction func commentAction(_ sender: Any) {
         
-        let commentRef = ref.child("Post_Comment").child(post.postKey)
-        
-        let commentID = commentRef.childByAutoId().key
-        
-        
-        var commentDictionary = ["sender_id":uid!,"comment": userCommentTextView.text,"comment_type": "text"] as [String : Any]
-        
-        commentRef.child(commentID).setValue(commentDictionary)
-        
-        let timestamp = NSDate().timeIntervalSince1970 * 1000
-        
-        post.postRef.updateChildValues(["timestamp": 0 - timestamp])
-        
-        userCommentTextView.text = ""
-        
-    }  
 
+            let commentRef = ref.child("Post_Comment").child(post.postKey)
+            
+            let commentID = commentRef.childByAutoId().key
+            
+            
+            let commentDictionary = ["sender_id":uid!,"comment": userCommentTextView.text,"comment_type": "text"] as [String : Any]
+            
+            commentRef.child(commentID).setValue(commentDictionary)
+            
+            let timestamp = NSDate().timeIntervalSince1970 * 1000
+            
+            post.postRef.updateChildValues(["timestamp": 0 - timestamp])
+            
+            userCommentTextView.text = ""
+            heightConstraint.constant = 50
+        
+        
+    }
+
+    
+    func textViewDidChange(_ textView: UITextView) {
+        
+        if textView == userCommentTextView {
+            
+            let fixedWidth = textView.frame.size.width
+            let fixedHeight = textView.frame.size.height
+            textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+            let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+            var newFrame = textView.frame
+            newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+            textView.frame = newFrame
+            
+            
+            if textView.frame.size.height != fixedHeight {
+                heightConstraint.constant = 10 + textView.frame.size.height + 8
+            }
+            
+            if textView.text == "" {
+                commentButton.isEnabled = false
+            }
+            else{
+                commentButton.isEnabled = true
+            }
+        }
+        else {
+            
+            let currentOffset = commentTable.contentOffset
+            UIView.setAnimationsEnabled(false)
+            commentTable.beginUpdates()
+            commentTable.endUpdates()
+            UIView.setAnimationsEnabled(true)
+            commentTable.setContentOffset(currentOffset, animated: false)
+            
+        }
+        
+        
+    }
+    
+    
+    
+    
+    func keyboardWillShow(notification: Notification){
+    
+        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame: NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        let keyboardHeight = keyboardRectangle.height
+        
+        UIView.animate(withDuration: 0.5) { 
+            self.bottomConstraint.constant = keyboardHeight
+            self.view.layoutIfNeeded()
+        }
+        
+        
+    }
+    
+    func keyboardWillHide(notification: Notification){
+        bottomConstraint.constant = 0
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        userCommentTextView.delegate = self
         
         // Set the border
         
-        userCommentTextView.layer.borderWidth = 0.5
-        userCommentTextView.layer.borderColor = UIColor.blue.cgColor
-        userCommentTextView.isScrollEnabled = true
-        
-        
-        
+        userCommentTextView.layer.borderWidth = 0.6
+        userCommentTextView.layer.borderColor = UIColor.lightGray.cgColor
+        userCommentTextView.isScrollEnabled = false
+        userCommentTextView.textColor = UIColor.darkText
+        userCommentTextView.layer.cornerRadius = 5
+//        userCommentTextView.sizeToFit()
+        userCommentTextView.layoutIfNeeded()
+        let height = userCommentTextView.sizeThatFits(CGSize(width: userCommentTextView.frame.size.width, height: CGFloat.greatestFiniteMagnitude)).height
+        userCommentTextView.contentSize.height = height
         // set the datasource and delegate
         
         commentTable.delegate = self
@@ -90,6 +167,15 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         getUserData()
         
         loadComments()
+        
+        
+        commentTable.estimatedRowHeight = 70
+        
+        commentTable.rowHeight = UITableViewAutomaticDimension
+        
+        commentTable.tableFooterView = UIView()
+        
+        
     }
     
     func backViewController(){
@@ -99,8 +185,11 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     func reload(){
         DispatchQueue.main.async {
             self.commentTable.reloadData()
+            
+            
         }
     }
+    
     
     override func viewDidDisappear(_ animated: Bool) {
         commentRef.removeObserver(withHandle: commentRefHandle)
@@ -121,6 +210,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             self.comments.append(comment)
             
             self.reload()
+            
         })
         
         
@@ -134,7 +224,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             self.user = User(snap: snapshot)
             //this code is just to show the UserClass was populated.
             print(self.user.displayName)
-            self.userImageView.sd_setImage(with: URL(string: self.user.photoUrl))
+//            self.userImageView.sd_setImage(with: URL(string: self.user.photoUrl))
         })
     }
     
@@ -173,14 +263,24 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
             
-            textView.resignFirstResponder()
-            textView.isUserInteractionEnabled = false
+            if textView != userCommentTextView {
             
-            let comment = comments[textView.tag]
+                textView.resignFirstResponder()
+                textView.isUserInteractionEnabled = false
+                
+                let comment = comments[textView.tag]
+                
+                textView.isEditable = false
+                textView.layer.borderWidth = 0
+                textView.layer.borderColor = UIColor.clear.cgColor
+                self.userCommentTextView.isEditable = true
+                commentRef.child(comment.commentKey).updateChildValues(["comment": textView.text])
+                
+                return false
+
             
-            commentRef.child(comment.commentKey).updateChildValues(["comment": textView.text])
+            }
             
-            return false
         }
         return true
     }
@@ -206,6 +306,11 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             let cell = commentTable.cellForRow(at: IndexPath(row: row!, section: 0)) as! CommentTableViewCell
             
             cell.commentTextView.isUserInteractionEnabled = true
+            self.userCommentTextView.isEditable = false
+            cell.commentTextView.isEditable = true
+            cell.commentTextView.layer.borderWidth = 1
+            cell.commentTextView.layer.borderColor = UIColor.lightGray.cgColor
+            cell.commentTextView.becomeFirstResponder()
             
             print("edit")
         } else if access! == "delete" {
@@ -320,6 +425,8 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         cell.commentTextView.isUserInteractionEnabled = false
         cell.commentTextView.delegate = self
         cell.commentTextView.tag = indexPath.row
+        
+        cell.commentImageView.layer.cornerRadius = cell.commentImageView.frame.size.width / 2
         
         if cell.buttonStackView.subviews.count == 0 {
             if comment.userCommentID == uid! {

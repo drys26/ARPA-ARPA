@@ -9,7 +9,7 @@
 import Foundation
 import Firebase
 
-class PendingGroup {
+class PendingGroup: Equatable {
 
     var ref: DatabaseReference
     var groupId: String
@@ -19,5 +19,9 @@ class PendingGroup {
         self.ref = snap.ref
         self.groupId = snap.key
         self.userId = snap.value as! String
+    }
+    
+    static func == (lhs: PendingGroup, rhs: PendingGroup) -> Bool {
+        return lhs.groupId == rhs.groupId
     }
 }
