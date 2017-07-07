@@ -40,7 +40,6 @@ protocol FeedProtocol {
     var posts: [Post] {get set}
     var ref: DatabaseReference {get set}
     var uid: String {get set}
-    var user: User {get set}
     var refresher:UIRefreshControl {get set}
     
     // Methods

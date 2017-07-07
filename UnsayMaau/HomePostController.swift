@@ -45,6 +45,11 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
 //            getUserPost()
 //        }
         
+        if ref == nil {
+            ref = Database.database().reference()
+            getUserData()
+        }
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -78,13 +83,11 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             homeCollectionView.addSubview(refresher)
         }
         
-        if ref == nil {
-            ref = Database.database().reference()
-            getUserData()
-            DispatchQueue.main.async {
-                self.showPost()
-            }
-        }
+//        if ref != nil {
+//            DispatchQueue.main.async {
+//                self.showPost()
+//            }
+//        }
         
         // Set the Delegates of the collection to self
         
@@ -119,6 +122,11 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
 //            print(self.user.displayName)
 //            print(self.user.photoUrl)
 //            print(self.user.followingIDs)
+            
+            
+            DispatchQueue.main.async {
+                self.showPost()
+            }
         })
     }
     
@@ -168,7 +176,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
 //        let postRef = ref.child("Posts").qu
         ref.child("Posts").queryOrdered(byChild: "timestamp").observeSingleEvent(of: .value, with: {(snapshot) in
             //print(snapshot)
-            self.getUserData()
+            
             if let rootPosts = snapshot.children.allObjects as? [DataSnapshot] {
                 for rootPost in rootPosts {
                     let post = Post(post: rootPost)
@@ -223,10 +231,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         var followerDictionary = [String:Any]()
         var followingDictionary = [String:Any]()
         if sender.titleLabel?.text == "Follow" {
-            followingDictionary["following"] = ["\(post.authorImageID)":true]
-            ref.child("Users").child(uid!).updateChildValues(followingDictionary)
-            followerDictionary["followers"] = ["\(uid!)":true]
-            ref.child("Users").child(post.authorImageID).updateChildValues(followerDictionary)
+            ref.child("Users").child(uid!).child("following").updateChildValues(["\(post.authorImageID)":true])
+            ref.child("Users").child(post.authorImageID).child("followers").updateChildValues([uid!:true])
             sender.setTitle("Unfollow", for: .normal)
         } else if sender.titleLabel?.text == "Unfollow" {
             ref.child("Users").child(uid!).child("following").child(post.authorImageID).removeValue()
@@ -610,7 +616,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         return (returnStackView , labelViews , textView)
     }
     
-    func voteImage(sender: UITapGestureRecognizer){
+    func voteImage(sender: UITapGestureRecognizer) {
         
         if let imageView = sender.view as? UIImageView {
             
