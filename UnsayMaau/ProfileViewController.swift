@@ -120,8 +120,9 @@ class ProfileViewController: UIViewController {
         self.view.bringSubview(toFront: floats)
         
         profileImage.layer.cornerRadius = profileImage.layer.frame.size.width / 2
-        
-        
+        profileImage.layer.borderWidth = 3
+        profileImage.layer.borderColor = UIColor.white.cgColor
+
         
     }
     

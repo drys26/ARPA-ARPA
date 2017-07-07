@@ -12,7 +12,7 @@ import Firebase
 import SDWebImage
 import Photos
 
-class ContainerChatViewController: JSQMessagesViewController , UINavigationControllerDelegate , UIImagePickerControllerDelegate {
+class ContainerChatViewController: JSQMessagesViewController , UINavigationControllerDelegate , UIImagePickerControllerDelegate, JSQMessagesCollectionViewCellDelegate {
     
     // MARK: Properties
     var messages = [JSQMessage]()
@@ -38,6 +38,67 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
         didSet {
             title = group?.groupName
         }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToFullScreenImage" {
+            if let photo = sender as? UIImage {
+                let fullscreen = segue.destination as! FullScreenImageController
+                fullscreen.photo = photo
+                fullscreen.newSize = photo.size
+            }
+        }
+    }
+    
+    func messagesCollectionViewCellDidTapAvatar(_ cell: JSQMessagesCollectionViewCell!) {
+        print("tapped avatar")
+    }
+    
+    func messagesCollectionViewCellDidTap(_ cell: JSQMessagesCollectionViewCell!, atPosition position: CGPoint) {
+        print("tapped cell")
+    }
+    
+    func messagesCollectionViewCellDidTapMessageBubble(_ cell: JSQMessagesCollectionViewCell!) {
+//        if let test = self.getImage(indexPath: IndexPath(row: cell.tag, section: 0) {
+//            selectedImage = test
+//            self.performSegue(withIdentifier: "showMedia", sender: self)
+//        }
+        
+        print("\(IndexPath(row: cell.tag, section: 0))")
+        
+        let indexPath = IndexPath(row: cell.tag, section: 0)
+        
+        let message = self.messages[indexPath.row]
+        
+        if message.isMediaMessage {
+            if let photo = message.media as? JSQPhotoMediaItem{
+                print("tapped photo")
+//                let photoMessage = self.photoMessageMap["photo_url"] as! String
+//                print(photoMessage)
+                print(photo.image)
+                print(photo.image.size)
+                self.performSegue(withIdentifier: "goToFullScreenImage", sender: photo.image)
+                print("\(message.senderDisplayName)")
+                
+                
+            }
+            else if let video = message.media as? JSQVideoMediaItem{
+                print("tapped video")
+                
+            }
+            else if let audio = message.media as? JSQAudioMediaItem{
+                print("tapped audio")
+            }
+        }
+        else{
+            print("tapped is text")
+        }
+        
+        
+    }
+    
+    func messagesCollectionViewCell(_ cell: JSQMessagesCollectionViewCell!, didPerformAction action: Selector!, withSender sender: Any!) {
+        
     }
     
     private var messageRef: DatabaseReference!
@@ -67,6 +128,8 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
         messageRef = self.databaseRef.child("Group_Messages").child(group.groupId)
         observeMessages()
         
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
         
     }
 
@@ -169,6 +232,8 @@ class ContainerChatViewController: JSQMessagesViewController , UINavigationContr
         }
         cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.size.width / 2
         cell.avatarImageView.clipsToBounds = true
+        cell.delegate = self
+        cell.tag = indexPath.row
         return cell
     }
     

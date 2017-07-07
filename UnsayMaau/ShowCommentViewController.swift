@@ -76,6 +76,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
             textView.frame = newFrame
             
+            
             if textView.frame.size.height != fixedHeight {
                 heightConstraint.constant = 10 + textView.frame.size.height + 8
             }
@@ -106,16 +107,28 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     func keyboardWillShow(notification: Notification){
     
+        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame: NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        let keyboardHeight = keyboardRectangle.height
+        
+        UIView.animate(withDuration: 0.5) { 
+            self.bottomConstraint.constant = keyboardHeight
+            self.view.layoutIfNeeded()
+        }
+        
         
     }
     
     func keyboardWillHide(notification: Notification){
-    
+        bottomConstraint.constant = 0
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -161,6 +174,8 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         commentTable.rowHeight = UITableViewAutomaticDimension
         
         commentTable.tableFooterView = UIView()
+        
+        
     }
     
     func backViewController(){
@@ -170,8 +185,11 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     func reload(){
         DispatchQueue.main.async {
             self.commentTable.reloadData()
+            
+            
         }
     }
+    
     
     override func viewDidDisappear(_ animated: Bool) {
         commentRef.removeObserver(withHandle: commentRefHandle)
@@ -192,6 +210,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             self.comments.append(comment)
             
             self.reload()
+            
         })
         
         
@@ -254,7 +273,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
                 textView.isEditable = false
                 textView.layer.borderWidth = 0
                 textView.layer.borderColor = UIColor.clear.cgColor
-                
+                self.userCommentTextView.isEditable = true
                 commentRef.child(comment.commentKey).updateChildValues(["comment": textView.text])
                 
                 return false
@@ -287,6 +306,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             let cell = commentTable.cellForRow(at: IndexPath(row: row!, section: 0)) as! CommentTableViewCell
             
             cell.commentTextView.isUserInteractionEnabled = true
+            self.userCommentTextView.isEditable = false
             cell.commentTextView.isEditable = true
             cell.commentTextView.layer.borderWidth = 1
             cell.commentTextView.layer.borderColor = UIColor.lightGray.cgColor
