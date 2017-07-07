@@ -56,7 +56,7 @@ class ProfileViewController: UIViewController {
             self.ref.child("Users_Posts").child(self.uid!).observeSingleEvent(of: .value, with: { (snapshot) in
                 self.postLabel.text = "\(snapshot.childrenCount.hashValue)"
             })
-            self.ref.child("Users_Groups").child(self.uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.ref.child("Users_Groups").child(self.uid!).child("Member_Groups").observeSingleEvent(of: .value, with: { (snapshot) in
                 self.groupLabel.text = "\(snapshot.childrenCount.hashValue)"
             })
             self.coverImage.sd_setImage(with: URL(string: self.user.coverPhotoUrl))
@@ -68,10 +68,9 @@ class ProfileViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
 
-        
-        
         var controllerArray: [UIViewController] = []
         
         let firstVC = storyboard?.instantiateViewController(withIdentifier: "ProfileLiveController")

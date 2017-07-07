@@ -140,6 +140,7 @@ class AcceptGroupViewController: UIViewController , UITableViewDelegate , UITabl
         if access == "accept" {
             print("accept")
             rootRef.child("Groups").child(pendingGroup.groupId).child("members").updateChildValues([uid!:true])
+            rootRef.child("Users_Groups").child(uid!).child("Member_Groups").updateChildValues([pendingGroup.groupId:true])
             removeAction()
         } else {
             print("decline")

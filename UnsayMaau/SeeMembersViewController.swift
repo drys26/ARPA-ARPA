@@ -558,6 +558,7 @@ extension SeeMembersViewController: UITableViewDataSource {
         if access! == "accept" {
             group.groupRef.child("pending_members").child(user.userId).removeValue()
             group.groupRef.child("members").updateChildValues(["\(user.userId)": true])
+            rootRef.child("Users_Groups").child(user.userId).child("Member_Groups").updateChildValues([group.groupId:true])
             removeUsers()
         } else if access! == "decline" {
             group.groupRef.child("pending_members").child(user.userId).removeValue()

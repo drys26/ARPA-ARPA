@@ -27,12 +27,15 @@ class Post: Equatable {
     
     var postKey: String
     
+    var postStatus: Bool
     
     init(post: DataSnapshot) {
         self.postRef = post.ref
         self.postKey = post.key
         self.postIsFinished = false
+        
         let postDictionary = post.value as! [String: Any]
+        self.postStatus = postDictionary["private_status"] as! Bool
         self.postDescription = postDictionary["post_description"] as! String
         //self.postImageUrl = postDictionary["post_photo_url"] as! String
         let authorInfo = postDictionary["author_info"] as! String

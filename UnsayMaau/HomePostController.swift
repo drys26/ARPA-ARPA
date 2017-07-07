@@ -45,6 +45,11 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
 //            getUserPost()
 //        }
         
+        if ref == nil {
+            ref = Database.database().reference()
+            getUserData()
+        }
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -78,9 +83,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             homeCollectionView.addSubview(refresher)
         }
         
-        if ref == nil {
-            ref = Database.database().reference()
-            getUserData()
+        if ref != nil {
             DispatchQueue.main.async {
                 self.showPost()
             }
@@ -170,7 +173,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
 //        let postRef = ref.child("Posts").qu
         ref.child("Posts").queryOrdered(byChild: "timestamp").observeSingleEvent(of: .value, with: {(snapshot) in
             //print(snapshot)
-            self.getUserData()
+            
             if let rootPosts = snapshot.children.allObjects as? [DataSnapshot] {
                 for rootPost in rootPosts {
                     let post = Post(post: rootPost)
@@ -610,7 +613,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         return (returnStackView , labelViews , textView)
     }
     
-    func voteImage(sender: UITapGestureRecognizer){
+    func voteImage(sender: UITapGestureRecognizer) {
         
         if let imageView = sender.view as? UIImageView {
             

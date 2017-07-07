@@ -184,6 +184,10 @@ class GroupController: UIViewController,UISearchBarDelegate {
                                 self.reload()
                             }
                             
+                            if self.groups[1].contains(yourGroup) {
+                                self.groups[1].remove(at: self.groups[1].index(of: yourGroup)!)
+                                self.reload()
+                            }
                         })
                     }
                     
@@ -211,8 +215,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
                                 let trendingGroup = Group(snap: groupSnap)
                                 
                                 print(trendingGroup.groupName)
-                                
-                                
+  
                                 let i = self.groups.count - 1
                                 
                                 if !self.groups[i - 1].contains(trendingGroup) && !self.groups[i].contains(trendingGroup) && trendingGroup.groupStatus == false {
@@ -220,6 +223,17 @@ class GroupController: UIViewController,UISearchBarDelegate {
                                     print(trendingGroup.groupId)
                                     self.reload()
                                 }
+                                
+                                
+//                                if self.groups[i - 1].contains(trendingGroup) && self.groups[i].count != 0 {
+//                                    // Remove from trending
+//                                    self.groups[i].remove(at: self.groups[i].index(of: trendingGroup)!)
+//                                    self.reload()
+//                                }
+                                
+                                
+                                
+                                
                             }
                             
                         }
@@ -242,13 +256,14 @@ class GroupController: UIViewController,UISearchBarDelegate {
         groupTableView.delegate = self
         groupTableView.dataSource = self
         rootRef = Database.database().reference()
+        getUserData()
         rootRef.observeSingleEvent(of: .value, with: {(snapshot) in
             if snapshot.hasChild("Groups") {
                 self.refGroups = self.rootRef.child("Groups")
                 self.loadGroups()
             }
         })
-        getUserData()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -292,7 +307,29 @@ class GroupController: UIViewController,UISearchBarDelegate {
 
             rootRef.child("Groups").child(group1.groupId).observeSingleEvent(of: .value, with: {(snapshot) in
             
+                
+                let valueDictionary = snapshot.value as! [String: Any]
+                
+                
+                var membersDictionary = [String: Any]()
+                
+                var adminDictionary = [String: Any]()
+                
+                if snapshot.hasChild("members") {
+                    membersDictionary = valueDictionary["members"] as! [String: Any]
+                }
+                
+                if snapshot.hasChild("admin_members") {
+                    adminDictionary = valueDictionary["admin_members"] as! [String: Any]
+                }
+ 
+                let isAdmin = adminDictionary[self.user.userId] != nil
+                
+                let isMember = membersDictionary[self.user.userId] != nil
+                
+                
                 let newGroup = Group(snap: snapshot)
+                
                 
                 print(snapshot)
                 
@@ -311,11 +348,11 @@ class GroupController: UIViewController,UISearchBarDelegate {
 //                    self.showAlertController(message: "Please wait for response", title: "Request Send")
 //                }
                 
-                if newGroup.members.contains(self.user) || newGroup.admins.contains(self.user) {
+                if isAdmin || isMember {
                     // TODO: Enter group view controller
                     // and display data
                     self.performSegue(withIdentifier: "goToGroupPage", sender: newGroup)
-                } else if !newGroup.admins.contains(self.user) || !newGroup.members.contains(self.user)  {
+                } else if !isAdmin || !isMember  {
                     let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
                     self.refGroups.child(newGroup.groupId).updateChildValues(pendingDictionary)
                     self.showAlertController(message: "Please wait for response", title: "Request Send")
