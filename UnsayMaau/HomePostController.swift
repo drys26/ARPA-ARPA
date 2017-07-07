@@ -100,10 +100,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
         
-        
-        return CGSize(width: view.frame.width - 20, height: 598)
+        return CGSize(width: view.frame.width - 20, height: 500)
     }
     
     func reloadData(){
@@ -295,6 +293,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
 //        let cellHeight = cell.rootDescriptionCaption.frame.size.height + cell.rootView.frame.size.height + cell.userInfoRootView.frame.size.height
         
+        
+//        cell.frame = CGRect(x: cell.frame.origin.x, y: cell.origin.frame.y, width: cell.frame.size.width, height: <#T##CGFloat#>)
         
 //        cell.frame = CGRect(x: 0, y: 0, width: cell.frame.size.width, height: cellHeight)
         
