@@ -28,6 +28,7 @@
 		103A96B01EF8D42E001DAC9F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103A96AF1EF8D42E001DAC9F /* User.swift */; };
 		103A96B21EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103A96B11EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift */; };
 		103A96B41EF8DD18001DAC9F /* PostImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103A96B31EF8DD18001DAC9F /* PostImages.swift */; };
+		104C038D1F0E44B900176996 /* FullScreenImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104C038C1F0E44B800176996 /* FullScreenImageController.swift */; };
 		104CE02D1F0B479F00D658CB /* SearchGroupUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104CE02C1F0B479F00D658CB /* SearchGroupUsersViewController.swift */; };
 		104CE02F1F0B47D700D658CB /* SearchUsersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104CE02E1F0B47D700D658CB /* SearchUsersTableViewCell.swift */; };
 		10631BE31EF2917C000FB07F /* PostTwoVerticalFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */; };
@@ -102,6 +103,7 @@
 		103A96AF1EF8D42E001DAC9F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		103A96B11EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		103A96B31EF8DD18001DAC9F /* PostImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostImages.swift; sourceTree = "<group>"; };
+		104C038C1F0E44B800176996 /* FullScreenImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullScreenImageController.swift; sourceTree = "<group>"; };
 		104CE02C1F0B479F00D658CB /* SearchGroupUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchGroupUsersViewController.swift; sourceTree = "<group>"; };
 		104CE02E1F0B47D700D658CB /* SearchUsersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchUsersTableViewCell.swift; sourceTree = "<group>"; };
 		10631BE21EF2917C000FB07F /* PostTwoVerticalFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTwoVerticalFrame.swift; sourceTree = "<group>"; };
@@ -272,7 +274,6 @@
 			isa = PBXGroup;
 			children = (
 				1096784C1EF3CB68006CE3E3 /* Helpers.swift */,
-				1091A6611F0A0A8900A62E5D /* AddPostCell.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -290,6 +291,7 @@
 		10FECBC81F0CD0F00075CD36 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				1091A6611F0A0A8900A62E5D /* AddPostCell.swift */,
 				10FECBC21F0C8C5F0075CD36 /* SettingsTableViewCell.swift */,
 				10FECBC91F0CD1220075CD36 /* AcceptGroupTableViewCell.swift */,
 				103A96B11EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift */,
@@ -348,6 +350,7 @@
 				102AC63C1F04A48A00750D6A /* ChatViewController.swift */,
 				102AC63E1F04B22A00750D6A /* ContainerChatViewController.swift */,
 				104CE02C1F0B479F00D658CB /* SearchGroupUsersViewController.swift */,
+				104C038C1F0E44B800176996 /* FullScreenImageController.swift */,
 			);
 			name = Groups;
 			sourceTree = "<group>";
@@ -703,6 +706,7 @@
 				10ABFF791EF2A25C0087F05F /* SelectFrameViewController.swift in Sources */,
 				1096784B1EF3C915006CE3E3 /* Post.swift in Sources */,
 				10FECBD31F0CD65C0075CD36 /* PendingGroup.swift in Sources */,
+				104C038D1F0E44B900176996 /* FullScreenImageController.swift in Sources */,
 				10FECBCC1F0CD3F60075CD36 /* AcceptGroupViewController.swift in Sources */,
 				101E3CE91F02111C003621CC /* AddGroupViewController.swift in Sources */,
 				102329001F05F8010087A73A /* SignUpViewController.swift in Sources */,

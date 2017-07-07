@@ -83,6 +83,13 @@ import Firebase
             var max = 0
             for rootPost in rootSnapshot.children.allObjects as! [DataSnapshot] {
                 let post = Post(post: rootPost)
+                
+                
+                if self.user.followingIDs.contains(post.authorImageID) {
+                    self.posts.remove(at: self.posts.index(of: post)!)
+                    self.reloadData()
+                }
+                
                 if post.postStatus == false && post.authorImageID != self.uid && !self.posts.contains(post) {
                     rootVoteCount.append([Int]())
                     tempPost.append(post)
@@ -162,10 +169,8 @@ import Firebase
         var followerDictionary = [String:Any]()
         var followingDictionary = [String:Any]()
         if sender.titleLabel?.text == "Follow" {
-            followingDictionary["following"] = ["\(post.authorImageID)":true]
-            ref.child("Users").child(uid).updateChildValues(followingDictionary)
-            followerDictionary["followers"] = [uid:true]
-            ref.child("Users").child(post.authorImageID).updateChildValues(followerDictionary)
+            ref.child("Users").child(uid).child("following").updateChildValues(["\(post.authorImageID)":true])
+            ref.child("Users").child(post.authorImageID).child("followers").updateChildValues([uid:true])
             sender.setTitle("Unfollow", for: .normal)
         } else if sender.titleLabel?.text == "Unfollow" {
             ref.child("Users").child(uid).child("following").child(post.authorImageID).removeValue()
@@ -525,203 +530,124 @@ import Firebase
             
             // Check if post is already finished
             
-            refVote.child("Posts").child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
+            
+            if self.user.followingIDs.contains(voteUserID) {
                 
-                let value = snapshot.value as! [String : Any]
-                let finished = value["finished"] as! Bool
-                if finished == true {
-                    self.showAlertController(message: "This post is already done", title: "Finished")
-                } else {
-                    // Check if user already voted
+                let refVote = Database.database().reference()
+                
+                // Check if post is already finished
+                
+                refVote.child("Posts").child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
                     
-                    refVote.child("Users").child(self.uid).child("post_voted").observeSingleEvent(of: .value, with: {(snapshot) in
-                        if snapshot.hasChild(postID) {
-                            self.showAlertController(message: "You already voted for this post.", title: "Done")
-                        }  else {
-                            // Create a Dictionary for votes node
-                            
-                            //                    let voteDictionary = ["\(self.uid!)": true]
-                            //
-                            //                    // Insert to the database
-                            //
-                            //                    refVote.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
-                            //
-                            //                    refVote.child("Users").child(self.uid!).child("post_voted").updateChildValues(["\(postID)": true])
-                            //
-                            //                    refVote.child("Vote_Post").child(imageID).observe(.value, with: {(snapshot) in
-                            //                        let voteCount = snapshot.childrenCount
-                            //                        let label = imageView.viewWithTag(1) as! UILabel
-                            //                        let voteString = "\(voteCount)"
-                            //                        label.text = voteString
-                            //                    })
-                            
-                            // Create a Dictionary for votes node
-                            //
-                            let voteDictionary = ["\(self.uid)": true]
-                            
-                            var max = 0
-                            var arrOfVotes = [Int]()
-                            
-                            // Insert to the database
-                            
-                            let timestamp = NSDate().timeIntervalSince1970 * 1000
-                            
-                            refVote.child("Posts").child(postID).updateChildValues(["timestamp":0 - timestamp])
-                            
-                            refVote.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
-                            
-                            refVote.child("Users").child(self.uid).child("post_voted").updateChildValues(["\(postID)": "\(imageView.tag + 1)"])
-                            
-                            refVote.child("Vote_Post").child(imageID).observeSingleEvent(of: .value, with: {(snapshot) in
-                                let voteCount = snapshot.childrenCount
-                                let rootView = imageView.viewWithTag(0) as! UIView
-                                let label = rootView.viewWithTag(1) as! UILabel
+                    let value = snapshot.value as! [String : Any]
+                    let finished = value["finished"] as! Bool
+                    if finished == true {
+                        self.showAlertController(message: "This post is already done", title: "Finished")
+                    } else {
+                        // Check if user already voted
+                        
+                        refVote.child("Users").child(self.uid).child("post_voted").observeSingleEvent(of: .value, with: {(snapshot) in
+                            if snapshot.hasChild(postID) {
+                                self.showAlertController(message: "You already voted for this post.", title: "Done")
+                            }  else {
+                                
+                                // Create a Dictionary for votes node
                                 //
-                                ////                                let attribText = NSMutableAttributedString(string: " \(voteCount)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
-                                ////
-                                ////                                let imageAttach = NSTextAttachment()
-                                ////                                imageAttach.image = UIImage(named: "crown.png")
-                                ////
-                                ////                                let attribImage = NSAttributedString(attachment: imageAttach)
-                                ////
-                                ////                                let combi = NSMutableAttributedString()
-                                ////                                combi.append(attribImage)
-                                ////                                combi.append(attribText)
-                                //
-                                //                                //label.attributedText = combi
-                                label.text = "\(voteCount)"
+                                let voteDictionary = ["\(self.uid)": true]
                                 
-                                //                                if frameType.contains("TWO") || frameType.contains("THREE") {
-                                //                                    let label = imageView.viewWithTag(1) as! UILabel
-                                //                                    label.text = "\(voteCount)"
-                                //                                } else {
-                                //                                    let rootImage = imageView.viewWithTag(1) as! UIImageView
-                                //                                    let rootView = rootImage.viewWithTag(0) as! UIView
-                                //                                    let label = rootView.viewWithTag(1) as! UILabel
-                                //                                    label.text = "\(voteCount)"
-                                //                                }
+                                var max = 0
+                                var arrOfVotes = [Int]()
                                 
-                                arrOfVotes.append(voteCount.hashValue)
+                                // Insert to the database
                                 
-                            })
-                            refVote.removeAllObservers()
-                            
-                            let root: UIStackView
-                            
-                            
-                            
-                            if frameType.contains("TWO") || frameType.contains("THREE") {
-                                root = imageView.superview as! UIStackView
-                                print(String(describing: root))
-                                for imageViewHolder in root.subviews {
-                                    //let imageViewHolder = root.subviews[i] as! UIImageView
-                                    if imageViewHolder.tag != imageView.tag {
-                                        
-                                        
-                                        let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
-                                        let imageID = imageInfo?[0]
-                                        
-                                        print(imageInfo!)
-                                        print(String(describing: imageViewHolder))
-                                        
-                                        
-                                        
-                                        refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
-                                            let voteCount = snapshot.childrenCount
-                                            let voteString = "\(voteCount)"
-                                            
-                                            if arrOfVotes.count == 1 {
-                                                max = arrOfVotes[0]
-                                            }
-                                            arrOfVotes.append(voteCount.hashValue)
-                                            
-                                            let index = root.subviews.index(of: imageViewHolder)
-                                            
-                                            let rootImage = imageViewHolder as! UIImageView
-                                            let rootView = rootImage.viewWithTag(0) as! UIView
-                                            let label = rootView.viewWithTag(1) as! UILabel
-                                            
-                                            //                                            if arrOfVotes[index!] > max {
-                                            //                                                print(" arrvotes > max")
-                                            //                                                max = arrOfVotes[index!]
-                                            //                                                let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
-                                            //
-                                            //                                                let imageAttach = NSTextAttachment()
-                                            //                                                imageAttach.image = UIImage(named: "crown.png")
-                                            //
-                                            //                                                let attribImage = NSAttributedString(attachment: imageAttach)
-                                            //
-                                            //                                                let combi = NSMutableAttributedString()
-                                            //                                                combi.append(attribImage)
-                                            //                                                combi.append(attribText)
-                                            //
-                                            //                                                label.attributedText = combi
-                                            //                                            } else {
-                                            label.text = voteString
-                                            //}
-                                        })
-                                        
-                                    }
-                                }
-                            } else {
-                                root = imageView.superview?.superview as! UIStackView
+                                let timestamp = NSDate().timeIntervalSince1970 * 1000
                                 
-                                print(String(describing: root))
+                                refVote.child("Posts").child(postID).updateChildValues(["timestamp":0 - timestamp])
                                 
-                                for stackviews in root.subviews {
-                                    for imageViewHolder in stackviews.subviews {
+                                refVote.child("Vote_Post").child(imageID).updateChildValues(voteDictionary)
+                                
+                                refVote.child("Users").child(self.uid).child("post_voted").updateChildValues(["\(postID)": "\(imageView.tag + 1)"])
+                                
+                                refVote.child("Vote_Post").child(imageID).observeSingleEvent(of: .value, with: {(snapshot) in
+                                    let voteCount = snapshot.childrenCount
+                                    let rootView = imageView.viewWithTag(0) as! UIView
+                                    let label = rootView.viewWithTag(1) as! UILabel
+                                    
+                                    label.text = "\(voteCount)"
+                                    
+                                })
+                                refVote.removeAllObservers()
+                                
+                                let root: UIStackView
+                                
+                                if frameType.contains("TWO") || frameType.contains("THREE") {
+                                    root = imageView.superview as! UIStackView
+                                    print(String(describing: root))
+                                    for imageViewHolder in root.subviews {
+                                        //let imageViewHolder = root.subviews[i] as! UIImageView
                                         if imageViewHolder.tag != imageView.tag {
+                                            
                                             let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
                                             let imageID = imageInfo?[0]
                                             
-                                            print(imageInfo!)
-                                            print(String(describing: imageViewHolder))
-                                            
-                                            refVote.child("Vote_Post").child(imageID!).observe(.value, with: {(snapshot) in
+                                            refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
                                                 let voteCount = snapshot.childrenCount
                                                 let voteString = "\(voteCount)"
+                                                
+                                                if arrOfVotes.count == 1 {
+                                                    max = arrOfVotes[0]
+                                                }
+                                                arrOfVotes.append(voteCount.hashValue)
+                                                
+                                                let index = root.subviews.index(of: imageViewHolder)
+                                                
                                                 let rootImage = imageViewHolder as! UIImageView
                                                 let rootView = rootImage.viewWithTag(0) as! UIView
                                                 let label = rootView.viewWithTag(1) as! UILabel
                                                 
-                                                //                                                if arrOfVotes.count == 1 {
-                                                //                                                    max = arrOfVotes[0]
-                                                //                                                }
-                                                //                                                arrOfVotes.append(voteCount.hashValue)
-                                                //                                                let index = root.subviews.index(of: imageViewHolder)
-                                                //
-                                                //                                                if arrOfVotes[index! - 1] > max {
-                                                //                                                    max = arrOfVotes[index! - 1]
-                                                //                                                    let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
-                                                //                                                    
-                                                //                                                    let imageAttach = NSTextAttachment()
-                                                //                                                    imageAttach.image = UIImage(named: "crown.png")
-                                                //                                                    
-                                                //                                                    let attribImage = NSAttributedString(attachment: imageAttach)
-                                                //                                                    
-                                                //                                                    let combi = NSMutableAttributedString()
-                                                //                                                    combi.append(attribImage)
-                                                //                                                    combi.append(attribText)
-                                                //                                                    
-                                                //                                                    label.attributedText = combi
-                                                //                                                } else {
                                                 label.text = voteString
-                                                //}
-                                                
-                                                //label.text = voteString
                                             })
+                                            
+                                        }
+                                    }
+                                } else {
+                                    root = imageView.superview?.superview as! UIStackView
+                                    
+                                    print(String(describing: root))
+                                    
+                                    for stackviews in root.subviews {
+                                        for imageViewHolder in stackviews.subviews {
+                                            if imageViewHolder.tag != imageView.tag {
+                                                let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
+                                                let imageID = imageInfo?[0]
+                                                
+                                                print(imageInfo!)
+                                                print(String(describing: imageViewHolder))
+                                                
+                                                refVote.child("Vote_Post").child(imageID!).observe(.value, with: {(snapshot) in
+                                                    let voteCount = snapshot.childrenCount
+                                                    let voteString = "\(voteCount)"
+                                                    let rootImage = imageViewHolder as! UIImageView
+                                                    let rootView = rootImage.viewWithTag(0) as! UIView
+                                                    let label = rootView.viewWithTag(1) as! UILabel
+                                                    label.text = voteString
+                                                })
+                                            }
                                         }
                                     }
                                 }
+                                
                             }
-                            
-                        }
-                    })
+                        })
+                        
+                        
+                    }
                     
-                    
-                }
-                
-            })
+                })
+            } else {
+                self.showAlertController(message: "Follow the user to vote", title: "")
+            }
+
             
             
         }

@@ -23,11 +23,13 @@ class AcceptGroupViewController: UIViewController , UITableViewDelegate , UITabl
     func loadPendingGroups(){
         let pendingGroupRef = rootRef.child("Users_Groups").child(uid!).child("Pending_Groups")
         
-        pendingGroupRef.observeSingleEvent(of: .value, with: { (snapshot) in
+        pendingGroupRef.observe(.value, with: { (snapshot) in
             for child in snapshot.children.allObjects as! [DataSnapshot] {
                 let pendingGroup = PendingGroup(snap: child)
-                self.pendingGroups.append(pendingGroup)
-                self.reload()
+                if !self.pendingGroups.contains(pendingGroup) {
+                    self.pendingGroups.append(pendingGroup)
+                    self.reload()
+                }
             }
         })
     }
@@ -89,19 +91,7 @@ class AcceptGroupViewController: UIViewController , UITableViewDelegate , UITabl
                 
                 cell.descriptionTextView.attributedText = description
             })
-            
-            
         })
-        
-//        let accept = UIButton(type: .custom)
-//        
-//        button.tag = indexPath.row
-//        
-//        button.setImage(UIImage(named: "invite_members"), for: .normal)
-//        
-//        button.addTarget(self, action: #selector(self.inviteAction(sender:)), for: .touchUpInside)
-//        
-//        cell.buttonStackView.addArrangedSubview(button)
         
         var buttons = [UIButton]()
         

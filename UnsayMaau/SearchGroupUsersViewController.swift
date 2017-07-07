@@ -16,39 +16,51 @@ class SearchGroupUsersViewController: UIViewController , UITableViewDelegate , U
     
     var users = [User]()
     
+    var user: User!
+    
     var group: Group!
     
     var rootRef: DatabaseReference!
     
     var groupHandle: DatabaseHandle!
     
+    var uid = Auth.auth().currentUser?.uid
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         navigationItem.title = "Search user"
-        
-        
 //        navigationItem.titleView = userSearchBar
         // Do any additional setup after loading the view.
         userTableView.delegate = self
         userTableView.dataSource = self
         userSearchBar.delegate = self
         userSearchBar.placeholder = "Search User ..."
-        
-        rootRef = Database.database().reference()
-        
-        observeGroup()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if rootRef == nil {
+            rootRef = Database.database().reference()
+            getUserData()
+            observeGroup()
+        }
+    }
+    
+    func getUserData(){
+        rootRef.child("Users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
+            self.user = User(snap: snapshot)
+        })
     }
     
     func loadSearchUsers(){
         let searchText = userSearchBar.text!
-        let uid = Auth.auth().currentUser?.uid
+        
         let userRef = rootRef.child("Users").queryOrdered(byChild: "search_name").queryStarting(atValue: searchText.lowercased()).queryEnding(atValue: searchText.lowercased() + "\u{f8ff}")
         userRef.observeSingleEvent(of: .value, with: {(snapshot) in
         
             for child in snapshot.children.allObjects as! [DataSnapshot] {
                 let user = User(snap: child)
-                if !child.hasChild("account_status") && user.userId != uid && !self.group.invitedPendingMembers.contains(user) {
+                if !child.hasChild("account_status") && user.userId != self.uid && !self.group.invitedPendingMembers.contains(user) {
                     self.users.append(user)
                     self.reload()
                 }
@@ -96,15 +108,18 @@ class SearchGroupUsersViewController: UIViewController , UITableViewDelegate , U
         cell.userDisplayName.text = user.displayName
         cell.userImageView.sd_setImage(with: URL(string: user.photoUrl))
         
-        let button = UIButton(type: .custom)
-        
-        button.tag = indexPath.row
-        
-        button.setImage(UIImage(named: "invite_members"), for: .normal)
-        
-        button.addTarget(self, action: #selector(self.inviteAction(sender:)), for: .touchUpInside)
-        
-        cell.buttonStackView.addArrangedSubview(button)
+        if self.group.admins.contains(self.user) {
+            
+            let button = UIButton(type: .custom)
+            
+            button.tag = indexPath.row
+            
+            button.setImage(UIImage(named: "invite_members"), for: .normal)
+            
+            button.addTarget(self, action: #selector(self.inviteAction(sender:)), for: .touchUpInside)
+            
+            cell.buttonStackView.addArrangedSubview(button)
+        }
         
         return cell
         

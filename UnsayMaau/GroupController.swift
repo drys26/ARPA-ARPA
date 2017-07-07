@@ -218,12 +218,19 @@ class GroupController: UIViewController,UISearchBarDelegate {
   
                                 let i = self.groups.count - 1
                                 
-                                if !self.groups[i - 1].contains(trendingGroup) && !self.groups[i].contains(trendingGroup) && trendingGroup.groupStatus == false {
+//                                if self.groups.count == 2 {
+//                                    if self.groups[0].contains(trendingGroup) {
+//                                        self.groups[1].remove(at: self.groups[1].index(of: trendingGroup)!)
+//                                        self.reload()
+//                                    }
+//                                }
+                                
+                                if !self.groups[i].contains(trendingGroup) && trendingGroup.groupStatus == false {
                                     self.groups[i].append(trendingGroup)
                                     print(trendingGroup.groupId)
                                     self.reload()
                                 }
-                                
+                                //!self.groups[i - 1].contains(trendingGroup) &&
                                 
 //                                if self.groups[i - 1].contains(trendingGroup) && self.groups[i].count != 0 {
 //                                    // Remove from trending
@@ -304,7 +311,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
             print("Group 1 \(group1.groupId)")
             print("Group 1 \(group1.members.count)")
             print("Group 1 \(group1.admins.count)")
-
+            
             rootRef.child("Groups").child(group1.groupId).observeSingleEvent(of: .value, with: {(snapshot) in
             
                 
@@ -338,16 +345,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
                 print("NewGroup \(newGroup.admins.count)")
                 
                 
-//                if newGroup.members.contains(self.user) || newGroup.admins.contains(self.user) {
-//                    // TODO: Enter group view controller
-//                    // and display data
-//                    self.performSegue(withIdentifier: "goToGroupPage", sender: newGroup)
-//                } else if !newGroup.admins.contains(self.user) || !newGroup.members.contains(self.user)  {
-//                    let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
-//                    self.refGroups.child(group1.groupId).updateChildValues(pendingDictionary)
-//                    self.showAlertController(message: "Please wait for response", title: "Request Send")
-//                }
-                
+            
                 if isAdmin || isMember {
                     // TODO: Enter group view controller
                     // and display data
