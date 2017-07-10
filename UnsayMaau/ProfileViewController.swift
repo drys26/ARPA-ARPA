@@ -13,13 +13,25 @@ import GoogleSignIn
 import Firebase
 
 class ProfileViewController: UIViewController {
+    
+    
+    @IBOutlet weak var groupHeader: UILabel!
+    @IBOutlet weak var followingHeader: UILabel!
+    @IBOutlet weak var followersHeader: UILabel!
+    @IBOutlet weak var postHeader: UILabel!
+    
+    
+    @IBOutlet weak var postStackView: UIStackView!
+    @IBOutlet weak var followersStackView: UIStackView!
 
+    @IBOutlet weak var followingStackView: UIStackView!
+    
+    @IBOutlet weak var groupStackView: UIStackView!
     
     @IBOutlet weak var coverImage: UIImageView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var floats: Floaty!
     @IBOutlet weak var StackViewCounter: UIStackView!
-    
     @IBOutlet weak var postLabel: UILabel!
     @IBOutlet weak var followersLabel: UILabel!
     @IBOutlet weak var followingLabel: UILabel!
@@ -35,13 +47,20 @@ class ProfileViewController: UIViewController {
     
     var ref: DatabaseReference!
     
+    @IBAction func goToFollowers(_ sender: Any) {
+        
+        self.performSegue(withIdentifier: "goToFollowFinder", sender: "followers")
+        
+    }
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return .lightContent
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         navigationController?.setNavigationBarHidden(true, animated: false)
+        
         if ref == nil {
             ref = Database.database().reference()
             getUserData()
@@ -64,13 +83,21 @@ class ProfileViewController: UIViewController {
             self.followingLabel.text = "\(self.user.followingIDs.count)"
             self.profileImage.sd_setImage(with: URL(string: self.user.photoUrl))
             self.userDisplayName.text = self.user.displayName
+            
+//            if self.followersHeader.text != "" && self.followersLabel.text != "" {
+//                print("Added Tap")
+//                
+//                let tap = UITapGestureRecognizer(target: self, action: #selector(self.goToFollowers))
+//                self.followersLabel.addGestureRecognizer(tap)
+//                self.followersHeader.addGestureRecognizer(tap)
+//                
+//            }
+            
         })
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-
         var controllerArray: [UIViewController] = []
         
         let firstVC = storyboard?.instantiateViewController(withIdentifier: "ProfileLiveController")
@@ -121,19 +148,25 @@ class ProfileViewController: UIViewController {
         profileImage.layer.cornerRadius = profileImage.layer.frame.size.width / 2
         profileImage.layer.borderWidth = 3
         profileImage.layer.borderColor = UIColor.white.cgColor
-
-        
+ 
     }
+    
+//    func goToFollowers(sender: UITapGestureRecognizer){
+//        print("Tap")
+//        if let label = sender.view as? UILabel {
+//            
+//        }
+//        
+//        self.performSegue(withIdentifier: "goToFollowFinder", sender: "followers")
+//        
+//    }
     
 
     @IBAction func toogleSettings(_ sender: Any) {
-        
         performSegue(withIdentifier: "goToSettings", sender: nil)
-        
     }
     
     @IBAction func signOutAction(_ sender: Any) {
-        
         try! Auth.auth().signOut()
         GIDSignIn.sharedInstance().signOut()
         dismiss(animated: true, completion: nil)
@@ -148,8 +181,11 @@ class ProfileViewController: UIViewController {
         if segue.identifier == "goToSettings" {
             let svc = segue.destination as! SettingsViewController
             svc.profileImage = self.profileImage.image
+        } else if segue.identifier == "goToFollowFinder" {
+            let sfvc = segue.destination as! SeeFollowsViewController
+            sfvc.user = user
+            sfvc.followType = sender as! String
         }
     }
     
-
 }

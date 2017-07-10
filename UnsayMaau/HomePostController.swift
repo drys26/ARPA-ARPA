@@ -36,6 +36,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     var user: User!
     var refresher:UIRefreshControl!
     
+    var isStarting = false
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -103,10 +105,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
         
-        
-        return CGSize(width: view.frame.width - 20, height: 598)
+        return CGSize(width: view.frame.width - 20, height: 500)
     }
     
     func reloadData(){
@@ -124,11 +124,14 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
 //            print(self.user.displayName)
 //            print(self.user.photoUrl)
 //            print(self.user.followingIDs)
-            
-            
-            DispatchQueue.main.async {
-                self.showPost()
+            if self.isStarting == false {
+                self.isStarting = true
+                DispatchQueue.main.async {
+                    self.showPost()
+                }
             }
+            
+            
         })
     }
     
@@ -181,7 +184,9 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             
             if let rootPosts = snapshot.children.allObjects as? [DataSnapshot] {
                 for rootPost in rootPosts {
+                    
                     let post = Post(post: rootPost)
+                    
                     print(post.postKey)
                     
                     if (self.posts.contains(post) && post.postIsFinished == true) || !self.user.followingIDs.contains(post.authorImageID) {
@@ -301,6 +306,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
 //        let cellHeight = cell.rootDescriptionCaption.frame.size.height + cell.rootView.frame.size.height + cell.userInfoRootView.frame.size.height
         
+        
+//        cell.frame = CGRect(x: cell.frame.origin.x, y: cell.origin.frame.y, width: cell.frame.size.width, height: <#T##CGFloat#>)
         
 //        cell.frame = CGRect(x: 0, y: 0, width: cell.frame.size.width, height: cellHeight)
         

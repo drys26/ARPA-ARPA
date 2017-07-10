@@ -225,12 +225,12 @@ class GroupController: UIViewController,UISearchBarDelegate {
 //                                    }
 //                                }
                                 
-                                if !self.groups[i].contains(trendingGroup) && trendingGroup.groupStatus == false {
+                                if !self.groups[i - 1].contains(trendingGroup) && !self.groups[i].contains(trendingGroup) && trendingGroup.groupStatus == false {
                                     self.groups[i].append(trendingGroup)
                                     print(trendingGroup.groupId)
                                     self.reload()
                                 }
-                                //!self.groups[i - 1].contains(trendingGroup) &&
+                                //
                                 
 //                                if self.groups[i - 1].contains(trendingGroup) && self.groups[i].count != 0 {
 //                                    // Remove from trending

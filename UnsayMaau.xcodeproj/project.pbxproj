@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		100690BB1F1324C20005D851 /* FollowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100690BA1F1324C20005D851 /* FollowTableViewCell.swift */; };
+		100690BD1F13263D0005D851 /* SeeFollowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100690BC1F13263D0005D851 /* SeeFollowsViewController.swift */; };
+		100690BF1F136B860005D851 /* ProfileForOtherUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100690BE1F136B860005D851 /* ProfileForOtherUsersViewController.swift */; };
 		100F2F711F023EBB005E7F27 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 100F2F701F023EBB005E7F27 /* fontawesome-webfont.ttf */; };
 		100F2F731F024DC6005E7F27 /* RootGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100F2F721F024DC6005E7F27 /* RootGroupController.swift */; };
 		101406411EF8CB2100662E1E /* EyeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406401EF8CB2100662E1E /* EyeController.swift */; };
@@ -82,6 +85,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		100690BA1F1324C20005D851 /* FollowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowTableViewCell.swift; sourceTree = "<group>"; };
+		100690BC1F13263D0005D851 /* SeeFollowsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeFollowsViewController.swift; sourceTree = "<group>"; };
+		100690BE1F136B860005D851 /* ProfileForOtherUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileForOtherUsersViewController.swift; sourceTree = "<group>"; };
 		100F2F701F023EBB005E7F27 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		100F2F721F024DC6005E7F27 /* RootGroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootGroupController.swift; sourceTree = "<group>"; };
 		101406401EF8CB2100662E1E /* EyeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeController.swift; sourceTree = "<group>"; };
@@ -300,6 +306,7 @@
 				102B25921F0A095C00049F16 /* CommentTableViewCell.swift */,
 				104CE02E1F0B47D700D658CB /* SearchUsersTableViewCell.swift */,
 				10FECBD41F0CED920075CD36 /* InviteMembersTableViewCell.swift */,
+				100690BA1F1324C20005D851 /* FollowTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -310,6 +317,8 @@
 				10A45DB31EF930FC00880BD3 /* ProfileViewController.swift */,
 				10FECBC41F0C8DDC0075CD36 /* SettingsViewController.swift */,
 				10FECBCB1F0CD3F60075CD36 /* AcceptGroupViewController.swift */,
+				100690BC1F13263D0005D851 /* SeeFollowsViewController.swift */,
+				100690BE1F136B860005D851 /* ProfileForOtherUsersViewController.swift */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -675,6 +684,7 @@
 				101406431EF8CDAC00662E1E /* GroupController.swift in Sources */,
 				103A96B21EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift in Sources */,
 				101E3CED1F0224A9003621CC /* Group.swift in Sources */,
+				100690BB1F1324C20005D851 /* FollowTableViewCell.swift in Sources */,
 				104CE02F1F0B47D700D658CB /* SearchUsersTableViewCell.swift in Sources */,
 				10FECBD71F0CEED50075CD36 /* UserInvite.swift in Sources */,
 				100F2F731F024DC6005E7F27 /* RootGroupController.swift in Sources */,
@@ -689,6 +699,7 @@
 				102B25931F0A095C00049F16 /* CommentTableViewCell.swift in Sources */,
 				103A96B41EF8DD18001DAC9F /* PostImages.swift in Sources */,
 				101E3CEF1F02552C003621CC /* SeeMembersTableViewCell.swift in Sources */,
+				100690BD1F13263D0005D851 /* SeeFollowsViewController.swift in Sources */,
 				10FECBC71F0C8FA60075CD36 /* Settings.swift in Sources */,
 				10FECBD51F0CED920075CD36 /* InviteMembersTableViewCell.swift in Sources */,
 				102AC63F1F04B22A00750D6A /* ContainerChatViewController.swift in Sources */,
@@ -715,6 +726,7 @@
 				10FECBCA1F0CD1220075CD36 /* AcceptGroupTableViewCell.swift in Sources */,
 				101665371F0B43CB00042798 /* LoginWithEmailController.swift in Sources */,
 				10FECBC51F0C8DDC0075CD36 /* SettingsViewController.swift in Sources */,
+				100690BF1F136B860005D851 /* ProfileForOtherUsersViewController.swift in Sources */,
 				10B5495C1F0F732A009C3B37 /* RecentEyeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
