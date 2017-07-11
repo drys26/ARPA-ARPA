@@ -41,6 +41,10 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
     var tappedImageViews = [UIImageView]()
     
     
+    var isGroup: Bool!
+    
+    var group: Group!
+    
     
     
     override func viewDidLoad() {
@@ -105,6 +109,7 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
             nextPhaseVC.imageData = self.imageData
             nextPhaseVC.images = self.pickImageArray
             nextPhaseVC.typeOfFrame = self.typeOfFrame
+            nextPhaseVC.isGroup = self.isGroup
         }
     }
     

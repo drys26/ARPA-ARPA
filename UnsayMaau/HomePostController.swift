@@ -98,7 +98,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         self.view.accessibilityIdentifier = "root_view"
 
-        
+        //observeNotifications()
 
     }
     
@@ -110,9 +110,16 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     }
     
     func reloadData(){
-    
         homeCollectionView.reloadData()
         
+    }
+    
+    func observeNotifications(){
+        ref.child("Users_Groups").child(self.user.userId).child("Pending_Groups").observe(.value, with: { (snapshot) in
+           // self.tabBarController?.tabBar.items?[4].badgeValue = "\(snapshot.childrenCount.hashValue)"
+//            self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = "\(snapshot.childrenCount.hashValue)"
+            
+        })
     }
 
     
@@ -128,6 +135,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                 self.isStarting = true
                 DispatchQueue.main.async {
                     self.showPost()
+                  //  self.observeNotifications()
                 }
             }
             

@@ -10,6 +10,7 @@
 		100690BB1F1324C20005D851 /* FollowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100690BA1F1324C20005D851 /* FollowTableViewCell.swift */; };
 		100690BD1F13263D0005D851 /* SeeFollowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100690BC1F13263D0005D851 /* SeeFollowsViewController.swift */; };
 		100690BF1F136B860005D851 /* ProfileForOtherUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100690BE1F136B860005D851 /* ProfileForOtherUsersViewController.swift */; };
+		100690C21F1395480005D851 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100690C11F1395480005D851 /* RootTabBarController.swift */; };
 		100F2F711F023EBB005E7F27 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 100F2F701F023EBB005E7F27 /* fontawesome-webfont.ttf */; };
 		100F2F731F024DC6005E7F27 /* RootGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100F2F721F024DC6005E7F27 /* RootGroupController.swift */; };
 		101406411EF8CB2100662E1E /* EyeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101406401EF8CB2100662E1E /* EyeController.swift */; };
@@ -54,6 +55,7 @@
 		10C8925C1F0E48E600DD901D /* TopEyeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10C8925B1F0E48E600DD901D /* TopEyeViewController.swift */; };
 		10D294941EF27184008F84B2 /* HomeRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D294931EF27184008F84B2 /* HomeRoot.swift */; };
 		10D294961EF27774008F84B2 /* HomePostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D294951EF27774008F84B2 /* HomePostController.swift */; };
+		10DF2AAE1F1482810003D40A /* GroupHomeFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DF2AAD1F1482810003D40A /* GroupHomeFeedViewController.swift */; };
 		10FECBC31F0C8C5F0075CD36 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FECBC21F0C8C5F0075CD36 /* SettingsTableViewCell.swift */; };
 		10FECBC51F0C8DDC0075CD36 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FECBC41F0C8DDC0075CD36 /* SettingsViewController.swift */; };
 		10FECBC71F0C8FA60075CD36 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FECBC61F0C8FA60075CD36 /* Settings.swift */; };
@@ -88,6 +90,7 @@
 		100690BA1F1324C20005D851 /* FollowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowTableViewCell.swift; sourceTree = "<group>"; };
 		100690BC1F13263D0005D851 /* SeeFollowsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeFollowsViewController.swift; sourceTree = "<group>"; };
 		100690BE1F136B860005D851 /* ProfileForOtherUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileForOtherUsersViewController.swift; sourceTree = "<group>"; };
+		100690C11F1395480005D851 /* RootTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
 		100F2F701F023EBB005E7F27 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		100F2F721F024DC6005E7F27 /* RootGroupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootGroupController.swift; sourceTree = "<group>"; };
 		101406401EF8CB2100662E1E /* EyeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeController.swift; sourceTree = "<group>"; };
@@ -138,6 +141,7 @@
 		10C8925B1F0E48E600DD901D /* TopEyeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopEyeViewController.swift; sourceTree = "<group>"; };
 		10D294931EF27184008F84B2 /* HomeRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRoot.swift; sourceTree = "<group>"; };
 		10D294951EF27774008F84B2 /* HomePostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePostController.swift; sourceTree = "<group>"; };
+		10DF2AAD1F1482810003D40A /* GroupHomeFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupHomeFeedViewController.swift; sourceTree = "<group>"; };
 		10FECBC21F0C8C5F0075CD36 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		10FECBC41F0C8DDC0075CD36 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		10FECBC61F0C8FA60075CD36 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -185,6 +189,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		100690C01F1395230005D851 /* Roots */ = {
+			isa = PBXGroup;
+			children = (
+				100690C11F1395480005D851 /* RootTabBarController.swift */,
+			);
+			name = Roots;
+			sourceTree = "<group>";
+		};
 		10ABFF371EF250940087F05F = {
 			isa = PBXGroup;
 			children = (
@@ -241,6 +253,7 @@
 		10ABFF711EF253560087F05F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				100690C01F1395230005D851 /* Roots */,
 				10FECBD11F0CD4F80075CD36 /* Login */,
 				10FECBD01F0CD4C70075CD36 /* Groups */,
 				10FECBCF1F0CD4BC0075CD36 /* Eye */,
@@ -360,6 +373,7 @@
 				102AC63E1F04B22A00750D6A /* ContainerChatViewController.swift */,
 				104CE02C1F0B479F00D658CB /* SearchGroupUsersViewController.swift */,
 				104C038C1F0E44B800176996 /* FullScreenImageController.swift */,
+				10DF2AAD1F1482810003D40A /* GroupHomeFeedViewController.swift */,
 			);
 			name = Groups;
 			sourceTree = "<group>";
@@ -681,6 +695,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				10ABFF461EF250940087F05F /* LoginViewController.swift in Sources */,
+				100690C21F1395480005D851 /* RootTabBarController.swift in Sources */,
 				101406431EF8CDAC00662E1E /* GroupController.swift in Sources */,
 				103A96B21EF8D7EF001DAC9F /* HomeFeedCollectionViewCell.swift in Sources */,
 				101E3CED1F0224A9003621CC /* Group.swift in Sources */,
@@ -694,6 +709,7 @@
 				10259BED1EF7B74F004E0A02 /* SelectImageFromLibraryViewController.swift in Sources */,
 				10259BEB1EF7A66F004E0A02 /* SelectImageViewController.swift in Sources */,
 				10A45DB41EF930FC00880BD3 /* ProfileViewController.swift in Sources */,
+				10DF2AAE1F1482810003D40A /* GroupHomeFeedViewController.swift in Sources */,
 				102AC63D1F04A48A00750D6A /* ChatViewController.swift in Sources */,
 				102B25951F0A0EB200049F16 /* Comment.swift in Sources */,
 				102B25931F0A095C00049F16 /* CommentTableViewCell.swift in Sources */,

@@ -14,6 +14,9 @@ class FollowTableViewCell: UITableViewCell {
     @IBOutlet weak var followLocation: UILabel!
     @IBOutlet weak var followDisplayName: UILabel!
     @IBOutlet weak var followImageView: UIImageView!
+    
+    @IBOutlet weak var actionButton: UIButton!
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()

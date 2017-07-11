@@ -12,13 +12,28 @@ class ProfileForOtherUsersViewController: UIViewController {
     
     var user: User!
     
+    @IBOutlet weak var profileDisplayName: UILabel!
+    @IBOutlet weak var coverPhotoImageView: UIImageView!
 
+    @IBOutlet weak var profilePhotoImageView: UIImageView!
+    
+    @IBOutlet weak var postLabel: UILabel!
+    @IBOutlet weak var followersLabel: UILabel!
+    @IBOutlet weak var followingLabel: UILabel!
+    @IBOutlet weak var groupLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(user.followingIDs)
+        
 
         // Do any additional setup after loading the view.
+    }
+    
+    func loadUserData(){
+    
+        
     }
 
     override func didReceiveMemoryWarning() {

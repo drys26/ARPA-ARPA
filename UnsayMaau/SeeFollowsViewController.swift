@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import FirebaseAuth
 
-class SeeFollowsViewController: UIViewController, UITableViewDelegate , UITableViewDataSource , UISearchBarDelegate {
+class SeeFollowsViewController: UIViewController, UITableViewDelegate , UITableViewDataSource  {
     
     
     @IBOutlet weak var followTableView: UITableView!
@@ -20,13 +20,14 @@ class SeeFollowsViewController: UIViewController, UITableViewDelegate , UITableV
     
     var user: User!
     
+    var uid = Auth.auth().currentUser?.uid
+    
     var users = [User]()
     
     var rootRef: DatabaseReference!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(followType)
         // Do any additional setup after loading the view.
         if rootRef == nil {
             rootRef = Database.database().reference()
@@ -40,6 +41,10 @@ class SeeFollowsViewController: UIViewController, UITableViewDelegate , UITableV
     
         followTableView.addGestureRecognizer(tap)
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationItem.title = "Followers"
     }
     
     func loadFollows(){
@@ -95,7 +100,31 @@ class SeeFollowsViewController: UIViewController, UITableViewDelegate , UITableV
         cell.followImageView.layer.cornerRadius = cell.followImageView.frame.size.width / 2
         cell.followLocation.text = ""
         
+        if user.userId == uid! {
+            if followType == "following" {
+                cell.actionButton.isHidden = true
+            } else {
+                cell.actionButton.setTitle("Unfollow", for: .normal)
+                cell.actionButton.isHidden = false
+                cell.actionButton.tag = indexPath.row
+                cell.actionButton.addTarget(self, action: #selector(self.unfollowCommand(sender:)), for: .touchUpInside)
+                cell.actionButton.layer.cornerRadius = 10
+            }
+        }
         return cell
+    }
+    
+    func unfollowCommand(sender: UIButton){
+        let currentUser = users[sender.tag]
+        let userRef:DatabaseReference = rootRef.child("Users").child(uid!).child("following")
+        
+        if sender.titleLabel?.text == "Unfollow" {
+            userRef.child(currentUser.userId).removeValue()
+            sender.setTitle("Follow", for: .normal)
+        } else {
+            userRef.child(currentUser.userId).setValue(true)
+            sender.setTitle("Unfollow", for: .normal)
+        }
         
     }
     
@@ -118,15 +147,19 @@ class SeeFollowsViewController: UIViewController, UITableViewDelegate , UITableV
                     let section = swipedIndexPath.section
                     let row = swipedIndexPath.row
                     
+                    
+                    
                     let pressedUser = users[row]
                     
-                    let profileVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProfileForOtherUsers") as! ProfileForOtherUsersViewController
+                    print(pressedUser.displayName)
                     
-                    profileVC.user = self.user
+                    let profileVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
                     
+                    profileVC.user = pressedUser
                     
-                    navigationController?.pushViewController(profileVC, animated: true)
-                    
+                    profileVC.isCurrentUser = false
+            
+                    present(profileVC, animated: true, completion: nil)
                     
                 }
             }
