@@ -94,7 +94,9 @@ class NextPhaseAddPostViewController: UIViewController {
             arrOfChildPaths.append("Group_Posts")
             arrOfChildPaths.append("Group_Images")
             arrOfChildPaths.append("Users_Group_Posts")
+            statusSegmentControl.isHidden = true
         } else {
+            statusSegmentControl.isHidden = false
             arrOfChildPaths.append("Posts")
             arrOfChildPaths.append("Images")
             arrOfChildPaths.append("Users_Posts")
@@ -129,13 +131,13 @@ class NextPhaseAddPostViewController: UIViewController {
         let key = ref.child(arrOfChildPaths[0]).childByAutoId().key
         
         if isGroup == true {
-            postID = ""
+            postID = "\(group.groupId)/\(key)"
         } else {
             postID = key
         }
         
         
-        
+
         let postDescription = rootTextFieldsStackView.subviews.last as! UITextView
         
         if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
@@ -147,6 +149,17 @@ class NextPhaseAddPostViewController: UIViewController {
         } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
             populateArray(count: 3)
             postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(uid!)"] as [String : Any]
+        }
+        
+        var status: Bool!
+        
+        if isGroup == false {
+            if statusSegmentControl.selectedSegmentIndex == 0 {
+                status = false
+            } else {
+                status = true
+            }
+            postsDictionary["private_status"] = status
         }
         
         postsDictionary["timestamp"] = 0 - (NSDate().timeIntervalSince1970 * 1000)
@@ -188,8 +201,17 @@ class NextPhaseAddPostViewController: UIViewController {
                 }
             })
         }
-        // End Adding Post
-        navigationController?.popToRootViewController(animated: true)
+        
+        if isGroup == false {
+            // End Adding Post
+            navigationController?.popToRootViewController(animated: true)
+        } else {
+            print("\(navigationController?.viewControllers.count) count navigation count")
+            navigationController?.popToViewController((navigationController?.viewControllers[(navigationController?.viewControllers.count)! - 4])!, animated: true)
+        }
+       
+        
+        
     }
     
     func updateImagesDictionary(count: Int, temporaryImagesDictionary: [String : Any]) {

@@ -64,6 +64,10 @@ class SelectFrameViewController: UIViewController {
             let sic = segue.destination as! SelectImageFromLibraryViewController
             sic.typeOfFrame = typeOfFrame
             sic.isGroup = self.isGroup
+            if isGroup == true {
+                sic.group = self.group
+            }
+            
             if typeOfFrame.contains("TWO") {
                 sic.imageTapCount = 2
             } else if typeOfFrame.contains("THREE") {

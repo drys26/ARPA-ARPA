@@ -18,6 +18,8 @@ class RootGroupController: UIViewController {
     
     var pageMenu: CAPSPageMenu?
     
+    var user: User!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,6 +36,7 @@ class RootGroupController: UIViewController {
         
         firstVC.title = "FEED"
         firstVC.group = self.group
+        firstVC.user = self.user
         
         
         let secondVC = storyboard?.instantiateViewController(withIdentifier: "GroupChat") as! UINavigationController

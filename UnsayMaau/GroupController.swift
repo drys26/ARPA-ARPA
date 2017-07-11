@@ -22,8 +22,6 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     var refreshControl: UIRefreshControl = UIRefreshControl()
     
-    
-    
     var groups = [[Group]]()
     
     var searchGroups = [Group]()
@@ -384,6 +382,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
             if let group = sender as? Group {
                 let root = segue.destination as! RootGroupController
                 root.group = group
+                root.user = self.user
             }
         }
     }

@@ -98,7 +98,6 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
         
     }
     
-    
     func nextAction(){
         performSegue(withIdentifier: "goToNextPosting" , sender: nil)
     }
@@ -110,10 +109,11 @@ class SelectImageFromLibraryViewController: UIViewController , UICollectionViewD
             nextPhaseVC.images = self.pickImageArray
             nextPhaseVC.typeOfFrame = self.typeOfFrame
             nextPhaseVC.isGroup = self.isGroup
+            if isGroup == true {
+                nextPhaseVC.group = self.group
+            }
         }
     }
-    
-    
     
     func grabPhotos(){
         let imgManager = PHImageManager.default()

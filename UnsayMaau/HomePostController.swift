@@ -34,6 +34,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     var uid = Auth.auth().currentUser?.uid
     
     var user: User!
+    
     var refresher:UIRefreshControl!
     
     var isStarting = false
@@ -105,8 +106,7 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return CGSize(width: view.frame.width - 20, height: 500)
+        return CGSize(width: view.frame.size.width - 20, height: 500)
     }
     
     func reloadData(){
@@ -335,12 +335,25 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
     }
     
+//    func returnSizeForCell(collection: UICollectionView,indexPath: IndexPath) -> CGFloat {
+//        
+//        let cell = homeCollectionView.cellForItem(at: indexPath)
+//        
+//        let height = 200 + cell.userInfoRootView.frame.size.height + cell.rootDescriptionCaption.frame.size.height + 16 + 20
+//        
+//        print(height)
+//        
+//        return height
+//        
+//    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToCommentView" {
             if let post = sender as? Post {
                 let root = segue.destination as! UINavigationController
                 let scvc = root.viewControllers.first as! ShowCommentViewController
                 scvc.post = post
+                scvc.isGroupComment = false
             }
         }
     }
