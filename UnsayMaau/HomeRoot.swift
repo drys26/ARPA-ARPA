@@ -9,16 +9,63 @@
 import UIKit
 import PageMenu
 import Floaty
+import Firebase
 
 class HomeRoot: UIViewController {
 
     @IBOutlet weak var float: Floaty!
+    
+    var user: User!
+    
+    var uid = Auth.auth().currentUser?.uid
+    
+    var ref: DatabaseReference!
     
     var pageMenu: CAPSPageMenu?
     
     @IBAction func goToSelectFrameAction(_ sender: Any) {
         self.performSegue(withIdentifier: "goToSelectFrame", sender: nil)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToSelectFrame" {
+            let sfcv = segue.destination as! SelectFrameViewController
+            sfcv.isGroup = false
+        }
+    }
+    
+    func getUserData(){
+        ref.child("Users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
+            self.user = User(snap: snapshot)
+            self.observeNotifications()
+        })
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if ref == nil {
+            ref = Database.database().reference()
+            getUserData()
+        }
+    }
+    
+    func observeNotifications(){
+        
+        // Notify if user is invite in a group
+        
+        ref.child("Notifications").child(self.user.userId).child("Pending_Groups_Notifications").observe(.value, with: { (snapshot) in
+            var count = snapshot.childrenCount.hashValue
+            if count == 0 {
+                self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = nil
+            } else {
+                self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = "\(count)"
+            }
+        })
+        
+        // Notify if a group has new post
+        
+        
+    }
+    
     
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        if segue.identifier == "goToSelectFrame" {
@@ -29,7 +76,7 @@ class HomeRoot: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         self.navigationItem.titleView = UIImageView(image: UIImage(named: "WhatsBest"))
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)

@@ -35,6 +35,12 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     var uid = Auth.auth().currentUser?.uid
     
+    var isGroupComment: Bool!
+    
+    var group: Group!
+    
+    var groupPost: GroupPost!
+    
     var isImage = false
     
     @IBOutlet weak var userCommentTextView: UITextView!
@@ -43,26 +49,32 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     @IBAction func commentAction(_ sender: Any) {
         
-
-            let commentRef = ref.child("Post_Comment").child(post.postKey)
-            
-            let commentID = commentRef.childByAutoId().key
-            
-            
-            let commentDictionary = ["sender_id":uid!,"comment": userCommentTextView.text,"comment_type": "text"] as [String : Any]
-            
-            commentRef.child(commentID).setValue(commentDictionary)
-            
-            let timestamp = NSDate().timeIntervalSince1970 * 1000
-            
+//        var commentRef: DatabaseReference!
+//        
+//        if isGroupComment == false {
+//            commentRef = ref.child("Post_Comment").child(post.postKey)
+//        } else {
+//            commentRef = ref.child("Group_Post_Comment").child(group.groupId).child(groupPost.postKey)
+//        }
+        
+        let commentID = commentRef.childByAutoId().key
+        
+        
+        let commentDictionary = ["sender_id":uid!,"comment": userCommentTextView.text,"comment_type": "text"] as [String : Any]
+        
+        commentRef.child(commentID).setValue(commentDictionary)
+        
+        let timestamp = NSDate().timeIntervalSince1970 * 1000
+        
+        if isGroupComment == false {
             post.postRef.updateChildValues(["timestamp": 0 - timestamp])
-            
-            userCommentTextView.text = ""
-            heightConstraint.constant = 50
-        
-        
+        } else {
+            group.groupRef.updateChildValues(["timestamp": 0 - timestamp])
+        }
+        userCommentTextView.text = ""
+        heightConstraint.constant = 50
     }
-
+    
     
     func textViewDidChange(_ textView: UITextView) {
         
@@ -106,13 +118,13 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     
     func keyboardWillShow(notification: Notification){
-    
+        
         let userInfo:NSDictionary = notification.userInfo! as NSDictionary
         let keyboardFrame: NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
         let keyboardHeight = keyboardRectangle.height
         
-        UIView.animate(withDuration: 0.5) { 
+        UIView.animate(withDuration: 0.5) {
             self.bottomConstraint.constant = keyboardHeight
             self.view.layoutIfNeeded()
         }
@@ -126,7 +138,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -142,7 +154,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         userCommentTextView.isScrollEnabled = false
         userCommentTextView.textColor = UIColor.darkText
         userCommentTextView.layer.cornerRadius = 5
-//        userCommentTextView.sizeToFit()
+        //        userCommentTextView.sizeToFit()
         userCommentTextView.layoutIfNeeded()
         let height = userCommentTextView.sizeThatFits(CGSize(width: userCommentTextView.frame.size.width, height: CGFloat.greatestFiniteMagnitude)).height
         userCommentTextView.contentSize.height = height
@@ -153,8 +165,6 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         
         // Initialize the database reference
         ref = Database.database().reference()
-        
-        print(post.postKey)
         
         // NAVIGATION
         
@@ -179,7 +189,12 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     }
     
     func backViewController(){
-        dismiss(animated: true, completion: nil)
+        if isGroupComment == false {
+            dismiss(animated: true, completion: nil)
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
+        
     }
     
     func reload(){
@@ -197,15 +212,15 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
     
     func loadComments(){
         
-        commentRef = ref.child("Post_Comment").child(post.postKey)
+        if isGroupComment == false {
+            commentRef = ref.child("Post_Comment").child(post.postKey)
+        } else {
+            commentRef = ref.child("Group_Post_Comment").child(group.groupId).child(groupPost.postKey)
+        }
         
         commentRefHandle = commentRef.observe(.childAdded, with: {(snapshot) in
-        
-            let comment = Comment(snap: snapshot)
             
-            print(comment.comment)
-            print(comment.userCommentID)
-            print(self.comments.count)
+            let comment = Comment(snap: snapshot)
             
             self.comments.append(comment)
             
@@ -224,7 +239,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             self.user = User(snap: snapshot)
             //this code is just to show the UserClass was populated.
             print(self.user.displayName)
-//            self.userImageView.sd_setImage(with: URL(string: self.user.photoUrl))
+            //            self.userImageView.sd_setImage(with: URL(string: self.user.photoUrl))
         })
     }
     
@@ -255,7 +270,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         buttons[1].setImage(UIImage(named: "delete_icon"), for: .normal)
         buttons[1].accessibilityLabel = "delete"
         loopButton2()
-
+        
         return buttons
         
     }
@@ -264,7 +279,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         if (text == "\n") {
             
             if textView != userCommentTextView {
-            
+                
                 textView.resignFirstResponder()
                 textView.isUserInteractionEnabled = false
                 
@@ -277,8 +292,8 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
                 commentRef.child(comment.commentKey).updateChildValues(["comment": textView.text])
                 
                 return false
-
-            
+                
+                
             }
             
         }
@@ -299,9 +314,9 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         }
         
         if access! == "edit" {
-//            group.groupRef.child("pending_members").child(user.userId).removeValue()
-//            group.groupRef.child("members").updateChildValues(["\(user.userId)": true])
-//            removeUsers()
+            //            group.groupRef.child("pending_members").child(user.userId).removeValue()
+            //            group.groupRef.child("members").updateChildValues(["\(user.userId)": true])
+            //            removeUsers()
             
             let cell = commentTable.cellForRow(at: IndexPath(row: row!, section: 0)) as! CommentTableViewCell
             
@@ -314,8 +329,8 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             
             print("edit")
         } else if access! == "delete" {
-//            group.groupRef.child("pending_members").child(user.userId).removeValue()
-//            removeUsers()
+            //            group.groupRef.child("pending_members").child(user.userId).removeValue()
+            //            removeUsers()
             let alertController = UIAlertController(title: "Confirmation", message: "Do you want to delete this comment?", preferredStyle: .alert)
             let yesButton = UIAlertAction(title: "Yes", style: .default, handler: { (alert) in
                 comment.ref.removeValue()
@@ -362,10 +377,31 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             
             let imageAttach = NSTextAttachment()
             
-            if snapshot.hasChild("post_voted/\(self.post.postKey)"){
-                let post_voted = value["post_voted"] as! [String: Any]
-                imageVoteNumber = post_voted[self.post.postKey] as! String
-
+            var stringChild: String!
+            
+            var stringValueChild: String!
+            
+            var stringPostKey: String!
+            
+            var postID: String!
+            
+            if self.isGroupComment == false {
+                stringValueChild = "post_voted"
+                stringChild = "post_voted/\(self.post.postKey)"
+                stringPostKey = self.post.postKey
+                postID = self.post.authorImageID
+            } else {
+                stringValueChild = "group_post_voted"
+                stringChild = "group_post_voted/\(self.groupPost.postKey)"
+                stringPostKey = self.groupPost.postKey
+                postID = self.groupPost.authorImageID
+            }
+            
+            if snapshot.hasChild(stringChild){
+                
+                let post_voted = value[stringValueChild] as! [String: Any]
+                imageVoteNumber = post_voted[stringPostKey] as! String
+                
                 switch imageVoteNumber {
                 case "1":
                     imageAttach.image = UIImage(named: "vote_image1")
@@ -393,7 +429,10 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
             }
             
             
-            if comment.userCommentID == self.post.authorImageID {
+            
+            
+            
+            if comment.userCommentID == postID {
                 
                 let imageAttach = NSTextAttachment()
                 imageAttach.image = UIImage(named: "owner_post")
@@ -407,15 +446,15 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
                 
                 cell.commentUserDisplayName.attributedText = combi
                 
-//                cell.commentTextView.attributedText = combi
+                //                cell.commentTextView.attributedText = combi
                 
             }
-
+            
             cell.commentImageView.sd_setImage(with: URL(string: imageUrl))
             
             
             
-           // cell.commentTextView.text = "\(comment.comment)  \(imageVoteNumber)"
+            // cell.commentTextView.text = "\(comment.comment)  \(imageVoteNumber)"
         })
         
         
@@ -456,15 +495,15 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         return comments.count
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

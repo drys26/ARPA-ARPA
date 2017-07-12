@@ -34,7 +34,10 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
     var uid = Auth.auth().currentUser?.uid
     
     var user: User!
+    
     var refresher:UIRefreshControl!
+    
+    var isStarting = false
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,23 +99,27 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
         self.view.accessibilityIdentifier = "root_view"
 
-        
+        //observeNotifications()
 
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        
-        
-        return CGSize(width: view.frame.width - 20, height: 598)
+        return CGSize(width: view.frame.size.width - 20, height: 500)
     }
     
     func reloadData(){
-    
         homeCollectionView.reloadData()
         
+    }
+    
+    func observeNotifications(){
+        ref.child("Users_Groups").child(self.user.userId).child("Pending_Groups").observe(.value, with: { (snapshot) in
+           // self.tabBarController?.tabBar.items?[4].badgeValue = "\(snapshot.childrenCount.hashValue)"
+//            self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = "\(snapshot.childrenCount.hashValue)"
+            
+        })
     }
 
     
@@ -124,11 +131,15 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
 //            print(self.user.displayName)
 //            print(self.user.photoUrl)
 //            print(self.user.followingIDs)
-            
-            
-            DispatchQueue.main.async {
-                self.showPost()
+            if self.isStarting == false {
+                self.isStarting = true
+                DispatchQueue.main.async {
+                    self.showPost()
+                  //  self.observeNotifications()
+                }
             }
+            
+            
         })
     }
     
@@ -181,7 +192,9 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
             
             if let rootPosts = snapshot.children.allObjects as? [DataSnapshot] {
                 for rootPost in rootPosts {
+                    
                     let post = Post(post: rootPost)
+                    
                     print(post.postKey)
                     
                     if (self.posts.contains(post) && post.postIsFinished == true) || !self.user.followingIDs.contains(post.authorImageID) {
@@ -302,6 +315,8 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
 //        let cellHeight = cell.rootDescriptionCaption.frame.size.height + cell.rootView.frame.size.height + cell.userInfoRootView.frame.size.height
         
         
+//        cell.frame = CGRect(x: cell.frame.origin.x, y: cell.origin.frame.y, width: cell.frame.size.width, height: <#T##CGFloat#>)
+        
 //        cell.frame = CGRect(x: 0, y: 0, width: cell.frame.size.width, height: cellHeight)
         
         return cell
@@ -320,12 +335,25 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         
     }
     
+//    func returnSizeForCell(collection: UICollectionView,indexPath: IndexPath) -> CGFloat {
+//        
+//        let cell = homeCollectionView.cellForItem(at: indexPath)
+//        
+//        let height = 200 + cell.userInfoRootView.frame.size.height + cell.rootDescriptionCaption.frame.size.height + 16 + 20
+//        
+//        print(height)
+//        
+//        return height
+//        
+//    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToCommentView" {
             if let post = sender as? Post {
                 let root = segue.destination as! UINavigationController
                 let scvc = root.viewControllers.first as! ShowCommentViewController
                 scvc.post = post
+                scvc.isGroupComment = false
             }
         }
     }
