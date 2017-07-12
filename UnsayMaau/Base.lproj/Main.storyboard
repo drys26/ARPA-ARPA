@@ -2898,7 +2898,7 @@
         <scene sceneID="Se0-VQ-mn9">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="62m-DH-c6P" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="PROFILE" image="user" id="JfJ-cE-aP5"/>
+                    <tabBarItem key="tabBarItem" tag="4" title="PROFILE" image="user" id="JfJ-cE-aP5"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="dJp-E1-RsG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>

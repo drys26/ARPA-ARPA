@@ -220,6 +220,20 @@ class NextPhaseAddPostViewController: UIViewController {
             if snapshot.childrenCount.hashValue == self.imageIDS.count {
                 self.ref.child(self.arrOfChildPaths[0]).child(self.postID).setValue(self.postsDictionary)
                 self.ref.child(self.arrOfChildPaths[2]).child(self.user.userId).updateChildValues([self.postID:true])
+                
+                if self.isGroup == true {
+                    self.group.groupRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                        let dictionary = snapshot.value as! [String: Any]
+                        if snapshot.hasChild("admin_members") {
+                            let adminMembers = dictionary["admin_members"] as! [String: Any]
+                            for (key,_) in adminMembers {
+                                //self.ref
+                            }
+                        }
+                        
+                    })
+                }
+                
             }
             print(snapshot.childrenCount)
             print(snapshot.children.allObjects.count)

@@ -50,9 +50,11 @@ class RootTabBarController: UITabBarController {
 //        default:
 //            break
 //        }
-        item.badgeValue = nil
+        if item.tag == 4 {
+            item.badgeValue = nil
+            ref.child("Notifications").child(user.userId).child("Pending_Groups_Notifications").removeValue()
+        }
         
-        ref.child("Users_Groups").child(user.userId).child("Pending_Groups_Notifications").removeValue()
         
         
         

@@ -139,28 +139,29 @@ class GroupHomeFeedViewController: UIViewController ,UICollectionViewDelegate, U
         cell.authorImageView.layer.cornerRadius = cell.authorImageView.frame.size.width / 2
         cell.locationText.text = ""
         
-        
-        //imageCache.setObject(<#T##obj: AnyObject##AnyObject#>, forKey: <#T##AnyObject#>)
-        
-//        if let image = imageCache.object(forKey: post.authorImageUrl) as? UIImage {
-//            cell.authorImageView.image = image
+//        if imageCache.object(forKey: post.authorImageID as AnyObject) != nil {
+//            cell.authorImageView.image = imageCache.object(forKey: post.authorImageID as AnyObject) as! UIImage
 //        } else {
-//            let imageData = getImage(url: post.authorImageUrl)
-//            cell.authorImageView.image = image
-//        }
-//        
-//        func getImage(url: String) -> UIImage {
-//            SDWebImageManager.shared().imageDownloader?.downloadImage(with: url, options: SDWebImageDownloaderOptions.allowInvalidSSLCertificates, progress: { (min: Int, max: Int, nil) in
-//            }, completed: { (image: UIImage, data: Data, error: NSError, finished: Bool) in
-//                if image != nil {
-//                    imageCache.setObject(image, forKey: post.authorImageUrl)
-//                    return image
-//                } else {
-//                    print("wrong")
+//            SDWebImageManager.shared().imageDownloader?.downloadImage(with: URL(string: post.authorImageUrl), options: .allowInvalidSSLCertificates, progress: { (min: Int, max: Int, nil) in
+//            }, completed: { (image, data, error, finished) in
+//                if error == nil {
+//                    cell.authorImageView.image = image
+//                    self.imageCache.setObject(image!, forKey: post.authorImageID as AnyObject)
 //                }
 //            })
-//            return UIImage()
 //        }
+        
+        
+        
+        
+//        SDWebImageManager.shared().imageDownloader?.downloadImage(with: URL(string:post.authorImageUrl), options: SDWebImageDownloaderOptions.allowInvalidSSLCertificates, progress: { (min: Int, max: Int, nil) in
+//        }, completed: ({ (image: UIImage, data: Data, error: NSError, finished: Bool) in
+//            if error != nil {
+//                cell.authorImageView.image = image
+//                self.imageCache.setObject(image, forKey: post.authorImageID as AnyObject)
+//            }
+//            } as! SDWebImageDownloaderCompletedBlock))
+        
         
         cell.authorImageView.sd_setImage(with: URL(string: post.authorImageUrl), placeholderImage: nil, options: .continueInBackground)
 
@@ -309,14 +310,13 @@ class GroupHomeFeedViewController: UIViewController ,UICollectionViewDelegate, U
             
             let voteLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 90, height: 20))
             if post.authorImageID == self.uid! {
-                self.refVotePostHandle = self.ref.child("Vote_Group_Post").child(post.frameImagesIDS[i]).observe(.value, with: {(snapshot) in
+                self.refVotePostHandle = self.ref.child("Group_Vote_Post").child(post.frameImagesIDS[i]).observe(.value, with: {(snapshot) in
                     let voteCount = snapshot.childrenCount
                     if arrOfVotes.count == 1 {
                         max = arrOfVotes[0]
                         index = i
                     }
                     arrOfVotes.append(voteCount.hashValue)
-                    
                     if arrOfVotes[i] > max {
                         max = arrOfVotes[i]
                         let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
@@ -334,7 +334,6 @@ class GroupHomeFeedViewController: UIViewController ,UICollectionViewDelegate, U
                     } else {
                         voteLabel.text = "\(voteCount)"
                     }
-                    
                 })
             } else {
                 self.ref.child("Users").child(self.uid!).child("post_voted").observeSingleEvent(of:.value, with: {(snapshot) in
@@ -366,8 +365,6 @@ class GroupHomeFeedViewController: UIViewController ,UICollectionViewDelegate, U
             // Append image view to the array
             
             imageViews.append(imgView)
-            
-            //print(String(describing: imgView))
             
             print("Count of First Loop \(i)")
         }

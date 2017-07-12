@@ -49,18 +49,21 @@ class HomeRoot: UIViewController {
     }
     
     func observeNotifications(){
-        ref.child("Users_Groups").child(self.user.userId).child("Pending_Groups_Notifications").observe(.value, with: { (snapshot) in
-            
+        
+        // Notify if user is invite in a group
+        
+        ref.child("Notifications").child(self.user.userId).child("Pending_Groups_Notifications").observe(.value, with: { (snapshot) in
             var count = snapshot.childrenCount.hashValue
-            
             if count == 0 {
                 self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = nil
             } else {
                 self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = "\(count)"
             }
-            
-            
         })
+        
+        // Notify if a group has new post
+        
+        
     }
     
     

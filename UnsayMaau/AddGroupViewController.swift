@@ -39,10 +39,10 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
     var backgroundImageId: String?
     
     var uid: String = (Auth.auth().currentUser?.uid)!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         ref = Database.database().reference()
         
         usersTableView.delegate = self
@@ -75,7 +75,7 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
         if let imageData = imageDataTemp {
             uploadImagePartTwo(data: imageData)
         }
-
+        
         var status: Bool!
         
         if groupStatusSegment.selectedSegmentIndex == 0 {
@@ -113,11 +113,11 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
     }
     
     func removeUsersNotChecked(){
-//        for user in isInvitedUser {
-//            if !searchUsers.contains(user) {
-//                searchUsers.remove(at: searchUsers.index(of: user)!)
-//            }
-//        }
+        //        for user in isInvitedUser {
+        //            if !searchUsers.contains(user) {
+        //                searchUsers.remove(at: searchUsers.index(of: user)!)
+        //            }
+        //        }
         
         for user in searchUsers {
             if !isInvitedUser.contains(user) {
@@ -232,26 +232,38 @@ class AddGroupViewController: UIViewController , UINavigationControllerDelegate 
     }
     
     func updatePostDictionary(){
+        
         postsDictionary["timestamp"] = 0 - (NSDate().timeIntervalSince1970 * 1000)
         ref.child("Groups").child(groupPostId).setValue(postsDictionary)
         ref.child("Users_Groups").child(uid).child("Member_Groups").updateChildValues([groupPostId:true])
         if isInvitedUser.count != 0 {
             for user in isInvitedUser {
+                
+                // Add in group invited pending members
+                
                 ref.child("Groups").child(groupPostId).child("invited_pending_members").updateChildValues(["\(user.userId)": true])
+                
+                // Add in users pending groups
+                
                 ref.child("Users_Groups").child(user.userId).child("Pending_Groups").updateChildValues([groupPostId:uid])
+                
+                
+                // Add in users pending group notifications
+                
+                ref.child("Notifications").child(user.userId).child("Pending_Groups_Notifications").updateChildValues([groupPostId:uid])
             }
         }
         
     }
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
