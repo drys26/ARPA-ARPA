@@ -85,10 +85,7 @@ import Firebase
                 let post = Post(post: rootPost)
                 
                 
-                if self.user.followingIDs.contains(post.authorImageID) {
-                    self.posts.remove(at: self.posts.index(of: post)!)
-                    self.reloadData()
-                }
+                
                 
                 if post.postStatus == false && post.authorImageID != self.uid && !self.posts.contains(post) {
                     rootVoteCount.append([Int]())
@@ -134,6 +131,18 @@ import Firebase
                             
                         })
                     }
+                    
+//                    if self.user.followingIDs.contains(post.authorImageID) {
+//                        
+//                        let i = self.posts.index(of: post)!
+//                        
+//                        if self.posts.contains(self.posts[i]) {
+//                            self.posts.remove(at: i)
+//                            self.reloadData()
+//                        }
+//                        
+//                        
+//                    }
                     
                     
                     

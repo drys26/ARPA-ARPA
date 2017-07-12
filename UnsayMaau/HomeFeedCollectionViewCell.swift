@@ -32,6 +32,7 @@ class HomeFeedCollectionViewCell: UICollectionViewCell {
         commandButton.setTitle(nil, for: .normal)
         let rootViewsArr = rootView.subviews
         let rootDescriptionArr = rootDescriptionCaption.subviews
+        
         for views in rootViewsArr {
             views.removeFromSuperview()
         }
@@ -41,5 +42,15 @@ class HomeFeedCollectionViewCell: UICollectionViewCell {
         
         super.prepareForReuse()
     }
+    
+//    override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
+//        
+//        let estimatedHeight = rootView.frame.height + userInfoRootView.frame.height + rootDescriptionCaption.frame.height + 16 + 20
+//        
+//        self.layoutIfNeeded()
+//        
+//        return CGSize(width: (superview?.frame.width)!, height: estimatedHeight)
+//        
+//    }
     
 }
