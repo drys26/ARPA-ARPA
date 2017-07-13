@@ -201,7 +201,6 @@ class NextPhaseAddPostViewController: UIViewController {
                 }
             })
         }
-        
         if isGroup == false {
             // End Adding Post
             navigationController?.popToRootViewController(animated: true)
@@ -209,9 +208,14 @@ class NextPhaseAddPostViewController: UIViewController {
             print("\(navigationController?.viewControllers.count) count navigation count")
             navigationController?.popToViewController((navigationController?.viewControllers[(navigationController?.viewControllers.count)! - 4])!, animated: true)
         }
-       
-        
-        
+    }
+    
+    func insertNotifications(dictionary: [String: Any]){
+        for (key,_) in dictionary {
+            if key != self.uid! {
+                self.ref.child("Notifications").child(key).child("Group_Post_Notifications").updateChildValues([self.postID:true])
+            }
+        }
     }
     
     func updateImagesDictionary(count: Int, temporaryImagesDictionary: [String : Any]) {
@@ -220,30 +224,30 @@ class NextPhaseAddPostViewController: UIViewController {
             if snapshot.childrenCount.hashValue == self.imageIDS.count {
                 self.ref.child(self.arrOfChildPaths[0]).child(self.postID).setValue(self.postsDictionary)
                 self.ref.child(self.arrOfChildPaths[2]).child(self.user.userId).updateChildValues([self.postID:true])
-                
                 if self.isGroup == true {
-                    self.group.groupRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                        let dictionary = snapshot.value as! [String: Any]
-                        if snapshot.hasChild("admin_members") {
-                            let adminMembers = dictionary["admin_members"] as! [String: Any]
-                            for (key,_) in adminMembers {
-                                //self.ref
-                            }
-                        }
-                        
-                    })
+                    let arr = self.postID.components(separatedBy: "/")
+                    self.ref.child("Group_Notifications").child(self.group.groupId).child("Post_Notifications").updateChildValues([arr[1]: true])
+
+//                    self.group.groupRef.observeSingleEvent(of: .value, with: { (snapshot) in
+//                        let dictionary = snapshot.value as! [String: Any]
+//                        
+//                        
+//                        
+//                        if snapshot.hasChild("admin_members") {
+//                            let adminMembers = dictionary["admin_members"] as! [String: Any]
+//                            self.insertNotifications(dictionary: adminMembers)
+//                        }
+//                        if snapshot.hasChild("members") {
+//                            let members = dictionary["members"] as! [String: Any]
+//                            self.insertNotifications(dictionary: members)
+//                        }
+                    //})
                 }
-                
             }
-            print(snapshot.childrenCount)
-            print(snapshot.children.allObjects.count)
-            print(snapshot.childrenCount.hashValue)
         })
     }
     
-    
     func setupStackViews(count: Int){
-    
         for i in 0..<count {
             let imageView = UIImageView(image: images[i])
             imageView.contentMode = .scaleAspectFill

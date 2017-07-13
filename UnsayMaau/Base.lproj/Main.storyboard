@@ -490,7 +490,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="EYE" image="eye" id="Wjg-tG-xUq"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="EYE" image="eye" id="Wjg-tG-xUq"/>
                     <connections>
                         <segue destination="s0c-4E-Y7Y" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="oD3-dY-WGd"/>
                         <segue destination="jMX-qW-zao" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="kBa-kI-jca"/>
@@ -789,8 +789,8 @@
         <scene sceneID="K1O-3y-JW9">
             <objects>
                 <navigationController id="c8y-4v-Emc" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="GROUPS" image="groups" id="7O8-MM-UiY"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8X2-Eg-HBa">
+                    <tabBarItem key="tabBarItem" tag="2" title="GROUPS" image="groups" id="7O8-MM-UiY"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="8X2-Eg-HBa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1817,7 +1817,7 @@
         <scene sceneID="MBz-Pi-gHD">
             <objects>
                 <navigationController id="s0c-4E-Y7Y" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TkC-dM-lhU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TkC-dM-lhU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2410,7 +2410,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="WATCHLIST" image="watchlist" id="qer-yB-07U"/>
+                    <tabBarItem key="tabBarItem" tag="3" title="WATCHLIST" image="watchlist" id="qer-yB-07U"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rdv-rf-sHT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2421,7 +2421,7 @@
             <objects>
                 <navigationController id="T1q-fT-hr7" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="HOME" image="home" id="AlF-dd-iGF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wZb-eD-spg">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wZb-eD-spg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2729,7 +2729,7 @@
                                                     </constraints>
                                                 </view>
                                                 <stackView opaque="NO" tag="60" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yEK-yQ-4M9">
-                                                    <rect key="frame" x="8" y="264" width="329" height="114.5"/>
+                                                    <rect key="frame" x="8" y="264" width="329" height="106"/>
                                                 </stackView>
                                             </subviews>
                                         </view>
@@ -2798,7 +2798,7 @@
             <objects>
                 <navigationController storyboardIdentifier="GroupChat" automaticallyAdjustsScrollViewInsets="NO" id="z6j-kl-iP0" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oFg-1E-yr5">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="oFg-1E-yr5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.0" green="0.74901960779999999" blue="0.61165268839999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -2881,7 +2881,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rPd-Ct-uvb" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cbu-WW-1gF">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="cbu-WW-1gF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2900,7 +2900,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="62m-DH-c6P" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="4" title="PROFILE" image="user" id="JfJ-cE-aP5"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dJp-E1-RsG">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="dJp-E1-RsG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

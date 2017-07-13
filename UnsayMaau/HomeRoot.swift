@@ -52,7 +52,9 @@ class HomeRoot: UIViewController {
         
         // Notify if user is invite in a group
         
-        ref.child("Notifications").child(self.user.userId).child("Pending_Groups_Notifications").observe(.value, with: { (snapshot) in
+        let notificationsRef = ref.child("Notifications").child(self.user.userId)
+        
+        notificationsRef.child("Pending_Groups_Notifications").observe(.value, with: { (snapshot) in
             var count = snapshot.childrenCount.hashValue
             if count == 0 {
                 self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = nil
@@ -61,9 +63,32 @@ class HomeRoot: UIViewController {
             }
         })
         
+        
         // Notify if a group has new post
         
-        
+//        ref.child("Group_Notifications").observe(.value, with: { (snapshot) in
+//            
+//            var notificationsCount = 0
+//            
+//            for rootPost in snapshot.children.allObjects as! [DataSnapshot] {
+//            
+//                let dictionary = rootPost.value as! [String: Any]
+//                
+//                if let postDictionary = dictionary["Post_Notifications"] as? [String: Any] {
+//                    if let notifiedDictionary = postDictionary["notified_users"] as? [String: Any] {
+//                        if notifiedDictionary[self.uid!] == nil {
+//                            notificationsCount += 1
+//                        }
+//                    }
+//                }
+//            }
+//            
+//            if notificationsCount == 0 {
+//                self.navigationController?.tabBarController?.tabBar.items?[2].badgeValue = nil
+//            } else {
+//                self.navigationController?.tabBarController?.tabBar.items?[2].badgeValue = "\(notificationsCount)"
+//            }
+//        })
     }
     
     

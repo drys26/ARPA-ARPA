@@ -43,22 +43,19 @@ class RootTabBarController: UITabBarController {
     }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-//        switch item.tag {
-//        case 4:
-//            tabBar.items?[4].badgeValue = nil
-//            break
-//        default:
-//            break
-//        }
-        if item.tag == 4 {
+        switch item.tag {
+        case 4:
             item.badgeValue = nil
             ref.child("Notifications").child(user.userId).child("Pending_Groups_Notifications").removeValue()
+            break
+        case 2:
+            item.badgeValue = nil
+//            ref.child("Notifications").child(user.userId).child("Group_Post_Notifications").removeValue()
+            break
+        default:
+            break
         }
-        
-        
-        
-        
-        
+ 
     }
     
     

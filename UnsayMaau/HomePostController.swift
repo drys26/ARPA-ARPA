@@ -109,14 +109,16 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         return CGSize(width: view.frame.size.width - 20, height: 500)
     }
     
+    
     func reloadData(){
         homeCollectionView.reloadData()
         
     }
     
+    
     func observeNotifications(){
         ref.child("Users_Groups").child(self.user.userId).child("Pending_Groups").observe(.value, with: { (snapshot) in
-           // self.tabBarController?.tabBar.items?[4].badgeValue = "\(snapshot.childrenCount.hashValue)"
+//            self.tabBarController?.tabBar.items?[4].badgeValue = "\(snapshot.childrenCount.hashValue)"
 //            self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = "\(snapshot.childrenCount.hashValue)"
             
         })
@@ -127,10 +129,6 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
         refUserHandle = ref.child("Users").child(uid!).observe(.value, with: {(snapshot) in
             self.user = User(snap: snapshot)
             //this code is just to show the UserClass was populated.
-            print(self.user.email)
-//            print(self.user.displayName)
-//            print(self.user.photoUrl)
-//            print(self.user.followingIDs)
             if self.isStarting == false {
                 self.isStarting = true
                 DispatchQueue.main.async {
@@ -197,6 +195,13 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                     
                     print(post.postKey)
                     
+                    if self.posts.contains(post) && post.postTimeCreated != self.posts[self.posts.index(of: post)!].postTimeCreated {
+                        
+                        let index = self.posts.index(of: post)!
+                        self.posts.remove(at: index)
+                        self.posts.insert(post, at: 0)
+                    }
+                    
                     if (self.posts.contains(post) && post.postIsFinished == true) || !self.user.followingIDs.contains(post.authorImageID) {
                         if let index = self.posts.index(of: post) {
                             self.posts.remove(at: index)
@@ -209,11 +214,12 @@ class HomePostController: UIViewController ,UICollectionViewDelegate, UICollecti
                     if (self.uid! == post.authorImageID || self.user.followingIDs.contains(post.authorImageID)) && !self.posts.contains(post) && post.postIsFinished == false {
                         self.posts.append(post)
                         //self.posts = self.posts.reversed()
-                        print("Post Count \(self.posts.count)")
                         DispatchQueue.main.async {
                             self.homeCollectionView.reloadData()
                         }
                     }
+                    
+                    
                     
                     
                 }

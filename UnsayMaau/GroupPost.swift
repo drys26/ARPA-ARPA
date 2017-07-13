@@ -23,6 +23,7 @@ class GroupPost: Equatable {
     var postIsFinished: Bool
     var postKey: String
     var ref: DatabaseReference
+    var postTimeCreated: Double
     
     init(post: DataSnapshot) {
         
@@ -32,6 +33,7 @@ class GroupPost: Equatable {
         let postDictionary = post.value as! [String: Any]
         self.postDescription = postDictionary["post_description"] as! String
         let authorInfo = postDictionary["author_info"] as! String
+        self.postTimeCreated = postDictionary["timestamp"] as! Double
         self.authorImageID = authorInfo
         self.authorDisplayName = "1"
         self.authorEmailAddress = "1"

@@ -24,6 +24,8 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     var groups = [[Group]]()
     
+    var countOfNotifications = [String:Any]()
+    
     var searchGroups = [Group]()
     
     var isSearching: Bool!
@@ -72,21 +74,21 @@ class GroupController: UIViewController,UISearchBarDelegate {
         }
     }
     
-//    func refreshData(){
-//        refGroupsHandle = refGroups.observe(.childAdded, with: {(snapshot) in
-//            let group = Group(snap: snapshot)
-//            if !self.groups.contains(group) {
-//                if group.groupStatus == false {
-//                    self.groups.append(group)
-//                    DispatchQueue.main.async {
-//                        self.groupTableView.reloadData()
-//                    }
-//                }
-//            }
-//        })
-//        refreshControl.endRefreshing()
-//        
-//    }
+    //    func refreshData(){
+    //        refGroupsHandle = refGroups.observe(.childAdded, with: {(snapshot) in
+    //            let group = Group(snap: snapshot)
+    //            if !self.groups.contains(group) {
+    //                if group.groupStatus == false {
+    //                    self.groups.append(group)
+    //                    DispatchQueue.main.async {
+    //                        self.groupTableView.reloadData()
+    //                    }
+    //                }
+    //            }
+    //        })
+    //        refreshControl.endRefreshing()
+    //
+    //    }
     
     func getUserData(){
         rootRef.child("Users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
@@ -102,49 +104,49 @@ class GroupController: UIViewController,UISearchBarDelegate {
     }
     
     func loadGroups(){
-//        if isSearching == true {
-//            searchGroups.removeAll()
-//            loadSearchedGroups()
-//        } else {
-//            refGroups.observeSingleEvent(of: .value, with: {(snapshot) in
-//                if let rootGroups = snapshot.children.allObjects as? [DataSnapshot] {
-//                    for rootGroup in rootGroups {
-//                        let group = Group(snap: rootGroup)
-//                        if !self.groups.contains(group) {
-//                            if group.groupStatus == false {
-//                                self.groups.append(group)
-//                                self.reload()
-//                            }
-//                        }
-//                        if self.groups.contains(group) && group.groupStatus == true {
-//                            if let index = self.groups.index(of: group) {
-//                                self.groups.remove(at: index)
-//                                DispatchQueue.main.async {
-//                                    self.groupTableView.reloadData()
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            })
-//        }
+        //        if isSearching == true {
+        //            searchGroups.removeAll()
+        //            loadSearchedGroups()
+        //        } else {
+        //            refGroups.observeSingleEvent(of: .value, with: {(snapshot) in
+        //                if let rootGroups = snapshot.children.allObjects as? [DataSnapshot] {
+        //                    for rootGroup in rootGroups {
+        //                        let group = Group(snap: rootGroup)
+        //                        if !self.groups.contains(group) {
+        //                            if group.groupStatus == false {
+        //                                self.groups.append(group)
+        //                                self.reload()
+        //                            }
+        //                        }
+        //                        if self.groups.contains(group) && group.groupStatus == true {
+        //                            if let index = self.groups.index(of: group) {
+        //                                self.groups.remove(at: index)
+        //                                DispatchQueue.main.async {
+        //                                    self.groupTableView.reloadData()
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            })
+        //        }
         
         // If there is pending members
         
-//        if snapshot.hasChild("pending_members") {
-//            self.sections.insert("Pending", at: 0)
-//            self.sections.remove(at: 1)
-//            self.group.groupRef.child("pending_members").observeSingleEvent(of: .value, with: {(rootSnapshot) in
-//                let value = rootSnapshot.value as! [String: Any]
-//                for (key , _) in value {
-//                    self.rootRef.child("Users").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
-//                        let user = User(snap: snapshot)
-//                        self.users[0].append(user)
-//                        self.reload()
-//                    })
-//                }
-//            })
-//        }
+        //        if snapshot.hasChild("pending_members") {
+        //            self.sections.insert("Pending", at: 0)
+        //            self.sections.remove(at: 1)
+        //            self.group.groupRef.child("pending_members").observeSingleEvent(of: .value, with: {(rootSnapshot) in
+        //                let value = rootSnapshot.value as! [String: Any]
+        //                for (key , _) in value {
+        //                    self.rootRef.child("Users").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
+        //                        let user = User(snap: snapshot)
+        //                        self.users[0].append(user)
+        //                        self.reload()
+        //                    })
+        //                }
+        //            })
+        //        }
         
         if groups.count == 0 {
             self.groups.append([Group]())
@@ -152,7 +154,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
             self.sections.append("Your Group")
             self.sections.append("Trending")
         }
-
+        
         if isSearching == true {
             searchGroups.removeAll()
             loadSearchedGroups()
@@ -165,7 +167,6 @@ class GroupController: UIViewController,UISearchBarDelegate {
                         self.groups.insert([Group](), at: 0)
                         //self.sections.remove(at: 1)
                     }
-
                     
                     let valueDictionary = rootSnapshot.value as! [String: Any]
                     
@@ -177,11 +178,18 @@ class GroupController: UIViewController,UISearchBarDelegate {
                             
                             // Get your joined groups
                             
-                            if !self.groups[0].contains(yourGroup) {
+                            let isNotInGroups = !self.groups[0].contains(yourGroup)
+                            
+                            if isNotInGroups {
                                 self.groups[0].append(yourGroup)
+                                if self.countOfNotifications[yourGroup.groupId] == nil {
+                                    self.rootRef.child("Group_Notifications").child(key).child("Post_Notifications").observeSingleEvent(of: .value, with: { (snapshotOfCount) in
+                                        print(" \(yourGroup.groupId)  Snapshot of count \(snapshotOfCount.childrenCount)")
+                                        self.countOfNotifications[yourGroup.groupId] = snapshotOfCount.childrenCount.hashValue
+                                    })
+                                }
                                 self.reload()
                             }
-                            
                             if self.groups[1].contains(yourGroup) {
                                 self.groups[1].remove(at: self.groups[1].index(of: yourGroup)!)
                                 self.reload()
@@ -213,15 +221,15 @@ class GroupController: UIViewController,UISearchBarDelegate {
                                 let trendingGroup = Group(snap: groupSnap)
                                 
                                 print(trendingGroup.groupName)
-  
+                                
                                 let i = self.groups.count - 1
                                 
-//                                if self.groups.count == 2 {
-//                                    if self.groups[0].contains(trendingGroup) {
-//                                        self.groups[1].remove(at: self.groups[1].index(of: trendingGroup)!)
-//                                        self.reload()
-//                                    }
-//                                }
+                                //                                if self.groups.count == 2 {
+                                //                                    if self.groups[0].contains(trendingGroup) {
+                                //                                        self.groups[1].remove(at: self.groups[1].index(of: trendingGroup)!)
+                                //                                        self.reload()
+                                //                                    }
+                                //                                }
                                 
                                 if !self.groups[i - 1].contains(trendingGroup) && !self.groups[i].contains(trendingGroup) && trendingGroup.groupStatus == false {
                                     self.groups[i].append(trendingGroup)
@@ -230,15 +238,11 @@ class GroupController: UIViewController,UISearchBarDelegate {
                                 }
                                 //
                                 
-//                                if self.groups[i - 1].contains(trendingGroup) && self.groups[i].count != 0 {
-//                                    // Remove from trending
-//                                    self.groups[i].remove(at: self.groups[i].index(of: trendingGroup)!)
-//                                    self.reload()
-//                                }
-                                
-                                
-                                
-                                
+                                //                                if self.groups[i - 1].contains(trendingGroup) && self.groups[i].count != 0 {
+                                //                                    // Remove from trending
+                                //                                    self.groups[i].remove(at: self.groups[i].index(of: trendingGroup)!)
+                                //                                    self.reload()
+                                //                                }
                             }
                             
                         }
@@ -273,9 +277,9 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        if refGroups != nil {
-//            refGroups.removeObserver(withHandle: refGroupsHandle)
-//        }
+        //        if refGroups != nil {
+        //            refGroups.removeObserver(withHandle: refGroupsHandle)
+        //        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -311,7 +315,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
             print("Group 1 \(group1.admins.count)")
             
             rootRef.child("Groups").child(group1.groupId).observeSingleEvent(of: .value, with: {(snapshot) in
-            
+                
                 
                 let valueDictionary = snapshot.value as! [String: Any]
                 
@@ -327,43 +331,61 @@ class GroupController: UIViewController,UISearchBarDelegate {
                 if snapshot.hasChild("admin_members") {
                     adminDictionary = valueDictionary["admin_members"] as! [String: Any]
                 }
- 
+                
                 let isAdmin = adminDictionary[self.user.userId] != nil
                 
                 let isMember = membersDictionary[self.user.userId] != nil
                 
                 
                 let newGroup = Group(snap: snapshot)
-                
-                
-                print(snapshot)
-                
-                print("NewGroup \(newGroup.groupId)")
-                print("NewGroup \(newGroup.members.count)")
-                print("NewGroup \(newGroup.admins.count)")
-                
-                
-            
+                                                                                                                                                                                                                       
                 if isAdmin || isMember {
                     // TODO: Enter group view controller
                     // and display data
+                    
+                    
+                    // Index path for every cell
+                    
+                    let index = IndexPath(row: row, section: section)
+                    let cell = self.groupTableView.cellForRow(at: index) as! GroupTableViewCell
+                    
+                    // Find cell with the tag of 51 and cast as UILabel
+                    
+//                    if let label = cell.rootView.viewWithTag(51) as? UILabel {
+//                        // Remove from superview
+//                        // Loop the rootview subviews
+//                        
+//                    }
+                    
+                    for view in cell.rootView.subviews {
+                        // if view tag equals to 51 remove it
+                        if view.tag == 51 {
+                            view.removeFromSuperview()
+                        }
+                    }
+                    
+                    // Perform Segue and pass the newGroup variable
+                    
                     self.performSegue(withIdentifier: "goToGroupPage", sender: newGroup)
+//                    self.rootRef.child("Group_Notifications").child(group1.groupId).child("Post_Notifications").child("notified_users").updateChildValues([self.uid!: true])
+                    
+                    
+                    
                 } else if !isAdmin || !isMember  {
                     let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
                     self.refGroups.child(newGroup.groupId).updateChildValues(pendingDictionary)
                     self.showAlertController(message: "Please wait for response", title: "Request Send")
                 }
             })
-            
-//            if group1.members.contains(self.user) || group1.admins.contains(self.user) {
-//                // TODO: Enter group view controller
-//                // and display data
-//                self.performSegue(withIdentifier: "goToGroupPage", sender: group1)
-//            } else if !group1.admins.contains(self.user) || !group1.members.contains(self.user)  {
-//                let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
-//                self.refGroups.child(group1.groupId).updateChildValues(pendingDictionary)
-//                self.showAlertController(message: "Please wait for response", title: "Request Send")
-//            }
+            //            if group1.members.contains(self.user) || group1.admins.contains(self.user) {
+            //                // TODO: Enter group view controller
+            //                // and display data
+            //                self.performSegue(withIdentifier: "goToGroupPage", sender: group1)
+            //            } else if !group1.admins.contains(self.user) || !group1.members.contains(self.user)  {
+            //                let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
+            //                self.refGroups.child(group1.groupId).updateChildValues(pendingDictionary)
+            //                self.showAlertController(message: "Please wait for response", title: "Request Send")
+            //            }
             
             
         }
@@ -414,9 +436,9 @@ extension GroupController: UITableViewDelegate {
         if section == 0 {
             return tableView.sectionHeaderHeight + 35
         }
-//        if groups[section].count == 0 {
-//            return 0.01
-//        }
+        //        if groups[section].count == 0 {
+        //            return 0.01
+        //        }
         return tableView.sectionHeaderHeight
     }
     
@@ -445,6 +467,34 @@ extension GroupController: UITableViewDataSource {
         
         cell.rootView.accessibilityLabel = "\(indexPath.section),\(indexPath.row)"
         
+        //        if countOfNotifications[group.groupId] != nil  {
+        //            let labelForNotifications = UILabel(frame: CGRect(x: cell.rootView.frame.maxX - 80, y: 15, width: cell.rootView.frame.size.width, height: 30))
+        //            labelForNotifications.tag = indexPath.row
+        //            labelForNotifications.textColor = UIColor.white
+        //            let count = countOfNotifications[group.groupId] as! Int
+        //            if count != 0 {
+        //                labelForNotifications.text = "\(count)"
+        //                cell.rootView.addSubview(labelForNotifications)
+        //            }
+        //        }
+        self.rootRef.child("Group_Notifications").child(group.groupId).child("Post_Notifications").observe(.value, with: { (snapshotOfCount) in
+            if snapshotOfCount.childrenCount != 0 {
+                let dictionary = snapshotOfCount.value as! [String: Any]
+                let notified = dictionary["notified_users"] as! [String: Any]
+                if notified[self.uid!] == nil {
+                    let labelForNotifications = UILabel(frame: CGRect(x: cell.rootView.frame.maxX - 80, y: 15, width: cell.rootView.frame.size.width, height: 30))
+                    labelForNotifications.tag = 51
+                    labelForNotifications.textColor = UIColor.white
+                    let count = snapshotOfCount.childrenCount.hashValue - 1
+                    if count != 0 {
+                        labelForNotifications.text = "\(count)"
+                        cell.rootView.addSubview(labelForNotifications)
+                    }
+                }
+            }
+        })
+        
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickCell(sender:)))
         
         cell.rootView.addGestureRecognizer(tap)
@@ -459,18 +509,18 @@ extension GroupController: UITableViewDataSource {
         
     }
     
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection
-//        section: Int) -> Int {
-//        if isSearching == false {
-//            return groups.count
-//        } else {
-//            return searchGroups.count
-//        }
-//        return 0
-//    }
+    //    func tableView(_ tableView: UITableView, numberOfRowsInSection
+    //        section: Int) -> Int {
+    //        if isSearching == false {
+    //            return groups.count
+    //        } else {
+    //            return searchGroups.count
+    //        }
+    //        return 0
+    //    }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-       // closeFloatingActionButton()
+        // closeFloatingActionButton()
         
         if searchBar.text != nil {
             if isSearching == false {
@@ -485,11 +535,11 @@ extension GroupController: UITableViewDataSource {
         }
     }
     
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        if sear
-//    }
+    //    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    //        if sear
+    //    }
     
-   
+    
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()

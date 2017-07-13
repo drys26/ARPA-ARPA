@@ -76,6 +76,20 @@ class GroupHomeFeedViewController: UIViewController ,UICollectionViewDelegate, U
 //                        self.groupPosts.append(groupPost)
 //                        
 //                    }
+                    if self.groupPosts.contains(groupPost) && groupPost.postTimeCreated != self.groupPosts[self.groupPosts.index(of: groupPost)!].postTimeCreated {
+                        
+                        
+                        
+                        let index = self.groupPosts.index(of: groupPost)!
+                        
+                        print("Change index \(index) to 0")
+                        
+                        self.groupPosts.remove(at: index)
+                        
+                        self.groupPosts.insert(groupPost, at: 0)
+                        
+                    }
+                    
                     if (self.groupPosts.contains(groupPost) && groupPost.postIsFinished == true) {
                         if let index = self.groupPosts.index(of: groupPost) {
                             self.groupPosts.remove(at: index)

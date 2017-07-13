@@ -69,7 +69,8 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         if isGroupComment == false {
             post.postRef.updateChildValues(["timestamp": 0 - timestamp])
         } else {
-            group.groupRef.updateChildValues(["timestamp": 0 - timestamp])
+            //group.groupRef.updateChildValues(["timestamp": 0 - timestamp])
+            ref.child("Group_Posts").child(group.groupId).child(groupPost.postKey).updateChildValues(["timestamp": 0 - timestamp])
         }
         userCommentTextView.text = ""
         heightConstraint.constant = 50

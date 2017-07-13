@@ -20,7 +20,7 @@ class Post: Equatable {
     //var postImageUrl: String
     var frameImagesIDS: [String]
     var postImagesInfos: [PostImages]
-//    var postTimeCreated: Double
+    var postTimeCreated: Double
     var postDescription: String
     var frameType: String
     var postIsFinished: Bool
@@ -37,6 +37,7 @@ class Post: Equatable {
         let postDictionary = post.value as! [String: Any]
         self.postStatus = postDictionary["private_status"] as! Bool
         self.postDescription = postDictionary["post_description"] as! String
+        self.postTimeCreated = postDictionary["timestamp"] as! Double
         //self.postImageUrl = postDictionary["post_photo_url"] as! String
         let authorInfo = postDictionary["author_info"] as! String
         let authorArr = authorInfo.components(separatedBy: ",")
