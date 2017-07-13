@@ -2368,6 +2368,7 @@
                                 <segments>
                                     <segment title="Public"/>
                                     <segment title="Private"/>
+                                    <segment title="Groups"/>
                                 </segments>
                             </segmentedControl>
                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gSB-wV-Y2p">

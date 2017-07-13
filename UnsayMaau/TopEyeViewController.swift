@@ -82,13 +82,14 @@ import Firebase
             for rootPost in rootSnapshot.children.allObjects as! [DataSnapshot] {
                 let post = Post(post: rootPost)
                 
+                // Remove if the following post is a follower of the current user
                 
-                if self.user.followingIDs.contains(post.authorImageID) {
+                if self.user.followingIDs.contains(post.authorImageID) && self.posts.contains(post) {
                     self.posts.remove(at: self.posts.index(of: post)!)
                     self.reloadData()
                 }
                 
-                if post.postStatus == false && post.authorImageID != self.uid && !self.posts.contains(post) {
+                if post.postStatus == false && post.authorImageID != self.uid && !self.posts.contains(post) && !self.user.followingIDs.contains(post.authorImageID) {
                     rootVoteCount.append([Int]())
                     tempPost.append(post)
                     let index: Int = tempPost.index(of: post)!

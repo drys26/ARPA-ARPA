@@ -82,7 +82,6 @@ class RecentEyeViewController: UIViewController , FeedProtocol , UICollectionVie
                 
                 if post.postStatus == false && post.authorImageID != self.uid && !self.posts.contains(post) && !self.user.followingIDs.contains(post.authorImageID) {
                     // TODO: Get the lastest post
-                    
                     self.posts.append(post)
                     self.reloadData()
 
