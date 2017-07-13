@@ -1,22 +1,21 @@
- //
-//  TopEyeViewController.swift
+//
+//  WatchlistFinishedViewController.swift
 //  UnsayMaau
 //
-//  Created by Nexusbond on 06/07/2017.
+//  Created by Nexusbond on 13/07/2017.
 //  Copyright © 2017 Nexusbond. All rights reserved.
 //
 
 import UIKit
 import Firebase
- 
- class TopEyeViewController: UIViewController , FeedProtocol , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout  {
+
+class WatchlistFinishedViewController: UIViewController , FeedProtocol , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
     
+    @IBOutlet weak var finishedCollectionView: UICollectionView!
+    
+    // MARK: Properties
     
     var user: User!
-
-    @IBOutlet weak var topTableView: UICollectionView!
-    
-    // Firebase Handle
     
     var refHandle: DatabaseHandle!
     
@@ -30,149 +29,95 @@ import Firebase
     var ref: DatabaseReference = Database.database().reference()
     var uid: String = (Auth.auth().currentUser?.uid)!
     var refresher: UIRefreshControl = UIRefreshControl()
+    
+    var isStarting = false
 
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-
+        // Do any additional setup after loading the view.
         getUserData()
-        
         refresher.addTarget(self, action: #selector(self.loadPostData), for: .valueChanged)
-        
         if #available(iOS 10.0, *){
-            topTableView.refreshControl = refresher
+            finishedCollectionView.refreshControl = refresher
         }else{
             
-            topTableView.addSubview(refresher)
+            finishedCollectionView.addSubview(refresher)
         }
-        
-        
-        
-        DispatchQueue.main.async {
-            self.loadPostData()
-        }
-        
-        
         // Set the Delegates of the collection to self
-        
-        topTableView.delegate = self
-        topTableView.dataSource = self
-        
+        finishedCollectionView.delegate = self
+        finishedCollectionView.dataSource = self
     }
     
-    
+    // Reload the collection view
     func reloadData() {
         DispatchQueue.main.async {
-            self.topTableView.reloadData()
+            self.finishedCollectionView.reloadData()
         }
     }
     
+    
+    // Retrieve data from the database
     func loadPostData() {
-        
-        var voteCount = [Int]()
-        
-        var tempPost = [Post]()
-        
-        var rootVoteCount = [[Int]]()
-        
-        
-        ref.child("Posts").observeSingleEvent(of: .value, with: {(rootSnapshot) in
-            //var max = 0
-            var max = 0
-            for rootPost in rootSnapshot.children.allObjects as! [DataSnapshot] {
-                let post = Post(post: rootPost)
-                
-                // Remove if the following post is a follower of the current user
-                
-                if self.user.followingIDs.contains(post.authorImageID) && self.posts.contains(post) {
-                    self.posts.remove(at: self.posts.index(of: post)!)
-                    self.reloadData()
+        // Users Posts Array
+        var userPostIds = [String]()
+        // Get the users posts
+        ref.child("Users_Posts").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            // Count if snapshot children is not equals 0
+            if snapshot.childrenCount.hashValue != 0 {
+                let dictionary = snapshot.value as! [String: Any]
+                // Loop the dictionary then append the keys
+                for (key,_) in dictionary {
+                    if !userPostIds.contains(key) {
+                        userPostIds.append(key)
+                    }
                 }
-
-                
-                if post.postStatus == false && post.authorImageID != self.uid && !self.posts.contains(post) && !self.user.followingIDs.contains(post.authorImageID) {
-                    rootVoteCount.append([Int]())
-                    tempPost.append(post)
-                    let index: Int = tempPost.index(of: post)!
-                    for i in 0..<post.frameImagesIDS.count {
-                        self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: { (snapshot) in
-                            let currentVoteCount = snapshot.childrenCount.hashValue
-                            rootVoteCount[index].append(currentVoteCount)
-                            if rootVoteCount[index].count == post.frameImagesIDS.count {
-                                let currentCount = self.countArray(arr: rootVoteCount[index])
-                                var comparerCount = 0
-                                if index != 0 {
-                                    let i = index - 1
-                                    comparerCount = self.countArray(arr: rootVoteCount[i])
-                                }
-                                print("Max \(max)")
-                                print("Comparer Count \(comparerCount)")
-                                print("Current Count \(currentCount)")
-                                print("Post name \(tempPost[index].postDescription)")
-                                if !self.posts.contains(tempPost[index]) {
-                                    if currentCount > max {
-                                        max = currentCount
-                                        print("currentCount >= max \(max)")
-                                        self.posts.insert(tempPost[index], at: 0)
-                                    } else if currentCount >= comparerCount {
-                                        print("currentCount >= comparerCount")
-                                        if self.posts.count > 1 {
-                                            self.posts.insert(tempPost[index], at: 1)
-                                        } else {
-                                            self.posts.append(tempPost[index])
-                                        }
-                                        
-                                    } else {
-                                        print("append")
-                                        self.posts.append(tempPost[index])
-                                    }
+            }
+            // Get the users post vote data
+            self.ref.child("Users").child(self.uid).child("post_voted").observeSingleEvent(of: .value, with: { (snapshotPostVoted) in
+                // Count if snapshot children is not equals 0
+                if snapshotPostVoted.childrenCount.hashValue != 0 {
+                    let userVotedDictionary = snapshotPostVoted.value as! [String: Any]
+                    // Loop the dictionary then append the keys
+                    for (key,_) in userVotedDictionary {
+                        // Compare if key is in user post ids
+                        // if key is not in the user post ids append it in the post array
+                        if !userPostIds.contains(key) {
+                            print("\(key)  KEY")
+                            self.ref.child("Posts").child(key).observeSingleEvent(of: .value, with: { (postSnapshot) in
+                                let post = Post(post: postSnapshot)
+                                
+                                // if the post is not in the post array
+                                
+                                if !self.posts.contains(post) && post.postIsFinished == true {
+                                    self.posts.append(post)
                                     self.reloadData()
                                 }
-                            }
-                            
-                        })
+                            })
+                        }
                     }
-                    
-//                    if self.user.followingIDs.contains(post.authorImageID) {
-//                        
-//                        let i = self.posts.index(of: post)!
-//                        
-//                        if self.posts.contains(self.posts[i]) {
-//                            self.posts.remove(at: i)
-//                            self.reloadData()
-//                        }
-//                        
-//                        
-//                    }
-                    
-                    
-                    
                 }
-                
-            }
+            })
             
         })
         refresher.endRefreshing()
     }
     
-    func countArray(arr: [Int]) -> Int{
-        var temp = 0
-        for i in arr {
-            temp += i
-        }
-        return temp
-    }
-    
+    // Get the current user data with observe event type
     func getUserData() {
         refUserHandle = ref.child("Users").child(uid).observe(.value, with: {(snapshot) in
             self.user = User(snap: snapshot)
-            //this code is just to show the UserClass was populated.
-            print(self.user.email)
-            
+            // if isStarting == false  , load the data
+            if self.isStarting == false {
+                self.isStarting = true
+                DispatchQueue.main.async {
+                    self.loadPostData()
+                }
+            }
         })
     }
     
     func commandAction(sender: UIButton) {
+        // Get the current Post of the Posts array
         let post = posts[sender.tag]
         var followerDictionary = [String:Any]()
         var followingDictionary = [String:Any]()
@@ -192,6 +137,8 @@ import Firebase
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        
+        
         let cellIdentifier = "HomeFeedCell"
         
         //let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFeedCell", for: indexPath) as! HomeFeedCollectionViewCell
@@ -207,11 +154,11 @@ import Firebase
         cell.authorDisplayName.text = post.authorDisplayName
         cell.commandButton.tag = indexPath.row
         cell.commandButton.addTarget(self, action: #selector(self.commandAction), for: .touchUpInside)
-//        if post.authorImageID == uid {
-//            cell.commandButton.setTitle("End Vote", for: .normal)
-//        } else if user.followingIDs.contains(post.authorImageID){
-//            cell.commandButton.setTitle("Unfollow", for: .normal)
-//        }
+        //        if post.authorImageID == uid {
+        //            cell.commandButton.setTitle("End Vote", for: .normal)
+        //        } else if user.followingIDs.contains(post.authorImageID){
+        //            cell.commandButton.setTitle("Unfollow", for: .normal)
+        //        }
         
         cell.commandButton.setTitle("Follow", for: .normal)
         
@@ -255,14 +202,15 @@ import Firebase
     
     func viewCommentAction(sender: UIButton){
         let post = posts[sender.tag]
+        print(post.postKey)
         getUserData()
-        user.userRef.observeSingleEvent(of: .value, with: {(snapshot) in
-            if snapshot.hasChild("post_voted/\(post.postKey)") || post.authorImageID == self.user.userId {
-                self.performSegue(withIdentifier: "goToCommentView", sender: post)
-            } else {
-                self.showAlertController(message: "You need to vote to comment.", title: "Vote First")
-            }
-        })
+        //        user.userRef.observeSingleEvent(of: .value, with: {(snapshot) in
+        //            if snapshot.hasChild("post_voted/\(post.postKey)") || post.authorImageID == self.user.userId {
+        //                self.performSegue(withIdentifier: "goToCommentView", sender: post)
+        //            } else {
+        //                self.showAlertController(message: "You need to vote to comment.", title: "Vote First")
+        //            }
+        //        })
         
     }
     
@@ -313,6 +261,7 @@ import Firebase
         
         var count = returnCountOfFrames(frameType: frameType)
         
+        // Stack View for the post frame
         
         let returnStackView = UIStackView(frame: CGRect(x: 0, y: 0, width: width , height: height))
         returnStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -332,10 +281,13 @@ import Firebase
         
         for i in 0..<count {
             
+            // Create a label for the image description
+            
             let labelView = UILabel(frame: CGRect(x: 0, y: 0, width: labelWidth, height: 10))
             labelView.font = UIFont.systemFont(ofSize: 14)
             labelViews.append(labelView)
             
+            // Create an image view for the post images
             
             let imgView = UIImageView()
             imgView.contentMode = .scaleAspectFill
@@ -352,35 +304,15 @@ import Firebase
             imgView.addSubview(voteView)
             
             
-            
+            // Label for the votes
             let voteLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 90, height: 20))
+            // if authorId == current user id execute task
             if post.authorImageID == self.uid {
+                // Retrieve the vote post node with the current frame image ids
                 self.refVotePostHandle = self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observe(.value, with: {(snapshot) in
+                    // Count the children of the snapshot
                     let voteCount = snapshot.childrenCount
-//                    if arrOfVotes.count == 1 {
-//                        max = arrOfVotes[0]
-//                        index = i
-//                    }
-//                    arrOfVotes.append(voteCount.hashValue)
-//                    
-//                    if arrOfVotes[i] > max {
-//                        max = arrOfVotes[i]
-//                        let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
-//                        
-//                        let imageAttach = NSTextAttachment()
-//                        imageAttach.image = UIImage(named: "crown.png")
-//                        
-//                        let attribImage = NSAttributedString(attachment: imageAttach)
-//                        
-//                        let combi = NSMutableAttributedString()
-//                        combi.append(attribImage)
-//                        combi.append(attribText)
-//                        
-//                        voteLabel.attributedText = combi
-//                    } else {
                     voteLabel.text = "\(voteCount)"
-                    //}
-                    
                 })
             } else {
                 self.ref.child("Users").child(self.uid).child("post_voted").observeSingleEvent(of:.value, with: {(snapshot) in
@@ -388,31 +320,7 @@ import Firebase
                         var handle = self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observeSingleEvent(of: .value
                             , with: {(snapshot) in
                                 let voteCount = snapshot.childrenCount
-                                // arrOfVotes.append(voteCount.hashValue)
-                                // voteLabel.text = "\(voteCount)"
-                                //                                if arrOfVotes.count == 1 {
-                                //                                    max = arrOfVotes[0]
-                                //                                    index = i
-                                //                                }
-                                //                                arrOfVotes.append(voteCount.hashValue)
-                                //
-                                //                                if arrOfVotes[i] > max {
-                                //                                    max = arrOfVotes[i]
-                                //                                    let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
-                                //
-                                //                                    let imageAttach = NSTextAttachment()
-                                //                                    imageAttach.image = UIImage(named: "crown.png")
-                                //
-                                //                                    let attribImage = NSAttributedString(attachment: imageAttach)
-                                //
-                                //                                    let combi = NSMutableAttributedString()
-                                //                                    combi.append(attribImage)
-                                //                                    combi.append(attribText)
-                                //
-                                //                                    voteLabel.attributedText = combi
-                                //                                } else {
                                 voteLabel.text = "\(voteCount)"
-                                //}
                         })
                     } else {
                         voteLabel.text = "?"
@@ -421,32 +329,17 @@ import Firebase
             }
             voteLabel.font = UIFont(name: voteLabel.font.fontName, size: 12)
             voteLabel.textColor = UIColor.white
-            //            imgView.addSubview(voteView)
             voteLabel.tag = 1
             voteView.addSubview(voteLabel)
             
-            
-            
-            // Create an Long Tap Gesture Recognizer
-            
-            let tap = UITapGestureRecognizer()
-            tap.addTarget(self, action: #selector(self.voteImage(sender:)))
-            
-            // Add Gesture Recognizer
-            
-            imgView.addGestureRecognizer(tap)
-            
-            // Append image view to the array
-            
-            imageViews.append(imgView)
-            
-            //print(String(describing: imgView))
-            
-//            print("Count of First Loop \(i)")
         }
         
+        // Loop the post frame image ids
         for i in 0..<post.frameImagesIDS.count {
+            
+            // Retrieve the images node with the post key and the frame image ids
             ref.child("Images").child(post.postKey).child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: {(snapshot) in
+                // Retrieve the post images with the snapshot
                 let postImage = PostImages(snap: snapshot)
                 imageViews[i].sd_setImage(with: URL(string: postImage.imageUrl))
                 
@@ -466,8 +359,10 @@ import Firebase
             })
         }
         
+        // If count == 4 the frame type is FOUR_CROSS
         if count == 4 {
             
+            // Create 2 stackviews for upper and lower stacks
             let upper = UIStackView()
             let lower = UIStackView()
             
@@ -502,11 +397,7 @@ import Firebase
         separator.backgroundColor = UIColor.lightGray
         
         labelViews[labelViews.count - 1].addSubview(separator)
-        
-        
-        //textView.addSubview(separator)
-        
-        //(returnStackView , labelViews , textView)
+
         return (returnStackView , labelViews , textView)
     }
     
@@ -516,12 +407,9 @@ import Firebase
             
             // Tag is Frame no of the image
             
-            print(imageView.tag)
-            
             // Accessibility Label is the image info
             // Contains image id , post id , author image id
             
-            print(imageView.accessibilityLabel!)
             
             // Make an array of the label value
             
@@ -531,11 +419,6 @@ import Firebase
             let postID = imageInfo[1]
             let voteUserID = imageInfo[2]
             let frameType = imageInfo[3]
-            
-            let refVote = Database.database().reference()
-            
-            // Check if post is already finished
-            
             
             if self.user.followingIDs.contains(voteUserID) {
                 
@@ -578,19 +461,18 @@ import Firebase
                                     let voteCount = snapshot.childrenCount
                                     let rootView = imageView.viewWithTag(0) as! UIView
                                     let label = rootView.viewWithTag(1) as! UILabel
-                                    
                                     label.text = "\(voteCount)"
-                                    
                                 })
                                 refVote.removeAllObservers()
                                 
+                                // Root stack view of the post
                                 let root: UIStackView
                                 
+                                // Update the other labels
                                 if frameType.contains("TWO") || frameType.contains("THREE") {
                                     root = imageView.superview as! UIStackView
                                     print(String(describing: root))
                                     for imageViewHolder in root.subviews {
-                                        //let imageViewHolder = root.subviews[i] as! UIImageView
                                         if imageViewHolder.tag != imageView.tag {
                                             
                                             let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
@@ -599,18 +481,14 @@ import Firebase
                                             refVote.child("Vote_Post").child(imageID!).observeSingleEvent(of: .value, with: {(snapshot) in
                                                 let voteCount = snapshot.childrenCount
                                                 let voteString = "\(voteCount)"
-                                                
                                                 if arrOfVotes.count == 1 {
                                                     max = arrOfVotes[0]
                                                 }
                                                 arrOfVotes.append(voteCount.hashValue)
-                                                
                                                 let index = root.subviews.index(of: imageViewHolder)
-                                                
                                                 let rootImage = imageViewHolder as! UIImageView
                                                 let rootView = rootImage.viewWithTag(0) as! UIView
                                                 let label = rootView.viewWithTag(1) as! UILabel
-                                                
                                                 label.text = voteString
                                             })
                                             
@@ -621,8 +499,8 @@ import Firebase
                                     
                                     print(String(describing: root))
                                     
-                                    for stackviews in root.subviews {
-                                        for imageViewHolder in stackviews.subviews {
+                                    for stackviews in root.subviews { // loop through the root stack views
+                                        for imageViewHolder in stackviews.subviews { // loop through the images in the stack views
                                             if imageViewHolder.tag != imageView.tag {
                                                 let imageInfo = imageViewHolder.accessibilityLabel?.components(separatedBy: ",")
                                                 let imageID = imageInfo?[0]
@@ -645,19 +523,21 @@ import Firebase
                                 
                             }
                         })
-                        
-                        
                     }
-                    
                 })
             } else {
                 self.showAlertController(message: "Follow the user to vote", title: "")
             }
-
-            
-            
         }
     }
-    
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
 
 }

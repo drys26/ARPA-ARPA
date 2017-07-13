@@ -57,6 +57,9 @@
 		10D294961EF27774008F84B2 /* HomePostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D294951EF27774008F84B2 /* HomePostController.swift */; };
 		10DF2AAE1F1482810003D40A /* GroupHomeFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DF2AAD1F1482810003D40A /* GroupHomeFeedViewController.swift */; };
 		10DF2AB01F1497B00003D40A /* GroupPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DF2AAF1F1497B00003D40A /* GroupPost.swift */; };
+		10E2C8641F17254E0038EDF1 /* WatchlistLiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E2C8631F17254E0038EDF1 /* WatchlistLiveViewController.swift */; };
+		10E2C8661F1725670038EDF1 /* WatchlistFinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E2C8651F1725670038EDF1 /* WatchlistFinishedViewController.swift */; };
+		10F1D82C1F171E2800A18CA7 /* WatchListRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1D82B1F171E2800A18CA7 /* WatchListRoot.swift */; };
 		10FECBC31F0C8C5F0075CD36 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FECBC21F0C8C5F0075CD36 /* SettingsTableViewCell.swift */; };
 		10FECBC51F0C8DDC0075CD36 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FECBC41F0C8DDC0075CD36 /* SettingsViewController.swift */; };
 		10FECBC71F0C8FA60075CD36 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FECBC61F0C8FA60075CD36 /* Settings.swift */; };
@@ -144,6 +147,9 @@
 		10D294951EF27774008F84B2 /* HomePostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePostController.swift; sourceTree = "<group>"; };
 		10DF2AAD1F1482810003D40A /* GroupHomeFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupHomeFeedViewController.swift; sourceTree = "<group>"; };
 		10DF2AAF1F1497B00003D40A /* GroupPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupPost.swift; sourceTree = "<group>"; };
+		10E2C8631F17254E0038EDF1 /* WatchlistLiveViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchlistLiveViewController.swift; sourceTree = "<group>"; };
+		10E2C8651F1725670038EDF1 /* WatchlistFinishedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchlistFinishedViewController.swift; sourceTree = "<group>"; };
+		10F1D82B1F171E2800A18CA7 /* WatchListRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchListRoot.swift; sourceTree = "<group>"; };
 		10FECBC21F0C8C5F0075CD36 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		10FECBC41F0C8DDC0075CD36 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		10FECBC61F0C8FA60075CD36 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -255,6 +261,7 @@
 		10ABFF711EF253560087F05F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				10F1D82A1F171DF100A18CA7 /* Watchlist */,
 				100690C01F1395230005D851 /* Roots */,
 				10FECBD11F0CD4F80075CD36 /* Login */,
 				10FECBD01F0CD4C70075CD36 /* Groups */,
@@ -308,6 +315,16 @@
 				10ABFF4F1EF250950087F05F /* Info.plist */,
 			);
 			name = "Important Files";
+			sourceTree = "<group>";
+		};
+		10F1D82A1F171DF100A18CA7 /* Watchlist */ = {
+			isa = PBXGroup;
+			children = (
+				10F1D82B1F171E2800A18CA7 /* WatchListRoot.swift */,
+				10E2C8631F17254E0038EDF1 /* WatchlistLiveViewController.swift */,
+				10E2C8651F1725670038EDF1 /* WatchlistFinishedViewController.swift */,
+			);
+			name = Watchlist;
 			sourceTree = "<group>";
 		};
 		10FECBC81F0CD0F00075CD36 /* Cells */ = {
@@ -714,11 +731,14 @@
 				10A45DB41EF930FC00880BD3 /* ProfileViewController.swift in Sources */,
 				10DF2AAE1F1482810003D40A /* GroupHomeFeedViewController.swift in Sources */,
 				102AC63D1F04A48A00750D6A /* ChatViewController.swift in Sources */,
+				10F1D82C1F171E2800A18CA7 /* WatchListRoot.swift in Sources */,
 				102B25951F0A0EB200049F16 /* Comment.swift in Sources */,
 				102B25931F0A095C00049F16 /* CommentTableViewCell.swift in Sources */,
+				10E2C8661F1725670038EDF1 /* WatchlistFinishedViewController.swift in Sources */,
 				103A96B41EF8DD18001DAC9F /* PostImages.swift in Sources */,
 				101E3CEF1F02552C003621CC /* SeeMembersTableViewCell.swift in Sources */,
 				100690BD1F13263D0005D851 /* SeeFollowsViewController.swift in Sources */,
+				10E2C8641F17254E0038EDF1 /* WatchlistLiveViewController.swift in Sources */,
 				10FECBC71F0C8FA60075CD36 /* Settings.swift in Sources */,
 				10FECBD51F0CED920075CD36 /* InviteMembersTableViewCell.swift in Sources */,
 				102AC63F1F04B22A00750D6A /* ContainerChatViewController.swift in Sources */,

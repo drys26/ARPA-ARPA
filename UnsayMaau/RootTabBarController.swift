@@ -42,6 +42,7 @@ class RootTabBarController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
+    // Remove the badge
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         switch item.tag {
         case 4:
@@ -50,7 +51,6 @@ class RootTabBarController: UITabBarController {
             break
         case 2:
             item.badgeValue = nil
-//            ref.child("Notifications").child(user.userId).child("Group_Post_Notifications").removeValue()
             break
         default:
             break

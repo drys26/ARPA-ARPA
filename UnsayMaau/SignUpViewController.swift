@@ -178,6 +178,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
             if nameTextField.text == "" {
                 print("no name")
+                nameTextField.rightViewMode = .always
             }
             else if emailTextField.text == "" {
                 print("no email")

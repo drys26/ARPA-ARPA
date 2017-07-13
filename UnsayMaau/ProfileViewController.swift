@@ -70,6 +70,8 @@ class ProfileViewController: UIViewController , CAPSPageMenuDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        
+        
         if ref == nil {
             ref = Database.database().reference()
         }
@@ -87,10 +89,6 @@ class ProfileViewController: UIViewController , CAPSPageMenuDelegate {
         }
         getUserData()
     }
-    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        navigationController?.setNavigationBarHidden(false, animated: animated)
-//    }
     
     func getUserData(){
         var id = ""
@@ -115,14 +113,6 @@ class ProfileViewController: UIViewController , CAPSPageMenuDelegate {
             self.userDisplayName.text = self.user.displayName
             
         })
-    }
-    
-    func willMoveToPage(_ controller: UIViewController, index: Int) {
-        print(index)
-    }
-    
-    func didMoveToPage(_ controller: UIViewController, index: Int) {
-        print(index)
     }
     
     override func viewDidLoad() {
@@ -170,6 +160,8 @@ class ProfileViewController: UIViewController , CAPSPageMenuDelegate {
         pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRect(x: 0.0, y: StackViewCounter.frame.maxY , width: self.view.frame.width, height: self.view.frame.height), pageMenuOptions: parameters)
         
         pageMenu?.delegate = self
+        pageMenu?.setStartIndexToPage(index: 3)
+        
         
         self.view.addSubview(pageMenu!.view)
         
@@ -189,19 +181,10 @@ class ProfileViewController: UIViewController , CAPSPageMenuDelegate {
  
     }
     
+    
     func dismissPVC(){
         self.dismiss(animated: true, completion: nil)
     }
-    
-//    func goToFollowers(sender: UITapGestureRecognizer){
-//        print("Tap")
-//        if let label = sender.view as? UILabel {
-//            
-//        }
-//        
-//        self.performSegue(withIdentifier: "goToFollowFinder", sender: "followers")
-//        
-//    }
     
 
     @IBAction func toogleSettings(_ sender: Any) {

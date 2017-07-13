@@ -54,11 +54,9 @@ class GroupController: UIViewController,UISearchBarDelegate {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         
-        
+        // Set the search bar delegate and add refresh control to the table view
         
         searchBar.delegate = self
-        
-        
         refreshControl.addTarget(self, action: #selector(self.loadGroups), for: .valueChanged)
         
         
@@ -74,21 +72,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
         }
     }
     
-    //    func refreshData(){
-    //        refGroupsHandle = refGroups.observe(.childAdded, with: {(snapshot) in
-    //            let group = Group(snap: snapshot)
-    //            if !self.groups.contains(group) {
-    //                if group.groupStatus == false {
-    //                    self.groups.append(group)
-    //                    DispatchQueue.main.async {
-    //                        self.groupTableView.reloadData()
-    //                    }
-    //                }
-    //            }
-    //        })
-    //        refreshControl.endRefreshing()
-    //
-    //    }
+    // Get the current user data
     
     func getUserData(){
         rootRef.child("Users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
@@ -148,6 +132,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
         //            })
         //        }
         
+        // Append the groups array and sections array if group count == 0
         if groups.count == 0 {
             self.groups.append([Group]())
             self.groups.append([Group]())
@@ -155,20 +140,26 @@ class GroupController: UIViewController,UISearchBarDelegate {
             self.sections.append("Trending")
         }
         
+        // If user is searching
         if isSearching == true {
             searchGroups.removeAll()
             loadSearchedGroups()
-        } else {
+        } else { // if the user is not searching
+            
+            // Get the users groups in member groups node in firebase database
             rootRef.child("Users_Groups").child(uid!).child("Member_Groups").observeSingleEvent(of: .value, with: { (rootSnapshot) in
                 if rootSnapshot.childrenCount != 0 {
+                    
+                    // if section index 0 is Trending then insert groups section in index 0
                     
                     if self.sections[0] == "Trending" {
                         self.sections.insert("Your Group", at: 0)
                         self.groups.insert([Group](), at: 0)
-                        //self.sections.remove(at: 1)
                     }
                     
                     let valueDictionary = rootSnapshot.value as! [String: Any]
+                    
+                    // Loop through the dictionary of the users groups
                     
                     for (key,_) in valueDictionary {
                         
@@ -177,7 +168,6 @@ class GroupController: UIViewController,UISearchBarDelegate {
                             let yourGroup = Group(snap: snapshot)
                             
                             // Get your joined groups
-                            
                             let isNotInGroups = !self.groups[0].contains(yourGroup)
                             
                             if isNotInGroups {
@@ -310,32 +300,22 @@ class GroupController: UIViewController,UISearchBarDelegate {
                 group1 = searchGroups[rootView.tag]
             }
             
-            print("Group 1 \(group1.groupId)")
-            print("Group 1 \(group1.members.count)")
-            print("Group 1 \(group1.admins.count)")
-            
+            // Get the Groups Data
             rootRef.child("Groups").child(group1.groupId).observeSingleEvent(of: .value, with: {(snapshot) in
-                
-                
                 let valueDictionary = snapshot.value as! [String: Any]
-                
-                
                 var membersDictionary = [String: Any]()
-                
                 var adminDictionary = [String: Any]()
-                
                 if snapshot.hasChild("members") {
                     membersDictionary = valueDictionary["members"] as! [String: Any]
                 }
-                
                 if snapshot.hasChild("admin_members") {
                     adminDictionary = valueDictionary["admin_members"] as! [String: Any]
                 }
                 
+                // If member is Admin
                 let isAdmin = adminDictionary[self.user.userId] != nil
-                
+                // If member is Member
                 let isMember = membersDictionary[self.user.userId] != nil
-                
                 
                 let newGroup = Group(snap: snapshot)
                                                                                                                                                                                                                        
@@ -345,17 +325,8 @@ class GroupController: UIViewController,UISearchBarDelegate {
                     
                     
                     // Index path for every cell
-                    
                     let index = IndexPath(row: row, section: section)
                     let cell = self.groupTableView.cellForRow(at: index) as! GroupTableViewCell
-                    
-                    // Find cell with the tag of 51 and cast as UILabel
-                    
-//                    if let label = cell.rootView.viewWithTag(51) as? UILabel {
-//                        // Remove from superview
-//                        // Loop the rootview subviews
-//                        
-//                    }
                     
                     for view in cell.rootView.subviews {
                         // if view tag equals to 51 remove it
@@ -367,9 +338,6 @@ class GroupController: UIViewController,UISearchBarDelegate {
                     // Perform Segue and pass the newGroup variable
                     
                     self.performSegue(withIdentifier: "goToGroupPage", sender: newGroup)
-//                    self.rootRef.child("Group_Notifications").child(group1.groupId).child("Post_Notifications").child("notified_users").updateChildValues([self.uid!: true])
-                    
-                    
                     
                 } else if !isAdmin || !isMember  {
                     let pendingDictionary = ["pending_members": ["\(self.uid!)": true]]
@@ -477,22 +445,23 @@ extension GroupController: UITableViewDataSource {
         //                cell.rootView.addSubview(labelForNotifications)
         //            }
         //        }
-        self.rootRef.child("Group_Notifications").child(group.groupId).child("Post_Notifications").observe(.value, with: { (snapshotOfCount) in
-            if snapshotOfCount.childrenCount != 0 {
-                let dictionary = snapshotOfCount.value as! [String: Any]
-                let notified = dictionary["notified_users"] as! [String: Any]
-                if notified[self.uid!] == nil {
-                    let labelForNotifications = UILabel(frame: CGRect(x: cell.rootView.frame.maxX - 80, y: 15, width: cell.rootView.frame.size.width, height: 30))
-                    labelForNotifications.tag = 51
-                    labelForNotifications.textColor = UIColor.white
-                    let count = snapshotOfCount.childrenCount.hashValue - 1
-                    if count != 0 {
-                        labelForNotifications.text = "\(count)"
-                        cell.rootView.addSubview(labelForNotifications)
-                    }
-                }
-            }
-        })
+//        
+//        self.rootRef.child("Group_Notifications").child(group.groupId).child("Post_Notifications").observe(.value, with: { (snapshotOfCount) in
+//            if snapshotOfCount.childrenCount != 0 {
+//                let dictionary = snapshotOfCount.value as! [String: Any]
+//                let notified = dictionary["notified_users"] as! [String: Any]
+//                if notified[self.uid!] == nil {
+//                    let labelForNotifications = UILabel(frame: CGRect(x: cell.rootView.frame.maxX - 80, y: 15, width: cell.rootView.frame.size.width, height: 30))
+//                    labelForNotifications.tag = 51
+//                    labelForNotifications.textColor = UIColor.white
+//                    let count = snapshotOfCount.childrenCount.hashValue - 1
+//                    if count != 0 {
+//                        labelForNotifications.text = "\(count)"
+//                        cell.rootView.addSubview(labelForNotifications)
+//                    }
+//                }
+//            }
+//        })
         
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickCell(sender:)))
@@ -500,7 +469,7 @@ extension GroupController: UITableViewDataSource {
         cell.rootView.addGestureRecognizer(tap)
         cell.backgroundImageView.sd_setImage(with: URL(string: group.backgroundImageUrl))
         cell.groupDescriptionText.text = group.groupDescription
-        cell.groupMembersText.text = "\(group.members.count)"
+        cell.groupMembersText.text = "\(group.members.count) members"
         cell.groupNameText.text = group.groupName
         
         

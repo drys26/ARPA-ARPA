@@ -294,29 +294,7 @@ class RecentEyeViewController: UIViewController , FeedProtocol , UICollectionVie
             if post.authorImageID == self.uid {
                 self.refVotePostHandle = self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observe(.value, with: {(snapshot) in
                     let voteCount = snapshot.childrenCount
-                    //                    if arrOfVotes.count == 1 {
-                    //                        max = arrOfVotes[0]
-                    //                        index = i
-                    //                    }
-                    //                    arrOfVotes.append(voteCount.hashValue)
-                    //
-                    //                    if arrOfVotes[i] > max {
-                    //                        max = arrOfVotes[i]
-                    //                        let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
-                    //
-                    //                        let imageAttach = NSTextAttachment()
-                    //                        imageAttach.image = UIImage(named: "crown.png")
-                    //
-                    //                        let attribImage = NSAttributedString(attachment: imageAttach)
-                    //
-                    //                        let combi = NSMutableAttributedString()
-                    //                        combi.append(attribImage)
-                    //                        combi.append(attribText)
-                    //
-                    //                        voteLabel.attributedText = combi
-                    //                    } else {
                     voteLabel.text = "\(voteCount)"
-                    //}
                     
                 })
             } else {
@@ -325,31 +303,8 @@ class RecentEyeViewController: UIViewController , FeedProtocol , UICollectionVie
                         var handle = self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observeSingleEvent(of: .value
                             , with: {(snapshot) in
                                 let voteCount = snapshot.childrenCount
-                                // arrOfVotes.append(voteCount.hashValue)
-                                // voteLabel.text = "\(voteCount)"
-                                //                                if arrOfVotes.count == 1 {
-                                //                                    max = arrOfVotes[0]
-                                //                                    index = i
-                                //                                }
-                                //                                arrOfVotes.append(voteCount.hashValue)
-                                //
-                                //                                if arrOfVotes[i] > max {
-                                //                                    max = arrOfVotes[i]
-                                //                                    let attribText = NSMutableAttributedString(string: "  \(max)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)])
-                                //
-                                //                                    let imageAttach = NSTextAttachment()
-                                //                                    imageAttach.image = UIImage(named: "crown.png")
-                                //
-                                //                                    let attribImage = NSAttributedString(attachment: imageAttach)
-                                //
-                                //                                    let combi = NSMutableAttributedString()
-                                //                                    combi.append(attribImage)
-                                //                                    combi.append(attribText)
-                                //
-                                //                                    voteLabel.attributedText = combi
-                                //                                } else {
+                                
                                 voteLabel.text = "\(voteCount)"
-                                //}
                         })
                     } else {
                         voteLabel.text = "?"

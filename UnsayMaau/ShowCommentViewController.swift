@@ -104,7 +104,7 @@ class ShowCommentViewController: UIViewController , UITableViewDataSource , UITa
         else {
             
             let currentOffset = commentTable.contentOffset
-            UIView.setAnimationsEnabled(false)
+            UIView.setAnimationsEnabled(true)
             commentTable.beginUpdates()
             commentTable.endUpdates()
             UIView.setAnimationsEnabled(true)
