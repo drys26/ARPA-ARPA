@@ -790,7 +790,7 @@
             <objects>
                 <navigationController id="c8y-4v-Emc" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="GROUPS" image="groups" id="7O8-MM-UiY"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8X2-Eg-HBa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="8X2-Eg-HBa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1924,7 +1924,7 @@
         <scene sceneID="MBz-Pi-gHD">
             <objects>
                 <navigationController id="s0c-4E-Y7Y" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TkC-dM-lhU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TkC-dM-lhU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2461,49 +2461,108 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="NfP-7p-iWz">
-                                <rect key="frame" x="16" y="108" width="343" height="267"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0h6-50-0h8">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4U6-57-2L0">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1064"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="zUQ-0N-WhX">
+                                                <rect key="frame" x="16" y="44" width="343" height="267"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="267" id="7sI-y3-xbA"/>
+                                                </constraints>
+                                            </stackView>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="UlX-7N-wkt">
+                                                <rect key="frame" x="8" y="8" width="359" height="29"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="28" id="BkA-gu-hf9"/>
+                                                </constraints>
+                                                <segments>
+                                                    <segment title="Public"/>
+                                                    <segment title="Private"/>
+                                                    <segment title="Groups"/>
+                                                </segments>
+                                            </segmentedControl>
+                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="kdF-WF-yPX">
+                                                <rect key="frame" x="16" y="319" width="343" height="30"/>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GUL-el-r3o">
+                                                <rect key="frame" x="16" y="357" width="343" height="530"/>
+                                                <subviews>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SOv-n4-uwi">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="30" id="9LT-sE-ZPt"/>
+                                                        </constraints>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                    </textField>
+                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ue0-du-Ql7">
+                                                        <rect key="frame" x="0.0" y="30" width="343" height="500"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="500" id="2nl-Jw-ZSK"/>
+                                                        </constraints>
+                                                        <prototypes>
+                                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="x6A-Ys-XBK">
+                                                                <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x6A-Ys-XBK" id="XmL-dA-FoB">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                                                    <autoresizingMask key="autoresizingMask"/>
+                                                                </tableViewCellContentView>
+                                                            </tableViewCell>
+                                                        </prototypes>
+                                                    </tableView>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="GUL-el-r3o" firstAttribute="leading" secondItem="4U6-57-2L0" secondAttribute="leading" constant="16" id="20B-MM-cnd"/>
+                                            <constraint firstItem="GUL-el-r3o" firstAttribute="top" secondItem="kdF-WF-yPX" secondAttribute="bottom" constant="8" id="3uu-KU-X3M"/>
+                                            <constraint firstItem="UlX-7N-wkt" firstAttribute="top" secondItem="4U6-57-2L0" secondAttribute="top" constant="8" id="4Mg-gB-ba1"/>
+                                            <constraint firstItem="kdF-WF-yPX" firstAttribute="top" secondItem="zUQ-0N-WhX" secondAttribute="bottom" constant="8" id="AQ0-z0-bod"/>
+                                            <constraint firstItem="zUQ-0N-WhX" firstAttribute="leading" secondItem="4U6-57-2L0" secondAttribute="leading" constant="16" id="Cjs-re-8M8"/>
+                                            <constraint firstAttribute="trailing" secondItem="zUQ-0N-WhX" secondAttribute="trailing" constant="16" id="Eht-i2-rbc"/>
+                                            <constraint firstItem="UlX-7N-wkt" firstAttribute="leading" secondItem="4U6-57-2L0" secondAttribute="leading" constant="8" id="HL8-fL-NbB"/>
+                                            <constraint firstItem="zUQ-0N-WhX" firstAttribute="top" secondItem="UlX-7N-wkt" secondAttribute="bottom" constant="8" id="U6R-nA-aan"/>
+                                            <constraint firstItem="kdF-WF-yPX" firstAttribute="leading" secondItem="4U6-57-2L0" secondAttribute="leading" constant="16" id="ciy-FH-S4i"/>
+                                            <constraint firstAttribute="trailing" secondItem="UlX-7N-wkt" secondAttribute="trailing" constant="8" id="eBe-VA-u65"/>
+                                            <constraint firstAttribute="trailing" secondItem="kdF-WF-yPX" secondAttribute="trailing" constant="16" id="eXs-85-tRL"/>
+                                            <constraint firstAttribute="height" constant="1064" id="v2x-zv-wot"/>
+                                            <constraint firstAttribute="trailing" secondItem="GUL-el-r3o" secondAttribute="trailing" constant="16" id="wNV-CV-a6n"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="267" id="07q-EL-0IB"/>
+                                    <constraint firstItem="4U6-57-2L0" firstAttribute="top" secondItem="0h6-50-0h8" secondAttribute="top" id="J4Z-Ei-Jjf"/>
+                                    <constraint firstAttribute="bottom" secondItem="4U6-57-2L0" secondAttribute="bottom" constant="-177" id="JVT-4r-UcO"/>
+                                    <constraint firstItem="4U6-57-2L0" firstAttribute="leading" secondItem="0h6-50-0h8" secondAttribute="leading" id="LFa-cl-rFd"/>
+                                    <constraint firstAttribute="trailing" secondItem="4U6-57-2L0" secondAttribute="trailing" id="f31-b5-o5L"/>
                                 </constraints>
-                            </stackView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="TPn-tF-Acy">
-                                <rect key="frame" x="16" y="72" width="343" height="29"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="1ym-wy-3gr"/>
-                                </constraints>
-                                <segments>
-                                    <segment title="Public"/>
-                                    <segment title="Private"/>
-                                    <segment title="Groups"/>
-                                </segments>
-                            </segmentedControl>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gSB-wV-Y2p">
-                                <rect key="frame" x="16" y="383" width="343" height="30"/>
-                            </stackView>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="NfP-7p-iWz" firstAttribute="leading" secondItem="8Ru-oY-dym" secondAttribute="leadingMargin" id="0le-WK-cc4"/>
-                            <constraint firstItem="TPn-tF-Acy" firstAttribute="top" secondItem="rpw-KE-NKW" secondAttribute="bottom" constant="8" id="10H-1p-6wa"/>
-                            <constraint firstItem="TPn-tF-Acy" firstAttribute="leading" secondItem="8Ru-oY-dym" secondAttribute="leadingMargin" id="2Xo-ml-eCr"/>
-                            <constraint firstItem="NfP-7p-iWz" firstAttribute="top" secondItem="TPn-tF-Acy" secondAttribute="bottom" constant="8" id="5C5-Yr-2iG"/>
-                            <constraint firstItem="gSB-wV-Y2p" firstAttribute="top" secondItem="NfP-7p-iWz" secondAttribute="bottom" constant="8" id="NAf-2k-z0n"/>
-                            <constraint firstItem="gSB-wV-Y2p" firstAttribute="trailing" secondItem="8Ru-oY-dym" secondAttribute="trailingMargin" id="fXU-Vd-gHr"/>
-                            <constraint firstItem="NfP-7p-iWz" firstAttribute="trailing" secondItem="8Ru-oY-dym" secondAttribute="trailingMargin" id="n9h-ar-yj8"/>
-                            <constraint firstItem="TPn-tF-Acy" firstAttribute="trailing" secondItem="8Ru-oY-dym" secondAttribute="trailingMargin" id="voS-dP-Une"/>
-                            <constraint firstItem="gSB-wV-Y2p" firstAttribute="leading" secondItem="8Ru-oY-dym" secondAttribute="leadingMargin" id="y9v-za-SuN"/>
+                            <constraint firstItem="0h6-50-0h8" firstAttribute="top" secondItem="rpw-KE-NKW" secondAttribute="bottom" id="4HB-NH-opJ"/>
+                            <constraint firstAttribute="trailing" secondItem="0h6-50-0h8" secondAttribute="trailing" id="7WP-Pv-oHk"/>
+                            <constraint firstItem="0h6-50-0h8" firstAttribute="leading" secondItem="8Ru-oY-dym" secondAttribute="leading" id="DvA-LY-S5y"/>
+                            <constraint firstItem="rZd-Bf-gZV" firstAttribute="top" secondItem="0h6-50-0h8" secondAttribute="bottom" id="Jku-Ta-2ff"/>
+                            <constraint firstItem="4U6-57-2L0" firstAttribute="width" secondItem="8Ru-oY-dym" secondAttribute="width" id="aRC-BS-20y"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="rootImageStackView" destination="NfP-7p-iWz" id="Mh5-BS-N0R"/>
-                        <outlet property="rootTextFieldsStackView" destination="gSB-wV-Y2p" id="VsA-yR-n5f"/>
-                        <outlet property="statusSegmentControl" destination="TPn-tF-Acy" id="BNt-oa-yCP"/>
+                        <outlet property="rootImageStackView" destination="zUQ-0N-WhX" id="PPh-RH-JHh"/>
+                        <outlet property="rootTextFieldsStackView" destination="kdF-WF-yPX" id="dBm-8s-TtT"/>
+                        <outlet property="statusSegmentControl" destination="UlX-7N-wkt" id="Dws-hj-Zzu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zar-oR-BtM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4717.6000000000004" y="-2782.7586206896553"/>
+            <point key="canvasLocation" x="4717.6000000000004" y="-2783.2083958020989"/>
         </scene>
         <!--WATCHLIST-->
         <scene sceneID="sqx-xK-I1j">
@@ -2603,7 +2662,7 @@
             <objects>
                 <navigationController id="T1q-fT-hr7" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="HOME" image="home" id="AlF-dd-iGF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wZb-eD-spg">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wZb-eD-spg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2980,7 +3039,7 @@
             <objects>
                 <navigationController storyboardIdentifier="GroupChat" automaticallyAdjustsScrollViewInsets="NO" id="z6j-kl-iP0" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oFg-1E-yr5">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="oFg-1E-yr5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.0" green="0.74901960779999999" blue="0.61165268839999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -3063,7 +3122,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rPd-Ct-uvb" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cbu-WW-1gF">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="cbu-WW-1gF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3082,7 +3141,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="62m-DH-c6P" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="4" title="PROFILE" image="user" id="JfJ-cE-aP5"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dJp-E1-RsG">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="dJp-E1-RsG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

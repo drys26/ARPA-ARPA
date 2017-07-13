@@ -1,10 +1,4 @@
-//
-//  WatchListRoot.swift
-//  UnsayMaau
-//
-//  Created by Nexusbond on 13/07/2017.
-//  Copyright © 2017 Nexusbond. All rights reserved.
-//
+
 
 import UIKit
 import PageMenu
