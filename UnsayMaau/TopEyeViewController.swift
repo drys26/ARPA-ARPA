@@ -14,9 +14,6 @@ import Firebase
     
     var user: User!
 
-    
-    //
-
     @IBOutlet weak var topTableView: UICollectionView!
     
     // Firebase Handle
@@ -78,6 +75,7 @@ import Firebase
         
         var rootVoteCount = [[Int]]()
         
+        
         ref.child("Posts").observeSingleEvent(of: .value, with: {(rootSnapshot) in
             //var max = 0
             var max = 0
@@ -90,9 +88,7 @@ import Firebase
                 if post.postStatus == false && post.authorImageID != self.uid && !self.posts.contains(post) {
                     rootVoteCount.append([Int]())
                     tempPost.append(post)
-                    
                     let index: Int = tempPost.index(of: post)!
-
                     for i in 0..<post.frameImagesIDS.count {
                         self.ref.child("Vote_Post").child(post.frameImagesIDS[i]).observeSingleEvent(of: .value, with: { (snapshot) in
                             let currentVoteCount = snapshot.childrenCount.hashValue
@@ -154,8 +150,6 @@ import Firebase
         refresher.endRefreshing()
     }
     
-    
-    
     func countArray(arr: [Int]) -> Int{
         var temp = 0
         for i in arr {
@@ -192,8 +186,6 @@ import Firebase
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        
         
         let cellIdentifier = "HomeFeedCell"
         

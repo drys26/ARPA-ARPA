@@ -41,6 +41,12 @@ class NextPhaseAddPostViewController: UIViewController {
     
     var postsDictionary = [String:Any]()
     
+    var isGroup: Bool!
+    
+    var group: Group!
+    
+    var arrOfChildPaths = [String]()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,6 +89,20 @@ class NextPhaseAddPostViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.postAction))
         
+        
+        if isGroup == true {
+            arrOfChildPaths.append("Group_Posts")
+            arrOfChildPaths.append("Group_Images")
+            arrOfChildPaths.append("Users_Group_Posts")
+            statusSegmentControl.isHidden = true
+        } else {
+            statusSegmentControl.isHidden = false
+            arrOfChildPaths.append("Posts")
+            arrOfChildPaths.append("Images")
+            arrOfChildPaths.append("Users_Posts")
+        }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -108,28 +128,40 @@ class NextPhaseAddPostViewController: UIViewController {
     func postAction() {
         print("Post Action")
         
-        postID = ref.child("Posts").childByAutoId().key
+        let key = ref.child(arrOfChildPaths[0]).childByAutoId().key
         
-        var status: Bool!
-        
-        if statusSegmentControl.selectedSegmentIndex == 0 {
-            status = false
+        if isGroup == true {
+            postID = "\(group.groupId)/\(key)"
         } else {
-            status = true
+            postID = key
         }
         
+        
+
         let postDescription = rootTextFieldsStackView.subviews.last as! UITextView
         
         if typeOfFrame == "TWO_VERTICAL" || typeOfFrame == "TWO_HORIZONTAL" {
             populateArray(count: 2)
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"post_description":postDescription.text,"frame_type":typeOfFrame,"author_info": "\(uid!)"] as [String : Any]
         } else if typeOfFrame == "FOUR_CROSS" {
             populateArray(count: 4)
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"frame_four":imageIDS[3],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(uid!)"] as [String : Any]
         } else if typeOfFrame == "THREE_VERTICAL" || typeOfFrame == "THREE_HORIZONTAL" {
             populateArray(count: 3)
-            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(user.displayName),\(user.email),\(user.photoUrl),\(uid!)","private_status":status] as [String : Any]
+            postsDictionary = ["frame_one": imageIDS[0],"frame_two": imageIDS[1],"frame_three": imageIDS[2],"post_description":postDescription.text,"frame_type":typeOfFrame ,"author_info": "\(uid!)"] as [String : Any]
         }
+        
+        var status: Bool!
+        
+        if isGroup == false {
+            if statusSegmentControl.selectedSegmentIndex == 0 {
+                status = false
+            } else {
+                status = true
+            }
+            postsDictionary["private_status"] = status
+        }
+        
         postsDictionary["timestamp"] = 0 - (NSDate().timeIntervalSince1970 * 1000)
         postsDictionary["finished"] = false
         
@@ -169,16 +201,39 @@ class NextPhaseAddPostViewController: UIViewController {
                 }
             })
         }
-        // End Adding Post
-        navigationController?.popToRootViewController(animated: true)
+        
+        if isGroup == false {
+            // End Adding Post
+            navigationController?.popToRootViewController(animated: true)
+        } else {
+            print("\(navigationController?.viewControllers.count) count navigation count")
+            navigationController?.popToViewController((navigationController?.viewControllers[(navigationController?.viewControllers.count)! - 4])!, animated: true)
+        }
+       
+        
+        
     }
     
     func updateImagesDictionary(count: Int, temporaryImagesDictionary: [String : Any]) {
-        ref.child("Images").child(postID).child(imageIDS[count]).setValue(temporaryImagesDictionary)
-        ref.child("Images").child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
+        ref.child(arrOfChildPaths[1]).child(postID).child(imageIDS[count]).setValue(temporaryImagesDictionary)
+        ref.child(arrOfChildPaths[1]).child(postID).observeSingleEvent(of: .value, with: {(snapshot) in
             if snapshot.childrenCount.hashValue == self.imageIDS.count {
-                self.ref.child("Posts").child(self.postID).setValue(self.postsDictionary)
-                self.ref.child("Users_Posts").child(self.user.userId).updateChildValues([self.postID:true])
+                self.ref.child(self.arrOfChildPaths[0]).child(self.postID).setValue(self.postsDictionary)
+                self.ref.child(self.arrOfChildPaths[2]).child(self.user.userId).updateChildValues([self.postID:true])
+                
+                if self.isGroup == true {
+                    self.group.groupRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                        let dictionary = snapshot.value as! [String: Any]
+                        if snapshot.hasChild("admin_members") {
+                            let adminMembers = dictionary["admin_members"] as! [String: Any]
+                            for (key,_) in adminMembers {
+                                //self.ref
+                            }
+                        }
+                        
+                    })
+                }
+                
             }
             print(snapshot.childrenCount)
             print(snapshot.children.allObjects.count)

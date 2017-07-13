@@ -22,8 +22,6 @@ class GroupController: UIViewController,UISearchBarDelegate {
     
     var refreshControl: UIRefreshControl = UIRefreshControl()
     
-    
-    
     var groups = [[Group]]()
     
     var searchGroups = [Group]()
@@ -225,12 +223,12 @@ class GroupController: UIViewController,UISearchBarDelegate {
 //                                    }
 //                                }
                                 
-                                if !self.groups[i].contains(trendingGroup) && trendingGroup.groupStatus == false {
+                                if !self.groups[i - 1].contains(trendingGroup) && !self.groups[i].contains(trendingGroup) && trendingGroup.groupStatus == false {
                                     self.groups[i].append(trendingGroup)
                                     print(trendingGroup.groupId)
                                     self.reload()
                                 }
-                                //!self.groups[i - 1].contains(trendingGroup) &&
+                                //
                                 
 //                                if self.groups[i - 1].contains(trendingGroup) && self.groups[i].count != 0 {
 //                                    // Remove from trending
@@ -384,6 +382,7 @@ class GroupController: UIViewController,UISearchBarDelegate {
             if let group = sender as? Group {
                 let root = segue.destination as! RootGroupController
                 root.group = group
+                root.user = self.user
             }
         }
     }
@@ -451,7 +450,7 @@ extension GroupController: UITableViewDataSource {
         cell.rootView.addGestureRecognizer(tap)
         cell.backgroundImageView.sd_setImage(with: URL(string: group.backgroundImageUrl))
         cell.groupDescriptionText.text = group.groupDescription
-        cell.groupMembersText.text = "\(group.members.count)"
+        cell.groupMembersText.text = "\(group.members.count) members"
         cell.groupNameText.text = group.groupName
         
         

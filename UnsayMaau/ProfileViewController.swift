@@ -12,20 +12,42 @@ import Floaty
 import GoogleSignIn
 import Firebase
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController , CAPSPageMenuDelegate {
+    
+    
+    @IBOutlet weak var backButton: UIImageView!
+    
+    @IBOutlet weak var groupHeader: UILabel!
+    @IBOutlet weak var followingHeader: UILabel!
+    @IBOutlet weak var followersHeader: UILabel!
+    @IBOutlet weak var postHeader: UILabel!
+    
+    
+    @IBOutlet weak var postStackView: UIStackView!
+    @IBOutlet weak var followersStackView: UIStackView!
 
+    @IBOutlet weak var followingStackView: UIStackView!
+    
+    @IBOutlet weak var groupStackView: UIStackView!
     
     @IBOutlet weak var coverImage: UIImageView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var floats: Floaty!
     @IBOutlet weak var StackViewCounter: UIStackView!
-    
     @IBOutlet weak var postLabel: UILabel!
     @IBOutlet weak var followersLabel: UILabel!
     @IBOutlet weak var followingLabel: UILabel!
     @IBOutlet weak var groupLabel: UILabel!
     @IBOutlet weak var userDisplayName: UILabel!
     
+    @IBOutlet weak var logoutButton: UIButton!
+    
+    @IBOutlet weak var goToFollowButton: UIButton!
+    
+    @IBOutlet weak var settingsBtn: UIButton!
+    
+    
+    var isCurrentUser: Bool = true
     
     var pageMenu: CAPSPageMenu?
     
@@ -35,28 +57,53 @@ class ProfileViewController: UIViewController {
     
     var ref: DatabaseReference!
     
+    @IBAction func goToFollowers(_ sender: Any) {
+        
+        performSegue(withIdentifier: "goToFollowFinder", sender: nil)
+        
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return .lightContent
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
+
+        
+        
         if ref == nil {
             ref = Database.database().reference()
-            getUserData()
         }
+        
+        navigationController?.title = "Profile"
+        
+        if isCurrentUser == true {
+            //navigationController?.setNavigationBarHidden(true, animated: animated)
+            backButton.isHidden = true
+            settingsBtn.isHidden = false
+        } else {
+            logoutButton.isHidden = true
+            backButton.isHidden = false
+            settingsBtn.isHidden = true
+        }
+        getUserData()
     }
     
     func getUserData(){
-        ref.child("Users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
+        var id = ""
+        if isCurrentUser == false {
+            id = user.userId
+        } else {
+            id = uid!
+        }
+        ref.child("Users").child(id).observeSingleEvent(of: .value, with: {(snapshot) in
             self.user = User(snap: snapshot)
             //this code is just to show the UserClass was populated.
-            print(self.user.email)
-            self.ref.child("Users_Posts").child(self.uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.ref.child("Users_Posts").child(id).observeSingleEvent(of: .value, with: { (snapshot) in
                 self.postLabel.text = "\(snapshot.childrenCount.hashValue)"
             })
-            self.ref.child("Users_Groups").child(self.uid!).child("Member_Groups").observeSingleEvent(of: .value, with: { (snapshot) in
+            self.ref.child("Users_Groups").child(id).child("Member_Groups").observeSingleEvent(of: .value, with: { (snapshot) in
                 self.groupLabel.text = "\(snapshot.childrenCount.hashValue)"
             })
             self.coverImage.sd_setImage(with: URL(string: self.user.coverPhotoUrl))
@@ -64,13 +111,12 @@ class ProfileViewController: UIViewController {
             self.followingLabel.text = "\(self.user.followingIDs.count)"
             self.profileImage.sd_setImage(with: URL(string: self.user.photoUrl))
             self.userDisplayName.text = self.user.displayName
+            
         })
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-
         var controllerArray: [UIViewController] = []
         
         let firstVC = storyboard?.instantiateViewController(withIdentifier: "ProfileLiveController")
@@ -113,6 +159,9 @@ class ProfileViewController: UIViewController {
         
         pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRect(x: 0.0, y: StackViewCounter.frame.maxY , width: self.view.frame.width, height: self.view.frame.height), pageMenuOptions: parameters)
         
+        pageMenu?.delegate = self
+        pageMenu?.setStartIndexToPage(index: 3)
+        
         
         self.view.addSubview(pageMenu!.view)
         
@@ -121,19 +170,28 @@ class ProfileViewController: UIViewController {
         profileImage.layer.cornerRadius = profileImage.layer.frame.size.width / 2
         profileImage.layer.borderWidth = 3
         profileImage.layer.borderColor = UIColor.white.cgColor
-
         
+        if isCurrentUser == false {
+            let tapBack = UITapGestureRecognizer(target: self, action: #selector(self.dismissPVC))
+            backButton.addGestureRecognizer(tapBack)
+        }
+        
+        
+        
+ 
+    }
+    
+    
+    func dismissPVC(){
+        self.dismiss(animated: true, completion: nil)
     }
     
 
     @IBAction func toogleSettings(_ sender: Any) {
-        
         performSegue(withIdentifier: "goToSettings", sender: nil)
-        
     }
     
     @IBAction func signOutAction(_ sender: Any) {
-        
         try! Auth.auth().signOut()
         GIDSignIn.sharedInstance().signOut()
         dismiss(animated: true, completion: nil)
@@ -148,8 +206,12 @@ class ProfileViewController: UIViewController {
         if segue.identifier == "goToSettings" {
             let svc = segue.destination as! SettingsViewController
             svc.profileImage = self.profileImage.image
+        } else if segue.identifier == "goToFollowFinder" {
+            let sfvc = segue.destination as! SeeFollowsViewController
+            sfvc.user = user
+            sfvc.followType = "followers"
+            //sender as! String
         }
     }
     
-
 }

@@ -18,6 +18,8 @@ class RootGroupController: UIViewController {
     
     var pageMenu: CAPSPageMenu?
     
+    var user: User!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,8 +32,12 @@ class RootGroupController: UIViewController {
 
         var controllerArray: [UIViewController] = []
         
-        let firstVC = storyboard?.instantiateViewController(withIdentifier: "GroupFeed")
-        firstVC?.title = "FEED"
+        let firstVC = storyboard?.instantiateViewController(withIdentifier: "GroupFeed") as! GroupHomeFeedViewController
+        
+        firstVC.title = "FEED"
+        firstVC.group = self.group
+        firstVC.user = self.user
+        
         
         let secondVC = storyboard?.instantiateViewController(withIdentifier: "GroupChat") as! UINavigationController
         
@@ -41,7 +47,7 @@ class RootGroupController: UIViewController {
         
         rootView.group = group
         
-        controllerArray.append(firstVC!)
+        controllerArray.append(firstVC)
         controllerArray.append(secondVC)
         
         // a bunch of random customization

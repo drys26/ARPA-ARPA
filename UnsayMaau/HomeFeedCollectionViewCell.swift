@@ -43,6 +43,17 @@ class HomeFeedCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
     }
     
+//    override func awakeFromNib() {
+//        super.awakeFromNib()
+//        
+//        self.contentView.autoresizingMask = UIViewAutoresizing.flexibleHeight
+//        self.contentView.autoresizingMask = UIViewAutoresizing.flexibleWidth
+//        self.contentView.frame = self.bounds
+//        
+//        self.contentView.translatesAutoresizingMaskIntoConstraints = true
+//        
+//    }
+    
 //    override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
 //        
 //        let estimatedHeight = rootView.frame.height + userInfoRootView.frame.height + rootDescriptionCaption.frame.height + 16 + 20
